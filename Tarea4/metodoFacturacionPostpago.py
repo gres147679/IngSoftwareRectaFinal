@@ -1,5 +1,16 @@
 # -*- coding: utf-8 -*-
 import database as db
+import Afiliaciones
+import psycopg2
+import psycopg2.extras
+import unittest
+import cliente as cl
+import moduloCliente as mc
+import consumos
+import productos as pr
+import validacion
+import dbparams
+import datetime
 
 
 # Implementación metodoFacturaciónPostpafgo
@@ -16,16 +27,6 @@ class metodoFacturacionPostpago(metodoFacturacion):
     self.mesFacturacion = anio
   
     
-  def buscarConsumos(self):
-    conexion = db.operacion("Buscamos todos los consumos asociados a un producto",
-			  """ SELECT to_char(con.fecha, 'DD MM YYYY'), serv.nombreserv, con.cantidad
-			      FROM consume AS con, servicio AS serv 
-			      WHERE con.numserie = \'%s\'  AND to_number(to_char(con.fecha, 'MM'),'9999999') = %s 
-			      AND serv.codserv = con.codserv""" % (self.idProducto, self.mesFacturacion),
-			      dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
-  
-    return conexion.execute()
-  
   def totalCobrar(self):
         
         resultado = Afiliaciones.ConsultarPlanesPostpago(self.idProducto)
@@ -108,11 +109,10 @@ class metodoFacturacionPostpago(metodoFacturacion):
                 total = total + exceso
                 self.listaCobrar[con][3] = exceso
         
-        self.calculada = 1
+        
         return total + renta
     
     def __str__(self):
-	if not self.calculada then return ""
         now = datetime.datetime.now()
         string = '\n=========================================================================================================='
         string += '\n{0:50}FACTURA'.format(' ') + '{0:20}Fecha de emisión: '.format(' ') + str(now.strftime("%d-%m-%Y")) + '\n' + str(self.cliente)
