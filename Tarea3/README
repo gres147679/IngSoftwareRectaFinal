@@ -1,0 +1,31 @@
+=======================================================================
+=============================== README ================================
+=======================================================================
+
+Pasos para ejecutar el software: 
+
+1) Modificar el archivo dbparams.py con los parámetros correspondientes
+   de la base de datos.
+   
+2) Cargar el archivo schema.sql en la base de datos
+
+3) Ejecutar el archivo main.py
+
+4) En caso de querer probar únicamente la facturación y no los módulos, 
+   ejecutar el archivo Factura.py
+   
+NOTA: Es necesario poblar la base de datos con la información de una
+      empresa, planes, paquetes y servicios; pues no se pueden insertar
+      mediante el menú interactivo.
+
+=======================================================================
+
+Elaborado por:
+    
+    Gamar Azuaje
+    Rosangelis García
+    José Luis Jiménez
+    Reinaldo Verdugo
+    Rebeca Machado
+    Gustavo El Khoury
+    Leopoldo Pimentel
