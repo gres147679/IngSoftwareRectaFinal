@@ -12,6 +12,29 @@ import database as db
 import dbparams
 import datetime
 
+# Estos metodos deberian volverse parte de una fachada para la factura.
+# LA construccion del OBJECTO Factura no deberia pedir nada por pantalla
+# En efecto hay que pedir cosas, pero esto debiera implementarlo una fachada
+# o el menu
+
+def buscarMes():
+      return str(raw_input("Por favor, introduzca el mes de facturacion "))
+    
+def buscarAnio():
+      return str(raw_input("Por favor, introduzca el año de facturacion "))
+
+def pedirObservaciones():
+        
+    while True:
+	res = str(raw_input("Desea agregarle observaciones a la factura? [s/n]: "))
+	if res == "s":
+	    return str(raw_input("Introduzca las observaciones:\n"))
+	else:
+	    if res == "n":
+		return ""
+	    else:
+		print "Opción inválida\n"
+
 def pedirFactura():
     
     if (pr.cantidadProductos() == 0):
@@ -51,11 +74,18 @@ def pedirFactura():
 	    print "Este producto no esta afiliado a ningun plan"
 	  else:
 	    # Le corresponde la estrategia prepago
+	    obs = pedirObservaciones()
 	    print "Se procedera a la generacion de la factura."
+	    # Aqui va la creacion del objecto factura
+	    break
 	    
         else:
 	    # Le corresponde la estrategia postpago
+	    mesFacturacion = buscarMes()
+	    anioFacturacion = buscarAnio()
+	    obs = pedirObservaciones()
 	    print "Se procedera a la generacion de la factura."
+	    # Aqui va la creacion del objecto factura
             break
         
             
@@ -67,24 +97,19 @@ def pedirFactura():
     
 
 class Factura:
-    def __init__(self, idCliente,idProducto):                   
+    def __init__(self, idCliente,idProducto,obs):                   
         self.idProducto = idProducto
         self.producto = pr.obtenerProducto(idProducto)
         self.cliente = mc.busquedaCliente(idCliente)
-        self.observaciones = self.pedirObservaciones()
+        self.observaciones = obs
     
-    def pedirObservaciones(self):
-        
-        while True:
-            res = str(raw_input("Desea agregarle observaciones a la factura? [s/n]: "))
-            if res == "s":
-                return str(raw_input("Introduzca las observaciones:\n"))
-            else:
-                if res == "n":
-                    return ""
-                else:
-                    print "Opción inválida\n"
-        
+    def __init__(self, idCliente,idProducto,obs,mes,anio):                   
+        self.idProducto = idProducto
+        self.producto = pr.obtenerProducto(idProducto)
+        self.cliente = mc.busquedaCliente(idCliente)
+        self.observaciones = obs
+        self.mesFacturacion=mes
+        self.anioFacturacion=anio
         
 if __name__ == '__main__':
     

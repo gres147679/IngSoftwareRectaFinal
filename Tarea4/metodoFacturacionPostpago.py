@@ -15,11 +15,6 @@ class metodoFacturacionPostpago(metodoFacturacion):
     self.anioFacturacion = buscarMes()
     self.mesFacturacion = buscarAnio()
   
-  def buscarMes(self):
-      return str(raw_input("Por favor, introduzca el mes de facturacion "))
-    
-  def buscarAnio(self):
-      return str(raw_input("Por favor, introduzca el año de facturacion "))
     
   def buscarConsumos(self):
     conexion = db.operacion("Buscamos todos los consumos asociados a un producto",
@@ -122,7 +117,7 @@ class metodoFacturacionPostpago(metodoFacturacion):
         string = '\n=========================================================================================================='
         string += '\n{0:50}FACTURA'.format(' ') + '{0:20}Fecha de emisión: '.format(' ') + str(now.strftime("%d-%m-%Y")) + '\n' + str(self.cliente)
         string += '\n' + str(self.producto)
-        string += '\n\n\n{4:40}SERVICIOS CONSUMIDOS (%s-%s)\n\n{0:30} | {1:20} | {2:20} | {3:20}'.format('SERVICIO', 'TOTAL CONSUMIDO', 'LÍMITE DEL PLAN', 'MONTO A COBRAR POR EXCESO',' ') % (self.mesFacturacion, self.anioFacturacion)
+        string += '\n\n\n{4:40}SERVICIOS CONSUMIDOS (%s-%s)\n\n{0:30} | {1:20} | {2:20} | {3:20}'.format('SERVICIO', 'TOTAL CONSUMIDO', 'L�?MITE DEL PLAN', 'MONTO A COBRAR POR EXCESO',' ') % (self.mesFacturacion, self.anioFacturacion)
         string += '\n----------------------------------------------------------------------------------------------------------'
         for con in self.listaCobrar.keys():
             string += '\n{0:30} | {1:20} | {2:20} | {3:20}'.format \
