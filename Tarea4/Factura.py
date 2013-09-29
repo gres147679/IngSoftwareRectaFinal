@@ -11,6 +11,7 @@ import validacion
 import database as db
 import dbparams
 import datetime
+import metodoFacturacionPostpago
 
 def pedirObservaciones():
         
@@ -67,11 +68,13 @@ def pedirFactura():
             resultado = Afiliaciones.ConsultarPlanesPrepago(numSerie)
             if not resultado or len(resultado) == 0:
 	      print "Este producto no esta afiliado a ningun plan"
-	    else
+	    else:
 	      # Este producto está afiliado a un plan prepago
 	      print "Se procedera a la generacion de la factura."
 	      obs = pedirObservaciones()
 	      # Asignacion y ejecucion de la estrategia metodoFacturacionPrepago
+	      myBill = Factura(idCliente,numSerie)
+	      print myBill
 	      break
         else:
 	  # Este producto está afiliado a un plan postpago
@@ -80,14 +83,10 @@ def pedirFactura():
 	  obs = pedirObservaciones()
 	  print "Se procedera a la generacion de la factura."
 	  # Asignacion y ejecucion de la estrategia metodoFacturacionPostpago
+	  myBill = Factura(idCliente,numSerie,mes,anio)
+	  print myBill
           break
         
-            
-        
-    
-    
-    
-    return Factura(idCliente,numSerie)
     
 
 class Factura:
@@ -95,13 +94,19 @@ class Factura:
         self.idProducto = idProducto
         self.producto = pr.obtenerProducto(idProducto)
         self.cliente = mc.busquedaCliente(idCliente)
-        self.listaCobrar = {}
-        self.nombrePlan = ''
-        self.totalPlan = 0
-        self.totalPaquete = 0
-        self.montoTotalCobrar = self.totalCobrar()
-        self.observaciones = self.pedirObservaciones()
-
+        # Crea un metodoFacturacionPrepago
+        # Todavia no existe, pero la firma debe ser
+        #self.metodoFacturacion = metodoFacturacionPrepago.metodoFacturacionPostpago(idProducto)
+        
+    def __init__(self, idCliente,idProducto,mesFacturacion,anioFacturacion):                   
+        self.idProducto = idProducto
+        self.producto = pr.obtenerProducto(idProducto)
+        self.cliente = mc.busquedaCliente(idCliente)
+        # Crea un metodoFacturacionPostpago
+        self.metodoFacturacion = metodoFacturacionPostpago.metodoFacturacionPostpago(idProducto,mesFacturacion,anioFacturacion)
+    
+    def __str__(self):
+      return str(self.metodoFacturacion)
 if __name__ == '__main__':
     
     factura = pedirFactura()
