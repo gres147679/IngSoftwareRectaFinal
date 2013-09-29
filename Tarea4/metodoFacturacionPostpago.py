@@ -11,6 +11,7 @@ import productos as pr
 import validacion
 import dbparams
 import datetime
+import metodoFacturacion
 
 
 # Implementación metodoFacturaciónPostpafgo
@@ -18,20 +19,27 @@ import datetime
 # el total del monto y la presentación final de la factura. Esta implementación
 # factura los equipos postpago
 
-class metodoFacturacionPostpago(metodoFacturacion):
+class metodoFacturacionPostpago():
   
   # mes y año de facturación
-  def __init__(self,idProducto,mes,anio):
+  def __init__(self,producto,idProducto,cliente,mes,anio,obs):
+    self.cliente = cliente
+    self.producto = producto
     self.idProducto = idProducto
     self.anioFacturacion = mes
     self.mesFacturacion = anio
+    self.listaCobrar = {}
+    self.nombrePlan = ''
+    self.totalPlan = 0
+    self.totalPaquete = 0
+    self.montoTotalCobrar = self.facturar()
+    self.observaciones = obs
   
     
-  def totalCobrar(self):
+  def facturar(self):
         
         resultado = Afiliaciones.ConsultarPlanesPostpago(self.idProducto)
-    
-
+   
         codplan = resultado[0][0]
 
         #Buscamos la renta del plan que se va a cobrar al producto.      
@@ -112,20 +120,20 @@ class metodoFacturacionPostpago(metodoFacturacion):
         
         return total + renta
     
-    def __str__(self):
-        now = datetime.datetime.now()
-        string = '\n=========================================================================================================='
-        string += '\n{0:50}FACTURA'.format(' ') + '{0:20}Fecha de emisión: '.format(' ') + str(now.strftime("%d-%m-%Y")) + '\n' + str(self.cliente)
-        string += '\n' + str(self.producto)
-        string += '\n\n\n{4:40}SERVICIOS CONSUMIDOS (%s-%s)\n\n{0:30} | {1:20} | {2:20} | {3:20}'.format('SERVICIO', 'TOTAL CONSUMIDO', 'L�?MITE DEL PLAN', 'MONTO A COBRAR POR EXCESO',' ') % (self.mesFacturacion, self.anioFacturacion)
-        string += '\n----------------------------------------------------------------------------------------------------------'
-        for con in self.listaCobrar.keys():
-            string += '\n{0:30} | {1:20} | {2:20} | {3:20}'.format \
-                        (self.listaCobrar[con][0], str(self.listaCobrar[con][1]), str(self.listaCobrar[con][2]), str(self.listaCobrar[con][3]))
-        string += '\n----------------------------------------------------------------------------------------------------------'
-        string += '\n\nMonto a cobrar por el plan ' + self.nombrePlan + ': ' + str(self.totalPlan)
-        string += '\nMonto a cobrar por los paquetes afiliados: ' + str(self.totalPaquete)
-        string += '\n\nTOTAL: ' + str(self.montoTotalCobrar)
-        string += '\n==========================================================================================================\n'
-        string += 'Observaciones: ' + str(self.observaciones) + '\n'
-        return string
+  def __str__(self):
+      now = datetime.datetime.now()
+      string = '\n=========================================================================================================='
+      string += '\n{0:50}FACTURA'.format(' ') + '{0:20}Fecha de emisión: '.format(' ') + str(now.strftime("%d-%m-%Y")) + '\n' + str(self.cliente)
+      string += '\n' + str(self.producto)
+      string += '\n\n\n{4:40}SERVICIOS CONSUMIDOS (%s-%s)\n\n{0:30} | {1:20} | {2:20} | {3:20}'.format('SERVICIO', 'TOTAL CONSUMIDO', 'L�?MITE DEL PLAN', 'MONTO A COBRAR POR EXCESO',' ') % (self.mesFacturacion, self.anioFacturacion)
+      string += '\n----------------------------------------------------------------------------------------------------------'
+      for con in self.listaCobrar.keys():
+	  string += '\n{0:30} | {1:20} | {2:20} | {3:20}'.format \
+		      (self.listaCobrar[con][0], str(self.listaCobrar[con][1]), str(self.listaCobrar[con][2]), str(self.listaCobrar[con][3]))
+      string += '\n----------------------------------------------------------------------------------------------------------'
+      string += '\n\nMonto a cobrar por el plan ' + self.nombrePlan + ': ' + str(self.totalPlan)
+      string += '\nMonto a cobrar por los paquetes afiliados: ' + str(self.totalPaquete)
+      string += '\n\nTOTAL: ' + str(self.montoTotalCobrar)
+      string += '\n==========================================================================================================\n'
+      string += 'Observaciones: ' + str(self.observaciones) + '\n'
+      return string

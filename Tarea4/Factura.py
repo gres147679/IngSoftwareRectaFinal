@@ -83,7 +83,7 @@ def pedirFactura():
 	  obs = pedirObservaciones()
 	  print "Se procedera a la generacion de la factura."
 	  # Asignacion y ejecucion de la estrategia metodoFacturacionPostpago
-	  myBill = Factura(idCliente,numSerie,mes,anio)
+	  myBill = Factura(idCliente,numSerie,mes,anio,obs)
 	  print myBill
           break
         
@@ -98,12 +98,12 @@ class Factura:
         # Todavia no existe, pero la firma debe ser
         #self.metodoFacturacion = metodoFacturacionPrepago.metodoFacturacionPostpago(idProducto)
         
-    def __init__(self, idCliente,idProducto,mesFacturacion,anioFacturacion):                   
+    def __init__(self, idCliente,idProducto,mesFacturacion,anioFacturacion,obs):                   
         self.idProducto = idProducto
         self.producto = pr.obtenerProducto(idProducto)
         self.cliente = mc.busquedaCliente(idCliente)
         # Crea un metodoFacturacionPostpago
-        self.metodoFacturacion = metodoFacturacionPostpago.metodoFacturacionPostpago(idProducto,mesFacturacion,anioFacturacion)
+        self.metodoFacturacion = metodoFacturacionPostpago.metodoFacturacionPostpago(self.producto,self.idProducto,self.cliente,mesFacturacion,anioFacturacion,obs)
     
     def __str__(self):
       return str(self.metodoFacturacion)
