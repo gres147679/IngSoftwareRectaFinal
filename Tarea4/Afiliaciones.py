@@ -380,19 +380,6 @@ def impPaquetes():
 
             for row in resultado:
                 print "{0:20} | {1:20} | {2:10}".format(row[0], row[1], row[2])
-
-#
-# Verifica que un cliente se le pueda generar una factura
-# Para esto debe poseer al menos un producto postpago.
-#
-
-def verificarCliente(idCliente):    
-    conexion = database.operacion("Cuenta la cantidad de productos postpago que posee un cliente",
-    """SELECT count(*) FROM cliente, afilia, producto WHERE cliente.cedula = producto.cedula 
-    AND producto.numserie = afilia.numserie AND cliente.cedula = %s;""" % idCliente,
-                                dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
-    
-    return (conexion.execute()[0][0] > 0)
             
 ## Main de pruebas
 if __name__ == '__main__':
