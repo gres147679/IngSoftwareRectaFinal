@@ -6,11 +6,10 @@ from abc import ABCMeta, abstractmethod
 # el total del monto y la presentación final de la factura
 
 class metodoFacturacion:
-  #__metaclass__ = ABCMeta
+  __metaclass__ = ABCMeta
   
   def __init__(self):
-    # Atributo que representa el monto de la factura, sea prepago o postpago
-    total = 0
+    pass
     
   def facturar(self):
     pass

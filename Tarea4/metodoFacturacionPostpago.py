@@ -19,21 +19,25 @@ import metodoFacturacion
 # el total del monto y la presentación final de la factura. Esta implementación
 # factura los equipos postpago
 
-class metodoFacturacionPostpago():
+class metodoFacturacionPostpago(metodoFacturacion.metodoFacturacion):
   
   # mes y año de facturación
   def __init__(self,producto,idProducto,cliente,mes,anio,obs):
-    self.cliente = cliente
+    # El orden es: producto,idProducto,cliente,mes,anio,obs
+    
     self.producto = producto
     self.idProducto = idProducto
-    self.anioFacturacion = mes
+    self.cliente = cliente
     self.mesFacturacion = anio
+    self.anioFacturacion = mes
+    self.observaciones = observaciones
+    
     self.listaCobrar = {}
     self.nombrePlan = ''
     self.totalPlan = 0
     self.totalPaquete = 0
     self.montoTotalCobrar = self.facturar()
-    self.observaciones = obs
+    
   
     
   def facturar(self):
