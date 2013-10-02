@@ -9,7 +9,7 @@ import moduloCliente
 import productos
 import consumos
 import Afiliaciones
-import Factura
+import gestionarFactura
 
 def main():
     print("BIENVENIDOS")
@@ -223,7 +223,7 @@ def main():
                 if op5 == 1:                    
                     print "\n1.- Generar la factura de un cliente."  
                     #Genera la factura
-                    fact = Factura.pedirFactura()
+                    fact = gestionarFactura.pedirFactura()
                     if fact:
 		      print fact
                    
