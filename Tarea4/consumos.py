@@ -151,17 +151,6 @@ class facturacion:
     return myString[:len(myString)-1]
     
     
-  def buscarConsumosporServicio(self):
-    conexion = database.operacion("Buscamos la suma de todos los consumos por servicio",
-                            """SELECT con.codserv, sum(con.cantidad) AS total FROM consume AS con 
-                            WHERE con.numserie = \'%s\' AND 
-                            to_char(con.fecha, 'MM YYYY') = \'%s\' GROUP BY (con.codserv)""" %
-                            (self.numSerieProducto, self.inicioFacturacion + " " + self.finFacturacion),
-                            dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
-       
-    return conexion.execute()  
-    
-    
 if __name__ == '__main__':
   #a = facturacion('CBZ27326','30/04/2000','30/04/2015')
   #print a

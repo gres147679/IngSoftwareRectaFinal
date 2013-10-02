@@ -12,6 +12,7 @@ import validacion
 import dbparams
 import datetime
 from metodoFacturacion import metodoFacturacion
+from gestionarConsumos import buscarConsumosporServicio
 
 # Implementación metodoFacturaciónPostpafgo
 # Implementa la interfaz para la estrategia que usa la factura para calcular
@@ -56,9 +57,8 @@ class metodoFacturacionPostpago(metodoFacturacion):
         self.totalPlan = renta
         
         #Buscamos la suma de todos los consumos por servicio hechos por el producto en el año y mes introducidos por el usuario.
-        #Lo guardamos en un diccionario donde la clave es el codigo del servicio.
-        listaConsumos = consumos.facturacion(self.idProducto,self.mesFacturacion,self.anioFacturacion)
-        resultado = listaConsumos.buscarConsumosporServicio()
+        #Lo guardamos en un diccionario donde la clave es el codigo del servicio.        
+        resultado = buscarConsumosporServicio(self.idProducto,self.mesFacturacion,self.anioFacturacion)
         
         totalConsumido = {}
         for row in resultado:

@@ -6,6 +6,16 @@ import datetime
 from consumos import consumo,existeEquipo,existeServicio
 import re
 
+def buscarConsumosporServicio(idProducto,mesFacturacion,anioFacturacion):
+    conexion = database.operacion("Buscamos la suma de todos los consumos por servicio",
+                            """SELECT con.codserv, sum(con.cantidad) AS total FROM consume AS con 
+                            WHERE con.numserie = \'%s\' AND 
+                            to_char(con.fecha, 'MM YYYY') = \'%s\' GROUP BY (con.codserv)""" %
+                            (idProducto, mesFacturacion+ " " + anioFacturacion),
+                            dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
+       
+    return conexion.execute()  
+
 def crearConsumoInteractivo():
   print 'Se le solicitará la información del consumo'
   print 'Inserte el código del equipo'
