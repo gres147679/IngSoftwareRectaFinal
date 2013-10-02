@@ -1,15 +1,16 @@
-# Modulo menu.py
-#!/usr/bin/env python
-#!/usr/local/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
+# Modulo menu.py
 
+import gestionarFactura
 import sys
 import validacion
 import moduloCliente
 import productos
 import consumos
 import Afiliaciones
-import gestionarFactura
+import gestionarConsumos
+
 
 def main():
     print("BIENVENIDOS")
@@ -200,13 +201,13 @@ def main():
                     print "Mostrando todos los productos disponibles: "
                     productos.listarProductos()
             
-                    consumos.crearConsumoInteractivo()
+                    gestionarConsumos.crearConsumoInteractivo()
                 elif op4 == 2:     
                     print "\n2.- Consultar consumos de un producto."   
                     
                     print "Mostrando todos los productos disponibles: "
                     productos.listarProductos()
-                    consumos.consumosProducto()
+                    gestionarConsumos.consumosProducto()
                 elif op4 == 3: 
                     print "\n3.- Regresar al menu anterior."
                     flag4 = False
