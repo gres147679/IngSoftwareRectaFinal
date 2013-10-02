@@ -11,15 +11,14 @@ import productos as pr
 import validacion
 import dbparams
 import datetime
-import metodoFacturacion
-
+from metodoFacturacion import metodoFacturacion
 
 # Implementación metodoFacturaciónPostpafgo
 # Implementa la interfaz para la estrategia que usa la factura para calcular
 # el total del monto y la presentación final de la factura. Esta implementación
 # factura los equipos postpago
 
-class metodoFacturacionPostpago(metodoFacturacion.metodoFacturacion):
+class metodoFacturacionPostpago(metodoFacturacion):
   
   # mes y año de facturación
   def __init__(self,producto,idProducto,cliente,mes,anio,obs):
@@ -30,7 +29,7 @@ class metodoFacturacionPostpago(metodoFacturacion.metodoFacturacion):
     self.cliente = cliente
     self.mesFacturacion = anio
     self.anioFacturacion = mes
-    self.observaciones = observaciones
+    self.observaciones = obs
     
     self.listaCobrar = {}
     self.nombrePlan = ''

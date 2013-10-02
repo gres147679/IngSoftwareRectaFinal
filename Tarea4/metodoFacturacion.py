@@ -1,15 +1,12 @@
-# -*- coding: utf-8 -*-
-from abc import ABCMeta, abstractmethod  
-
-# Interfaz metodoFacturación
-# Define una interfaz para la estrategia que usa la factura para calcular
-# el total del monto y la presentación final de la factura
+from abc import ABCMeta, abstractmethod
 
 class metodoFacturacion:
-  __metaclass__ = ABCMeta
-  
-  def __init__(self):
-    pass
+    __metaclass__ = ABCMeta
     
-  def facturar(self):
-    pass
+    @abstractmethod
+    def facturar(self):
+        pass
+
+    @abstractmethod
+    def __str__(self):
+        pass
