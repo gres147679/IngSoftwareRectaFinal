@@ -51,7 +51,7 @@ class consumo:
     # Conexión con la base de datos
     self.conexiondb = database.operacion(
       'Operacion que inserta un consumo en la DB',
-      'insert into consume values (DEFAULT,\'%s\',%s,\'%s\',%s);' 
+      'insert into consume values (DEFAULT,\'%s\',%s,to_date(\'%s\',\'DD/MM/YYYY\'),%s);' 
       % (self.numserie,self.codservicio,self.fecha,self.cantidad),
       dbparams.dbname,dbparams.dbuser,dbparams.dbpass
       )
