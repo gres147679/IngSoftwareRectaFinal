@@ -119,7 +119,13 @@ CREATE TABLE INCLUYE (
   CONSTRAINT cantidadServicioIncluyePositiva CHECK (cantidad > 0)
 );
 
-
+CREATE TABLE SALDO (
+  numserie      varchar(10)     references PRODUCTO(numserie),
+  fecha         timestamp       NOT NULL,
+  cantidad      integer            NOT NULL,
+  PRIMARY KEY(numserie, fecha),
+  CONSTRAINT cantidadPositiva CHECK (cantidad > 0)
+);
 
 --******************************************************************************
 --******************************** TRIGGERS ************************************
@@ -155,11 +161,11 @@ RETURNS TRIGGER AS $existePlanPostpago$
 $existePlanPostpago$ LANGUAGE plpgsql;
   
 CREATE TRIGGER existePlanPrepago
-BEFORE INSERT OR UPDATE ON ACTIVA FOR EACH ROW 
+BEFORE INSERT ON ACTIVA FOR EACH ROW 
 EXECUTE PROCEDURE existePlanPostpago();
   
 CREATE TRIGGER existePlanPostpago 
-BEFORE INSERT OR UPDATE ON AFILIA FOR EACH ROW 
+BEFORE INSERT ON AFILIA FOR EACH ROW 
 EXECUTE PROCEDURE existePlanPrepago();
 
 
@@ -504,9 +510,30 @@ RETURNS TRIGGER AS $existePlan$
 $existePlan$ LANGUAGE plpgsql;
   
 CREATE TRIGGER existePlan1
-BEFORE INSERT OR UPDATE ON ACTIVA FOR EACH ROW 
+BEFORE INSERT ON ACTIVA FOR EACH ROW 
 EXECUTE PROCEDURE existePlan();
 
 CREATE TRIGGER existePlan2
-BEFORE INSERT OR UPDATE ON AFILIA FOR EACH ROW 
+BEFORE INSERT ON AFILIA FOR EACH ROW 
 EXECUTE PROCEDURE existePlan();
+
+CREATE OR REPLACE FUNCTION aumentaSaldo() 
+RETURNS TRIGGER AS $aumentaSaldo$
+BEGIN
+    IF EXISTS (SELECT * 
+       FROM ACTIVA
+       WHERE NEW.numserie = numserie) THEN
+           UPDATE ACTIVA
+           SET saldo = saldo + NEW.cantidad
+           WHERE NEW.numserie = numserie;
+    ELSE
+        RAISE WARNING 'INVE002: EL producto al que intenta actualizar el saldo no tiene un plan prepago';
+        RETURN NULL;
+    END if;
+  RETURN NEW;
+  END;
+$aumentaSaldo$ LANGUAGE plpgsql;
+
+CREATE TRIGGER aumentaSaldo
+BEFORE INSERT ON SALDO FOR EACH ROW 
+EXECUTE PROCEDURE aumentaSaldo();
