@@ -46,7 +46,7 @@ def main():
                 elif op1 == 2:     
                     print "\n2.- Consultar un cliente."
                     
-                    print "Mostrando todos los clientes: "
+                    print "\nMostrando todos los clientes: "
                     moduloCliente.listarClientes()
                     
                     moduloCliente.consultaClientes()         
@@ -89,9 +89,9 @@ def main():
                            
                 op3 = int(validacion.validarNumero('Opcion: '))
                 
-                print "Mostrando todos los productos disponibles: "
+                print "\nMostrando todos los productos disponibles: "
                 productos.listarProductos()
-                
+
                 if op3 == 1:
                     producto31 = productos.validarSerie()   
                     flag31 = True                                       
@@ -101,29 +101,34 @@ def main():
                         print "   1.- Plan."
                         print "   2.- Paquete de Servicios."
                         print "   3.- Regresar."
-                
+                        
                         op31 = int(validacion.validarNumero('Opcion: '))
-                        if op31 == 1:
-                            
+                        
+                        if op31 == 1:                            
                             print "\n1.- Plan."
-                            
-                            print "Mostrando todos los planes disponibles: "
-                            Afiliaciones.impPlanes()
-                            
-                            cod_plan = int(validacion.validarNumero('Introduzca el codigo del plan: '))
-                            Afiliacion = Afiliaciones.Afiliaciones(producto31,cod_plan)                            
-                            Afiliacion.CrearAfiliacion()
+                             
+                            if Afiliaciones.impPlanes():
+                                print "\nMostrando todos los planes disponibles: "                                
+                                cod_plan = int(validacion.validarNumero('Introduzca el codigo del plan: '))
+                                Afiliacion = Afiliaciones.Afiliaciones(producto31,cod_plan)                            
+                                Afiliacion.CrearAfiliacion()
                             flag31 = False
                             
                         elif op31 == 2:     
                             print "\n2.- Paquete de Servicios."
                             
-                            print "Mostrando todos los paquetes de servicios disponibles: "
-                            Afiliaciones.impPaquetes()
+                            #Verifica que el producto tenga asociado un plan
+                            if productos.productoTienePlan(producto31):
+                                print "\nMostrando todos los paquetes de servicios disponibles: "
+                                
+                                if Afiliaciones.impPaquetes():
+                                    cod_ser = int(validacion.validarNumero('Introduzca el codigo del paquete de servicio: '))
+                                
+                                    Afiliacion = Afiliaciones.Afiliaciones(producto31,cod_ser)                            
+                                    Afiliacion.CrearContratacion()
+                            else:
+                                print "El producto no esta afiliado a un plan; por lo que no se puede afiliar un paquete de servicios."
                             
-                            cod_ser = int(validacion.validarNumero('Introduzca el codigo del paquete de servicio: '))
-                            Afiliacion = Afiliaciones.Afiliaciones(producto31,cod_ser)                            
-                            Afiliacion.CrearContratacion()
                             flag31 = False
                               
                         elif op31 == 3: 
@@ -131,8 +136,7 @@ def main():
                             flag31 = False
                             
                         elif (op31 > 3 or op31 <= 0):
-                            print "\nERROR: La opcion no es valida."
-                            
+                            print "\nERROR: La opcion no es valida."                         
 
                 elif op3 == 2:     
                     
@@ -148,7 +152,7 @@ def main():
                         if op32 == 1:
                             print "\n1.- Plan."
                             
-                            print "Mostrando todos los planes disponibles: "
+                            print "\nMostrando todos los planes disponibles: "
                             Afiliaciones.impPlanes()
                             
                             cod_plan = int(validacion.validarNumero('Introduzca el codigo del plan: '))
@@ -158,7 +162,7 @@ def main():
                         elif op32 == 2:     
                             print "\n2.- Paquete de Servicios."
                             
-                            print "Mostrando todos los paquetes de servicios disponibles: "
+                            print "\nMostrando todos los paquetes de servicios disponibles: "
                             Afiliaciones.impPaquetes()
                             
                             cod_ser = int(validacion.validarNumero('Introduzca el codigo del paquete de servicio: '))
@@ -198,14 +202,14 @@ def main():
                 if op4 == 1:
                     print "\n1.- Registrar un consumo."
                     
-                    print "Mostrando todos los productos disponibles: "
+                    print "\nMostrando todos los productos disponibles: "
                     productos.listarProductos()
             
                     gestionarConsumos.crearConsumoInteractivo()
                 elif op4 == 2:     
                     print "\n2.- Consultar consumos de un producto."   
                     
-                    print "Mostrando todos los productos disponibles: "
+                    print "\nMostrando todos los productos disponibles: "
                     productos.listarProductos()
                     gestionarConsumos.consumosProducto()
                 elif op4 == 3: 

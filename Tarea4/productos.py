@@ -183,7 +183,66 @@ def listarProductos():
             print writeRow              
         
         return True  
+   
+## Informa si un producto tiene un plan
+def productoTienePlan (producto):
+    try:
+        #Verificamos si el producto ya esta afiliado a un plan prepago
+        conexion = database.operacion("","""SELECT * FROM ACTIVA WHERE numserie = '%s'"""%(producto),
+        dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
+        resultado = conexion.execute()                
+        
+        #Posee plan prepago
+        if len(resultado) != 0:
+            conexion.conexion.commit()
+            conexion.cerrarConexion()
+            return True
+            
+        #Verificamos si el producto ya esta afiliado a un plan postpago
+        conexion.setComando("""SELECT * FROM AFILIA WHERE numserie = '%s'"""%(producto)), 
+        resultado2 = conexion.execute()
+            
+        #Posee plan postpago
+        if len(resultado2) != 0:
+            conexion.conexion.commit()
+            conexion.cerrarConexion()
+            return True
+
+        ## Guardamos los cambios y cerramos la base de datos
+        conexion.conexion.commit()
+        conexion.cerrarConexion()
+        
+        #No posee plan
+        return False
+
+    # Capturamos los posibles errores.
+    except Exception, e:
+        print '\nERROR:', e
     
+## Informa si un producto posee un servicio adicionala
+def productoTieneServicioA (producto,servicioA):
+    try:
+        #Verificamos si el producto ya esta afiliado a un plan prepago
+        conexion = database.operacion("","""SELECT codpaq, numserie FROM CONTRATA 
+            WHERE codpaq = %s AND numserie = '%s'"""%(servicioA,producto),
+        dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
+        resultado = conexion.execute()                
+        
+        #Posee el servicio adicional
+        if len(resultado) != 0:
+            conexion.conexion.commit()
+            conexion.cerrarConexion()
+            return True
+        
+        #No posee el servicio adicional
+        return False
+
+    # Capturamos los posibles errores.
+    except Exception, e:
+        print '\nERROR:', e
+
+
+
       ##### MAIN #####
 if __name__ == "__main__":
   print 'Esto no es un ejecutable. Es un modulo. MODULO!'
