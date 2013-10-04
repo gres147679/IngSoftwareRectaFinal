@@ -5,6 +5,10 @@ class Vendible:
     def __init__(self):  
         self._id = "Identificador abstracto"  
         self._desc = "Descripcion abstracta"
+        self._costoServicios = 0
+        
+    def get_costoServicios(self):
+        return self._costoServicios
    
     def get_id(self):  
         return self._id 
@@ -16,7 +20,8 @@ class Producto(Vendible):
     #Clase Concreta
     def __init__(self,id):  
         self._id = id  
-        self._desc = "Producto: " + str(self._id)
+        self._desc = "Producto: " + str(self._id)  + " "
+        self._costoServicios = 0
         
         
  ####################### TEST CODE ##########################
@@ -24,6 +29,6 @@ class Producto(Vendible):
  
 # Ejemplo de una clase concreta. Cuando la utilizen pidan la siere con validarSerie en productos.py
 # Usen el id para agregarle el paquete al producto a traves de la BD.
-# p = Producto(123);
-# print p.get_desc()
+#p = Producto(123);
+#print p.get_desc()
  

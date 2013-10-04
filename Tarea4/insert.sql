@@ -14,7 +14,10 @@
         (1002,'Segundos a Otras Operadoras',0.20,FALSE);
         
         insert into SERVICIO values
-        (1003,'Mensajes de texto',0.5,FALSE);
+        (1003,'Mensajes de Texto',0.5,FALSE);
+        
+        insert into SERVICIO values
+        (1004,'Megabytes de Navegacion',0.5,FALSE);
         
         insert into PLAN values
         (3002,'Mixto Plus','Este fabuloso plan incluye todos los servicios, y 
@@ -29,8 +32,26 @@
         insert into PAQUETE values
         (4001,'PegaoSMS',100);
         
+        insert into PAQUETE values
+        (4002,'PegaoSegundosMOCEL',150);
+        
+         insert into PAQUETE values
+        (4003,'PegaoSegundosOP',200);
+        
+        insert into PAQUETE values
+        (4004,'PegaoMB',150);
+        
         insert into CONTIENE values
         (4001,1003,100);
+        
+        insert into CONTIENE values
+        (4002,1001,100);
+        
+        insert into CONTIENE values
+        (4003,1002,100);
+        
+        insert into CONTIENE values
+        (4004,1004,100);
         
         insert into AFILIA values
         ('CBZ27326',3002,'paquete');
