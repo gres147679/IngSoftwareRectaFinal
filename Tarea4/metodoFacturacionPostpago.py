@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import database as db
-import Afiliaciones
+import afiliaciones
 import psycopg2
 import psycopg2.extras
 import unittest
@@ -42,7 +42,7 @@ class metodoFacturacionPostpago(metodoFacturacion):
     
   def facturar(self):
         
-        resultado = Afiliaciones.ConsultarPlanesPostpago(self.idProducto)
+        resultado = afiliaciones.ConsultarPlanesPostpago(self.idProducto)
    
         codplan = resultado[0][0]
 
@@ -82,7 +82,7 @@ class metodoFacturacionPostpago(metodoFacturacion):
         #Se busca si el producto este asociado a algun paquete. De estarlo, las cantidades de servicio ofrecidas se agregan al
         #diccionario de los servicios ofrecidos por el plan.
         
-        resultado = Afiliaciones.ConsultarPaquetes(self.idProducto)
+        resultado = afiliaciones.ConsultarPaquetes(self.idProducto)
 
         for row in resultado:
             codserv = row[0]
@@ -128,7 +128,7 @@ class metodoFacturacionPostpago(metodoFacturacion):
       string = '\n=========================================================================================================='
       string += '\n{0:50}FACTURA'.format(' ') + '{0:20}Fecha de emisiÃ³n: '.format(' ') + str(now.strftime("%d-%m-%Y")) + '\n' + str(self.cliente)
       string += '\n' + str(self.producto)
-      string += '\n\n\n{4:40}SERVICIOS CONSUMIDOS (%s-%s)\n\n{0:30} | {1:20} | {2:20} | {3:20}'.format('SERVICIO', 'TOTAL CONSUMIDO', 'LÃ?MITE DEL PLAN', 'MONTO A COBRAR POR EXCESO',' ') % (self.mesFacturacion, self.anioFacturacion)
+      string += '\n\n\n{4:40}SERVICIOS CONSUMIDOS (%s-%s)\n\n{0:30} | {1:20} | {2:20} | {3:20}'.format('SERVICIO', 'TOTAL CONSUMIDO', 'Lï¿½?MITE DEL PLAN', 'MONTO A COBRAR POR EXCESO',' ') % (self.mesFacturacion, self.anioFacturacion)
       string += '\n----------------------------------------------------------------------------------------------------------'
       for con in self.listaCobrar.keys():
 	  string += '\n{0:30} | {1:20} | {2:20} | {3:20}'.format \

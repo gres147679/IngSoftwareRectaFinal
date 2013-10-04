@@ -7,8 +7,7 @@ import sys
 import validacion
 import moduloCliente
 import productos
-import consumos
-import Afiliaciones
+import afiliaciones
 import gestionarConsumos
 
 
@@ -107,10 +106,10 @@ def main():
                         if op31 == 1:                            
                             print "\n1.- Plan."
                              
-                            if Afiliaciones.impPlanes():
+                            if afiliaciones.impPlanes():
                                 print "\nMostrando todos los planes disponibles: "                                
                                 cod_plan = int(validacion.validarNumero('Introduzca el codigo del plan: '))
-                                Afiliacion = Afiliaciones.Afiliaciones(producto31,cod_plan)                            
+                                Afiliacion = afiliaciones.Afiliaciones(producto31,cod_plan)                            
                                 Afiliacion.CrearAfiliacion()
                             flag31 = False
                             
@@ -121,10 +120,10 @@ def main():
                             if productos.productoTienePlan(producto31):
                                 print "\nMostrando todos los paquetes de servicios disponibles: "
                                 
-                                if Afiliaciones.impPaquetes():
+                                if afiliaciones.impPaquetes():
                                     cod_ser = int(validacion.validarNumero('Introduzca el codigo del paquete de servicio: '))
                                 
-                                    Afiliacion = Afiliaciones.Afiliaciones(producto31,cod_ser)                            
+                                    Afiliacion = afiliaciones.Afiliaciones(producto31,cod_ser)                            
                                     Afiliacion.CrearContratacion()
                             else:
                                 print "El producto no esta afiliado a un plan; por lo que no se puede afiliar un paquete de servicios."
@@ -153,20 +152,20 @@ def main():
                             print "\n1.- Plan."
                             
                             print "\nMostrando todos los planes disponibles: "
-                            Afiliaciones.impPlanes()
+                            afiliaciones.impPlanes()
                             
                             cod_plan = int(validacion.validarNumero('Introduzca el codigo del plan: '))
-                            Afiliacion = Afiliaciones.Afiliaciones(producto32,cod_plan)                            
+                            Afiliacion = afiliaciones.Afiliaciones(producto32,cod_plan)                            
                             Afiliacion.DesafiliarProducto()
                             
                         elif op32 == 2:     
                             print "\n2.- Paquete de Servicios."
                             
                             print "\nMostrando todos los paquetes de servicios disponibles: "
-                            Afiliaciones.impPaquetes()
+                            afiliaciones.impPaquetes()
                             
                             cod_ser = int(validacion.validarNumero('Introduzca el codigo del paquete de servicio: '))
-                            Afiliacion = Afiliaciones.Afiliaciones(producto32,cod_ser)                            
+                            Afiliacion = afiliaciones.Afiliaciones(producto32,cod_ser)                            
                             Afiliacion.desafiliarContratacion()                          
                             
                         elif op32 == 3: 
@@ -179,7 +178,7 @@ def main():
                 elif op3 == 3: 
                     print "\n3.- Consultar planes de un producto."
                     producto33 = productos.validarSerie()
-                    Afiliacion = Afiliaciones.Afiliaciones(producto33,1) 
+                    Afiliacion = afiliaciones.Afiliaciones(producto33,1) 
                     Afiliacion.ConsultarPlanes()
 
                 elif op3 == 4: 
@@ -230,7 +229,7 @@ def main():
                     #Genera la factura
                     fact = gestionarFactura.pedirFactura()
                     if fact:
-		      print fact
+                        print fact
                    
                 elif op5 == 2: 
                     print "\n2.- Regresar al menu anterior."

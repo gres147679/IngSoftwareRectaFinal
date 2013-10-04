@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import Afiliaciones
+import afiliaciones
 import moduloCliente as mc
 import productos as pr
 import validacion
@@ -41,7 +41,7 @@ def pedirFactura():
         if (not mc.existeCliente(idCliente)):
             print " El cliente no se encuentra en el sistema."
         else:   
-            if (not Afiliaciones.verificarCliente(idCliente)):
+            if (not afiliaciones.verificarCliente(idCliente)):
                 print " El cliente no posee productos postpago en el sistema."
             else:
                 break  
@@ -55,11 +55,11 @@ def pedirFactura():
             print " El producto no corresponde a dicho cliente."
             continue
         
-        resultado = Afiliaciones.ConsultarPlanesPostpago(numSerie)
+        resultado = afiliaciones.ConsultarPlanesPostpago(numSerie)
         
         if not resultado or len(resultado) == 0:
             # Este producto no está afiliado a un plan postpago
-            resultado = Afiliaciones.ConsultarPlanesPrepago(numSerie)
+            resultado = afiliaciones.ConsultarPlanesPrepago(numSerie)
             if not resultado or len(resultado) == 0:
 	      print "Este producto no esta afiliado a ningun plan"
 	    else:

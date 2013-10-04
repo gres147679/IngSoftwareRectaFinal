@@ -363,6 +363,9 @@ def impPlanes():
             for row in resultado:
                 print "{0:15} | {1:20} | {2:50} | {3:15} | {4:10}".format(row[0], row[1], row[2],row[3], row[5])
 
+            return True
+
+
 def impPaquetes():
         conexion = database.operacion("",
                                 """SELECT * FROM paquete""",
@@ -379,9 +382,10 @@ def impPaquetes():
             print "{0:20} | {1:20} | {2:10}".format("CODIGO DEL PAQUETE", "NOMBRE DEL PAQUETE", "PRECIO")
 
             for row in resultado:
-                print "{0:20} | {1:20} | {2:10}".format(row[0], row[1], row[2])
+                print "{0:20} | {1:20} | {2:10}".format(row[0], row[1], row[2])	
 
-#
+            return True
+#	
 # Verifica que un cliente se le pueda generar una factura
 # Para esto debe poseer al menos un producto postpago.
 #
