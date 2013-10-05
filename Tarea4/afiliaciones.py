@@ -368,6 +368,15 @@ def numPaquetesAContratar(codProd):
     dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
     return conexion.execute()[0][0]
 
+# Indica si un producto puede contratar un paquete
+
+def puedeContratar(codProd,codPaq):
+    conexion = database.operacion("",
+    """select count(*) from paquete where codpaq = %s and codpaq in (select codpaq from paquete as p
+        where not exists(select codpaq from contrata 
+        where numserie = \'%s\' and codpaq = p.codpaq));""" % (codPaq, codProd),
+                                dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
+    return (conexion.execute()[0][0] > 0)
 
 def impPlanes():       
         conexion = database.operacion("",
@@ -427,4 +436,6 @@ if __name__ == '__main__':
     #ConsultarPlanesPostpago(123)
     #af = Afiliaciones('CBZ273asdasd26', 30302)
     #af.CrearAfiliacion()
-    paquetesAContratar("CBZ27326")
+    impPaquetes()
+    paquetesAContratar("123")
+    print puedeContratar(123,1005)

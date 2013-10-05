@@ -123,44 +123,57 @@ def main():
                                 
                                 #Verifica que pueda contratar algun servicio
                                 numPaquetes = afiliaciones.numPaquetesAContratar(producto31)
-                                while (numPaquetes > 0 & continua): 
-                                    numPaquetes = afiliaciones.numPaquetesAContratar(producto31)                                   
+                                p = serviciosadicionales.Producto(producto31);
+                                
+                                while ((numPaquetes > 0) and (continua)): 
+                                                                    
                                     #Muestra los paquetes que el producto puede contratar
                                     print "\nMostrando todos los paquetes de servicios disponibles: "
                                     afiliaciones.paquetesAContratar(producto31)
                                     
-                                    p = serviciosadicionales.Producto(producto31);
-                                                                        
+                                         
                                     #Elige uno de los paquetes 
-                                    eleccionFlag = True
-                                    while eleccionFlag: 
+                                    while True: 
                                         cod_ser = int(validacion.validarNumero('\nIntroduzca el codigo del paquete de servicio: '))
                                         #Contrata el paquete
-                                        if cod_ser == 4001:
-                                            serviciosadicionales.MensajesDeTexto(p)
-                                            eleccionFlag = False
+                                        if (not afiliaciones.puedeContratar(p.get_id(), cod_ser)):
+                                            print "\nERROR: La opcion no es valida."
+                                            continue     
+                                        elif cod_ser == 4001:
+                                            p = serviciosadicionales.MensajesDeTexto(p)
+                                            break
                                         elif cod_ser == 4002:
-                                            serviciosadicionales.SegundosMOCEL(p)
-                                            eleccionFlag = False
+                                            p = serviciosadicionales.SegundosMOCEL(p)
+                                            break
                                         elif cod_ser == 4003:
-                                            serviciosadicionales.SegundosOtrasOperadoras(p)
-                                            eleccionFlag = False
+                                            p = serviciosadicionales.SegundosOtrasOperadoras(p)
+                                            break
                                         elif cod_ser == 4004:
-                                            serviciosadicionales.MegabytesDeNavegacion(p)
-                                            eleccionFlag = False
+                                            p = serviciosadicionales.MegabytesDeNavegacion(p)
+                                            break
                                         else:
                                             print "\nERROR: La opcion no es valida."                                   
 
+
+                                    #Procede a afiliar el producto.
+                                    af = afiliaciones.Afiliaciones(p.get_id(),p.get_codigo())
+                                    af.CrearContratacion()
+
+                                    #Actualiza la cantidad de paquetes disponibles
+                                    numPaquetes = afiliaciones.numPaquetesAContratar(producto31)   
+                                    
+                                    #Muestra la informacion actual del producto
+                                    print "\nSu producto ahora posee la siguiente informacion: "
+                                    print p
+
                                     #Verifica si se desea seguir afiliando paquetes
-                                    contrataFlag = True
-                                    while contrataFlag: 
+                                    while True: 
                                         x = validacion.validarInput('\nDesea seguir afiliando? (s/n): ')
                                         if x == 's':
-                                            contrataFlag = False
-                                        elif x == 'n':
-                                            contrataFlag = False
-                                            numPaquetes = -1
-                                            continua = False                                            
+                                            break
+                                        elif x == 'n':      
+                                            continua = False
+                                            break                                            
                                         else:
                                             print "\nERROR: La opcion no es valida."
                                 

@@ -20,8 +20,11 @@ class Producto(Vendible):
     #Clase Concreta
     def __init__(self,id):  
         self._id = id  
-        self._desc = "Producto: " + str(self._id)  + " "
+        self._desc = "Producto: " + str(self._id)
         self._costoServicios = 0
+        
+    def __str__(self):
+        return self._desc + "\ncostoServicios: " + str(self._costoServicios)
         
         
  ####################### TEST CODE ##########################
