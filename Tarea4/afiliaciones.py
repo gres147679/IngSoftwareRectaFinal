@@ -347,14 +347,16 @@ def ConsultarPaquetes(codproducto):
 
 def paquetesAContratar(codProd):
     conexion = database.operacion("",
-    """select nombrepaq from paquete as p
+    """select * from paquete as p
 where not exists(select * from contrata where numserie = \'%s\' and codpaq = p.codpaq);""" % codProd,
                                 dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
-    resultado = conexion.execute()
+    resultado = conexion.execute()  
     
-    print "Paquetes a contratar: "
-    for row in resultado:
-        print "  -" + row[0]
+    if len(resultado) != 0:
+        print "{0:25}PAQUETES".format(" ")
+        print "{0:20} | {1:20} | {2:10}".format("CODIGO DEL PAQUETE", "NOMBRE DEL PAQUETE", "PRECIO")
+        for row in resultado:
+            print "{0:20} | {1:20} | {2:10}".format(row[0], row[1], row[2])
     
 # Cuenta la cantidad de paquetes que puede contratar un producto.
     
@@ -422,6 +424,7 @@ def verificarCliente(idCliente):
             
 ## Main de pruebas
 if __name__ == '__main__':
-    ConsultarPlanesPostpago(123)
-    af = Afiliaciones('CBZ273asdasd26', 30302)
-    af.CrearAfiliacion()
+    #ConsultarPlanesPostpago(123)
+    #af = Afiliaciones('CBZ273asdasd26', 30302)
+    #af.CrearAfiliacion()
+    paquetesAContratar("CBZ27326")

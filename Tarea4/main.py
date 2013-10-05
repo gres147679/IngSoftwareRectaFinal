@@ -9,6 +9,7 @@ import moduloCliente
 import productos
 import afiliaciones
 import gestionarConsumos
+import serviciosadicionales
 
 
 def main():
@@ -118,15 +119,56 @@ def main():
                             
                             #Verifica que el producto tenga asociado un plan
                             if productos.productoTienePlan(producto31):
-                                print "\nMostrando todos los paquetes de servicios disponibles: "
+                                continua = True
                                 
-                                if afiliaciones.impPaquetes():
-                                    cod_ser = int(validacion.validarNumero('Introduzca el codigo del paquete de servicio: '))
+                                #Verifica que pueda contratar algun servicio
+                                numPaquetes = afiliaciones.numPaquetesAContratar(producto31)
+                                while (numPaquetes > 0 & continua): 
+                                    numPaquetes = afiliaciones.numPaquetesAContratar(producto31)                                   
+                                    #Muestra los paquetes que el producto puede contratar
+                                    print "\nMostrando todos los paquetes de servicios disponibles: "
+                                    afiliaciones.paquetesAContratar(producto31)
+                                    
+                                    p = serviciosadicionales.Producto(producto31);
+                                                                        
+                                    #Elige uno de los paquetes 
+                                    eleccionFlag = True
+                                    while eleccionFlag: 
+                                        cod_ser = int(validacion.validarNumero('\nIntroduzca el codigo del paquete de servicio: '))
+                                        #Contrata el paquete
+                                        if cod_ser == 4001:
+                                            serviciosadicionales.MensajesDeTexto(p)
+                                            eleccionFlag = False
+                                        elif cod_ser == 4002:
+                                            serviciosadicionales.SegundosMOCEL(p)
+                                            eleccionFlag = False
+                                        elif cod_ser == 4003:
+                                            serviciosadicionales.SegundosOtrasOperadoras(p)
+                                            eleccionFlag = False
+                                        elif cod_ser == 4004:
+                                            serviciosadicionales.MegabytesDeNavegacion(p)
+                                            eleccionFlag = False
+                                        else:
+                                            print "\nERROR: La opcion no es valida."                                   
+
+                                    #Verifica si se desea seguir afiliando paquetes
+                                    contrataFlag = True
+                                    while contrataFlag: 
+                                        x = validacion.validarInput('\nDesea seguir afiliando? (s/n): ')
+                                        if x == 's':
+                                            contrataFlag = False
+                                        elif x == 'n':
+                                            contrataFlag = False
+                                            numPaquetes = -1
+                                            continua = False                                            
+                                        else:
+                                            print "\nERROR: La opcion no es valida."
                                 
-                                    Afiliacion = afiliaciones.Afiliaciones(producto31,cod_ser)                            
-                                    Afiliacion.CrearContratacion()
+                                if (afiliaciones.numPaquetesAContratar(producto31) == 0):
+                                    print "\nYa ha contratado todos los paquetes de servicios."
+                                                                        
                             else:
-                                print "El producto no esta afiliado a un plan; por lo que no se puede afiliar un paquete de servicios."
+                                print "\nEl producto no esta afiliado a un plan; por lo que no se puede afiliar un paquete de servicios."
                             
                             flag31 = False
                               
