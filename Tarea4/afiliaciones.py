@@ -295,54 +295,76 @@ paquete %s exitosamente')%(self.producto, self.plan)
 # Consulta los planes postpago a los que esta suscrito un producto
 
 def ConsultarPlanesPostpago(codproducto):
-  try:
-      conexion = database.operacion("","""SELECT codplan FROM afilia WHERE numserie = '%s'""" %(codproducto),
-      Afiliaciones.nombreBase,Afiliaciones.usuarioBase,Afiliaciones.passwordBase)
-      resultado = conexion.execute()
+    try:
+        conexion = database.operacion("","""SELECT codplan FROM afilia WHERE numserie = '%s'""" %(codproducto),
+                                      Afiliaciones.nombreBase,Afiliaciones.usuarioBase,Afiliaciones.passwordBase)
+        resultado = conexion.execute()
       
-      ## Guardamos los cambios y cerramos la base de datos
-      conexion.conexion.commit()
-      conexion.cerrarConexion()
-      return resultado
+        ## Guardamos los cambios y cerramos la base de datos
+        conexion.conexion.commit()
+        conexion.cerrarConexion()
+        return resultado
       
-  # Capturamos los posibles errores.
-  except Exception, e:
-      print '\nERROR:', e
+    # Capturamos los posibles errores.
+    except Exception, e:
+        print '\nERROR:', e
       
 # Consulta los planes prepago a los que esta suscrito un producto
       
 def ConsultarPlanesPrepago(codproducto):
-  try:
-      conexion = database.operacion("","""SELECT codplan from activa WHERE numserie = '%s'"""%(codproducto),
-      Afiliaciones.nombreBase,Afiliaciones.usuarioBase,Afiliaciones.passwordBase)
-      resultado = conexion.execute()
+    try:
+        conexion = database.operacion("","""SELECT codplan from activa WHERE numserie = '%s'"""%(codproducto),
+                                      Afiliaciones.nombreBase,Afiliaciones.usuarioBase,Afiliaciones.passwordBase)
+        resultado = conexion.execute()
       
-      ## Guardamos los cambios y cerramos la base de datos
-      conexion.conexion.commit()
-      conexion.cerrarConexion()
-      return resultado
+        ## Guardamos los cambios y cerramos la base de datos
+        conexion.conexion.commit()
+        conexion.cerrarConexion()
+        return resultado
       
-  # Capturamos los posibles errores.
-  except Exception, e:
-      print '\nERROR:', e
+    # Capturamos los posibles errores.
+    except Exception, e:
+        print '\nERROR:', e
 
 # Consulta los paquetes de servicios a los que esta suscrito un producto
 
 def ConsultarPaquetes(codproducto):
-  try:
-      conexion = database.operacion("","""SELECT codserv, cantidad, costo, nombreserv FROM contrata NATURAL JOIN contiene NATURAL JOIN servicio 
+    try:
+        conexion = database.operacion("","""SELECT codserv, cantidad, costo, nombreserv FROM contrata NATURAL JOIN contiene NATURAL JOIN servicio 
 			  WHERE numserie = \'%s\'""" % codproducto,
-      Afiliaciones.nombreBase,Afiliaciones.usuarioBase,Afiliaciones.passwordBase)
-      resultado = conexion.execute()
+        Afiliaciones.nombreBase,Afiliaciones.usuarioBase,Afiliaciones.passwordBase)
+        resultado = conexion.execute()
       
-      ## Guardamos los cambios y cerramos la base de datos
-      #conexion.cerrarConexion()
-      return resultado
+        ## Guardamos los cambios y cerramos la base de datos
+        #conexion.cerrarConexion()
+        return resultado
       
-  # Capturamos los posibles errores.
-  except Exception, e:
-      print '\nERROR:', e
+    # Capturamos los posibles errores.
+    except Exception, e:
+        print '\nERROR:', e
 
+# Lista los paquetes que puede contratar un producto.
+
+def paquetesAContratar(codProd):
+    conexion = database.operacion("",
+    """select nombrepaq from paquete as p
+where not exists(select * from contrata where numserie = \'%s\' and codpaq = p.codpaq);""" % codProd,
+                                dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
+    resultado = conexion.execute()
+    
+    print "Paquetes a contratar: "
+    for row in resultado:
+        print "  -" + row[0]
+    
+# Cuenta la cantidad de paquetes que puede contratar un producto.
+    
+def numPaquetesAContratar(codProd):
+
+    conexion = database.operacion("",
+    """select count(*) from paquete as p
+    where not exists(select * from contrata where numserie = \'%s\' and codpaq = p.codpaq);""" % codProd,
+    dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
+    return conexion.execute()[0][0]
 
 
 def impPlanes():       
@@ -400,5 +422,6 @@ def verificarCliente(idCliente):
             
 ## Main de pruebas
 if __name__ == '__main__':
+    ConsultarPlanesPostpago(123)
     af = Afiliaciones('CBZ273asdasd26', 30302)
     af.CrearAfiliacion()
