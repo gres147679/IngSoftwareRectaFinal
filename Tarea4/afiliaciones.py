@@ -247,12 +247,13 @@ con el paquete de codigo %s""")%(self.producto, self.plan)
             ## Si el producto no esta asociado a ningun plan prepago
             if len(resultado) == 0:
                 
-                conexion.setComando("""SELECT nombreplan FROM AFILIA NATURAL 
+                conexion.setComando("""SELECT nombreplan, codplan FROM AFILIA NATURAL 
                 JOIN PLAN WHERE numserie = '%s'"""%(self.producto))
                 resultado = conexion.execute()
                 
                 for i in resultado:
                     print '\nEl producto esta asociado al plan ' + i[0]
+                    return i[1]
                     
                 ## Si el producto tampoco esta afiliado a planes postpago
                 if len(resultado) == 0:
@@ -266,31 +267,31 @@ con el paquete de codigo %s""")%(self.producto, self.plan)
         except Exception, e:
             print '\nERROR:', e
             
-    ## Elimina la afiliacion entre un producto y un paquete de servicios.
-    def desafiliarContratacion(self):
-        try:
-            conexion = database.operacion("","""SELECT numserie, codpaq FROM 
-            CONTRATA WHERE codpaq = %s AND numserie = '%s'
-            """%(self.plan,self.producto),Afiliaciones.nombreBase,Afiliaciones.usuarioBase,
-            Afiliaciones.passwordBase)
-            resultado = conexion.execute()
+    ### Elimina la afiliacion entre un producto y un paquete de servicios.
+    #def desafiliarContratacion(self):
+        #try:
+            #conexion = database.operacion("","""SELECT numserie, codpaq FROM 
+            #CONTRATA WHERE codpaq = %s AND numserie = '%s'
+            #"""%(self.plan,self.producto),Afiliaciones.nombreBase,Afiliaciones.usuarioBase,
+            #Afiliaciones.passwordBase)
+            #resultado = conexion.execute()
             
-            ## Si la contratacion no existe
-            if len(resultado) == 0:
-                raise Exception("El producto no esta afiliado al paquete introducido")
+            ### Si la contratacion no existe
+            #if len(resultado) == 0:
+                #raise Exception("El producto no esta afiliado al paquete introducido")
                 
-            ## En caso de que existiera, eliminamos la contratacion
-            conexion.setComando("""DELETE FROM CONTRATA WHERE codpaq = %s 
-            AND numserie = '%s'"""%(self.plan,self.producto))
-            resultado = conexion.execute()
-            print ('\nSe ha eliminado la contratacion del producto %s con el \
-paquete %s exitosamente')%(self.producto, self.plan)
+            ### En caso de que existiera, eliminamos la contratacion
+            #conexion.setComando("""DELETE FROM CONTRATA WHERE codpaq = %s 
+            #AND numserie = '%s'"""%(self.plan,self.producto))
+            #resultado = conexion.execute()
+            #print ('\nSe ha eliminado la contratacion del producto %s con el \
+#paquete %s exitosamente')%(self.producto, self.plan)
             
-            ## Cerramos y guardamos los cambios
-            conexion.conexion.commit()
-            conexion.cerrarConexion()
-        except Exception, e:
-            print '\nERROR: ', e
+            ### Cerramos y guardamos los cambios
+            #conexion.conexion.commit()
+            #conexion.cerrarConexion()
+        #except Exception, e:
+            #print '\nERROR: ', e
 
 # Consulta los planes postpago a los que esta suscrito un producto
 
@@ -438,4 +439,8 @@ if __name__ == '__main__':
     #af.CrearAfiliacion()
     impPaquetes()
     paquetesAContratar("123")
+    af = Afiliaciones("123",10)
+    cod = af.ConsultarPlanes()
+    if cod != None:
+        print cod
     print puedeContratar(123,1005)
