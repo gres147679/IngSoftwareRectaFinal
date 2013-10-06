@@ -30,6 +30,7 @@ def main():
         
         op = int(validacion.validarNumero('Opcion: '))
         
+        ## Opcion de Cliente
         if op == 1:
             
             flag1 = True
@@ -56,6 +57,7 @@ def main():
                 elif (op1 > 3 or op1 <= 0):
                     print "\nERROR: La opcion no es valida."
                     
+        ## Opcion de Producto            
         elif op == 2:     
             flag2 = True
             while flag2:
@@ -77,6 +79,8 @@ def main():
                     flag2 = False
                 elif (op2 > 3 or op2 <= 0):
                     print "\nERROR: La opcion no es valida."
+                    
+        ## Opcion de Afiliaciones            
         elif op == 3:    
             flag3 = True
 
@@ -92,6 +96,7 @@ def main():
                 print "\nMostrando todos los productos disponibles: "
                 productos.listarProductos()
 
+                ## Opcion de Afiliacion
                 if op3 == 1:
                     producto31 = productos.validarSerie()   
                     flag31 = True                                       
@@ -104,6 +109,7 @@ def main():
                         
                         op31 = int(validacion.validarNumero('Opcion: '))
                         
+                        ## Opcion para afiliar un plan
                         if op31 == 1:                            
                             print "\n1.- Plan."
                              
@@ -114,6 +120,7 @@ def main():
                                 Afiliacion.CrearAfiliacion()
                             flag31 = False
                             
+                        ## Opcion para afiliar un paquete de servicios
                         elif op31 == 2:     
                             print "\n2.- Paquete de Servicios."
                             
@@ -185,57 +192,69 @@ def main():
                             
                             flag31 = False
                               
+                        ## Opcion para regresar al menu de Afiliaciones
                         elif op31 == 3: 
                             print "\n3.- Regresar."                     
                             flag31 = False
                             
                         elif (op31 > 3 or op31 <= 0):
-                            print "\nERROR: La opcion no es valida."                         
-
+                            print "\nERROR: La opcion no es valida."    
+                            
+                ## Opcion para desafiliar un producto
                 elif op3 == 2:     
                     
                     flag32 = True
                     producto32 = productos.validarSerie()  
                     while flag32:       
-                        print "\n2.- Desafiliar un producto a un: ."             
-                        print "   1.- Plan."
-                        print "   2.- Paquete de Servicios."
-                        print "   3.- Regresar."
+                        print "\n2.- Desafiliar."             
+                        print "   1.- Desafiliar un producto de su plan asociado."
+                        print "   2.- Regresar."
                 
                         op32 = int(validacion.validarNumero('Opcion: '))
+                        
+                        ## Opcion desafiliar un producto de su plan
                         if op32 == 1:
-                            print "\n1.- Plan."
+                            print "\nDesafiliar un producto de su plan asociado"
                             
-                            print "\nMostrando todos los planes disponibles: "
-                            afiliaciones.impPlanes()
-                            
-                            cod_plan = int(validacion.validarNumero('Introduzca el codigo del plan: '))
-                            Afiliacion = afiliaciones.Afiliaciones(producto32,cod_plan)                            
-                            Afiliacion.DesafiliarProducto()
-                            
-                        elif op32 == 2:     
-                            print "\n2.- Paquete de Servicios."
-                            
-                            print "\nMostrando todos los paquetes de servicios disponibles: "
-                            afiliaciones.impPaquetes()
-                            
-                            cod_ser = int(validacion.validarNumero('Introduzca el codigo del paquete de servicio: '))
-                            Afiliacion = afiliaciones.Afiliaciones(producto32,cod_ser)                            
-                            Afiliacion.desafiliarContratacion()                          
-                            
-                        elif op32 == 3: 
+                            Afiliacion = afiliaciones.Afiliaciones(producto32,0)                            
+                            codigo_plan = Afiliacion.ConsultarPlanes()
+                            if codigo_plan != None:
+
+                                flag321 = True                                
+                                while flag321:
+                                    print "\nDesea desafiliar el producto %s del plan de codigo %s?"%(producto32,codigo_plan)
+                                    op321 = validacion.validarInput('(y/n)?')                                    
+                                    if op321 == 'y' or op321 == 'Y':
+                                        Afiliacion = afiliaciones.Afiliaciones(producto32,codigo_plan)
+                                        Afiliacion.DesafiliarProducto()
+                                        print "\nSe ha eliminado la afiliacion del producto %s con el plan %s"%(producto32,codigo_plan)
+                                        flag321 = False
+                                        
+                                    elif op321 == 'n' or op321 == 'N':
+                                        print "\nSe ha cancelado la desafiliacion"
+                                        flag321 = False
+                                    
+                                    else:
+                                        print "\nERROR: La opcion no es valida."
+                                        
+                            else:
+                                print "\nEl producto seleccionado no tiene plan asociado"
+   
+                        ## Opcion regresar al menu de afiliaciones
+                        elif op32 == 2: 
                             print "\n3.- Regresar."
                             flag32 = False
-                        elif (op32 > 3 or op32 <= 0):
+                        elif (op32 > 2 or op32 <= 0):
                             print "\nERROR: La opcion no es valida."
                             
-                           
+                ## Opcion consultar planes y paquetes de un producto         
                 elif op3 == 3: 
-                    print "\n3.- Consultar planes de un producto."
+                    print "\n3.- Consultar plan/paquetes de un producto."
                     producto33 = productos.validarSerie()
                     Afiliacion = afiliaciones.Afiliaciones(producto33,1) 
                     Afiliacion.ConsultarPlanes()
 
+                ## Opcion volver al menu anterior
                 elif op3 == 4: 
                     print "\n4.- Regresar al menu anterior."                    
                     flag3 = False 
@@ -243,6 +262,7 @@ def main():
                 elif (op3 > 4 or op3 <= 0):
                     print "\nERROR: La opcion no es valida."
 
+        ## Opcion de Consumos 
         elif op == 4:   
             
             flag4 = True
@@ -271,7 +291,8 @@ def main():
                     flag4 = False
                 elif (op4 > 3 or op4 <= 0):
                     print "\nERROR: La opcion no es valida."
-                    
+       
+        ## Opcion de generacion de facturas
         elif op == 5:   
             flag5 = True
             while flag5:      
@@ -291,7 +312,8 @@ def main():
                     flag5 = False
                 elif (op5 > 2 or op5 <= 0):
                     print "\nERROR: La opcion no es valida."  
-                                                
+        
+        ## Opcion salir
         elif op == 6: 
             print "\nHasta luego."
             flag = False
