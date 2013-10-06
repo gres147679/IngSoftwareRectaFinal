@@ -223,11 +223,13 @@ def main():
                                 flag321 = True                                
                                 while flag321:
                                     print "\nDesea desafiliar el producto %s del plan de codigo %s?"%(producto32,codigo_plan)
+                                    print "\nATENCIÓN: Esto hará que se eliminen las contrataciones de paquetes y servicios adicionales del produco"
                                     op321 = validacion.validarInput('(y/n)?')                                    
                                     if op321 == 'y' or op321 == 'Y':
                                         Afiliacion = afiliaciones.Afiliaciones(producto32,codigo_plan)
                                         Afiliacion.DesafiliarProducto()
                                         print "\nSe ha eliminado la afiliacion del producto %s con el plan %s"%(producto32,codigo_plan)
+                                        Afiliacion.EliminarContrataciones()
                                         flag321 = False
                                         
                                     elif op321 == 'n' or op321 == 'N':
@@ -238,7 +240,7 @@ def main():
                                         print "\nERROR: La opcion no es valida."
                                         
                             else:
-                                print "\nEl producto seleccionado no tiene plan asociado"
+                                print "\nERROR: No puede desafiliar si el producto no tiene un plan asociado"
    
                         ## Opcion regresar al menu de afiliaciones
                         elif op32 == 2: 
