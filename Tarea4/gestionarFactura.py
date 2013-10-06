@@ -19,12 +19,6 @@ def pedirObservaciones():
                 else:
                     print "Opción inválida\n"    
 
-def buscarMes():
-        return str(raw_input("Por favor, introduzca el mes de facturacion (MM): "))
-    
-def buscarAnio():
-    return str(raw_input("Por favor, introduzca el año de facturacion (YYYY): "))
-
 def pedirFactura():
     
     if (pr.cantidadProductos() == 0):
@@ -41,10 +35,7 @@ def pedirFactura():
         if (not mc.existeCliente(idCliente)):
             print " El cliente no se encuentra en el sistema."
         else:   
-            if (not afiliaciones.verificarCliente(idCliente)):
-                print " El cliente no posee productos postpago en el sistema."
-            else:
-                break  
+            break  
     
     mc.listarProductos(idCliente)
     print "\nIntroduzca la informacion del producto."
@@ -57,32 +48,14 @@ def pedirFactura():
         
         resultado = afiliaciones.ConsultarPlanesPostpago(numSerie)
         
-        if not resultado or len(resultado) == 0:
-            # Este producto no está afiliado a un plan postpago
-            resultado = afiliaciones.ConsultarPlanesPrepago(numSerie)
-            if not resultado or len(resultado) == 0:
-	      print "Este producto no esta afiliado a ningun plan"
-	    else:
-	      # Este producto está afiliado a un plan prepago
-	      print "Se procedera a la generacion de la factura."
-	      obs = pedirObservaciones()
-	      # Asignacion y ejecucion de la estrategia metodoFacturacionPrepago
-	      myBill = Factura(idCliente,numSerie)
-	      print myBill
-	      break
+        if len(afiliaciones.ConsultarPlanesPostpago(numSerie)) > 0 or len(afiliaciones.ConsultarPlanesPrepago(numSerie)) > 0:
+            obs = pedirObservaciones()
+            return Factura(idCliente, numSerie, obs)
         else:
-	  # Este producto está afiliado a un plan postpago
-	  mes = buscarMes()
-	  anio = buscarAnio()
-	  obs = pedirObservaciones()
-	  print "Se procedera a la generacion de la factura."
-	  # Asignacion y ejecucion de la estrategia metodoFacturacionPostpago
-	  myBill = Factura(idCliente,numSerie,mes,anio,obs)
-	  print myBill
-          break
+            print "El producto no tiene planes asociados"
+            return Null
           
 if __name__ == '__main__':
     
     factura = pedirFactura()
-    if factura and factura.montoTotalCobrar != -1:
-        print factura
+    print factura

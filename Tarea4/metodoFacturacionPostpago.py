@@ -19,17 +19,23 @@ from gestionarConsumos import buscarConsumosporServicio
 # el total del monto y la presentación final de la factura. Esta implementación
 # factura los equipos postpago
 
+def buscarMes():
+        return str(raw_input("Por favor, introduzca el mes de facturacion (MM): "))
+    
+def buscarAnio():
+    return str(raw_input("Por favor, introduzca el año de facturacion (YYYY): "))
+
 class metodoFacturacionPostpago(metodoFacturacion):
   
   # mes y año de facturación
-  def __init__(self,producto,idProducto,cliente,mes,anio,obs):
+  def __init__(self, cliente,producto,idProducto,obs):
     # El orden es: producto,idProducto,cliente,mes,anio,obs
     
     self.producto = producto
     self.idProducto = idProducto
     self.cliente = cliente
-    self.mesFacturacion = anio
-    self.anioFacturacion = mes
+    self.mesFacturacion = buscarMes()
+    self.anioFacturacion = buscarAnio()
     self.observaciones = obs
     
     self.listaCobrar = {}
@@ -43,7 +49,9 @@ class metodoFacturacionPostpago(metodoFacturacion):
   def facturar(self):
         
         resultado = afiliaciones.ConsultarPlanesPostpago(self.idProducto)
-   
+        
+        for row in resultado:
+            print row
         codplan = resultado[0][0]
 
         #Buscamos la renta del plan que se va a cobrar al producto.      

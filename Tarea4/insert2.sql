@@ -18,7 +18,7 @@
         
         insert into PLAN values
         (3002,'Mixto Plus','Este fabuloso plan incluye todos los servicios, y 
-        tarifas para excesos',211,311,'postpago');
+        tarifas para excesos',211,311,'prepago');
         
         insert into INCLUYE values
         (3002,1001,0.1,200);
@@ -32,53 +32,56 @@
         insert into CONTIENE values
         (4001,1003,100);
         
-        insert into AFILIA values
-        ('CBZ27326',3002,'paquete');
+        insert into ACTIVA values
+        ('CBZ27326',3002,10);
         
         insert into CONTRATA values
         ('CBZ27326',4001);
         
+	insert into saldo values
+	('CBZ27326',current_date - 10, 130);
+
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1001,current_date,20);
+        DEFAULT,'CBZ27326',1001,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1001,current_date,20);
+        DEFAULT,'CBZ27326',1001,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1001,current_date,20);
+        DEFAULT,'CBZ27326',1001,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1001,current_date,20);
+        DEFAULT,'CBZ27326',1001,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1001,current_date,20);
+        DEFAULT,'CBZ27326',1001,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1001,current_date,20);
+        DEFAULT,'CBZ27326',1001,current_date -5,20);
+        insert into CONSUME values(
+        DEFAULT,'CBZ27326',1001,current_date-5,20000);
+        
+        insert into CONSUME values(
+        DEFAULT,'CBZ27326',1002,current_date -5,20);
+        insert into CONSUME values(
+        DEFAULT,'CBZ27326',1002,current_date -5,20);
+        insert into CONSUME values(
+        DEFAULT,'CBZ27326',1002,current_date -5,20);
+        insert into CONSUME values(
+        DEFAULT,'CBZ27326',1002,current_date -5,20);
+        insert into CONSUME values(
+        DEFAULT,'CBZ27326',1002,current_date -5,20);
+        insert into CONSUME values(
+        DEFAULT,'CBZ27326',1002,current_date -5,20);
         insert into CONSUME values(
         DEFAULT,'CBZ27326',1001,current_date-60,20000);
         
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1002,current_date,20);
+        DEFAULT,'CBZ27326',1003,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1002,current_date,20);
+        DEFAULT,'CBZ27326',1003,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1002,current_date,20);
+        DEFAULT,'CBZ27326',1003,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1002,current_date,20);
+        DEFAULT,'CBZ27326',1003,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1002,current_date,20);
+        DEFAULT,'CBZ27326',1003,current_date -5,20);
         insert into CONSUME values(
-        DEFAULT,'CBZ27326',1002,current_date,20);
-        insert into CONSUME values(
-        DEFAULT,'CBZ27326',1001,current_date-60,20000);
-        
-        insert into CONSUME values(
-        DEFAULT,'CBZ27326',1003,current_date,20);
-        insert into CONSUME values(
-        DEFAULT,'CBZ27326',1003,current_date,20);
-        insert into CONSUME values(
-        DEFAULT,'CBZ27326',1003,current_date,20);
-        insert into CONSUME values(
-        DEFAULT,'CBZ27326',1003,current_date,20);
-        insert into CONSUME values(
-        DEFAULT,'CBZ27326',1003,current_date,20);
-        insert into CONSUME values(
-        DEFAULT,'CBZ27326',1003,current_date,20);
+        DEFAULT,'CBZ27326',1003,current_date -5,20);
         insert into CONSUME values(
         DEFAULT,'CBZ27326',1003,current_date-60,20000);

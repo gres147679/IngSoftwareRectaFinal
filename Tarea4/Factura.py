@@ -11,27 +11,26 @@ import validacion
 import database as db
 import dbparams
 import datetime
+import afiliaciones as af
 from metodoFacturacionPostpago import metodoFacturacionPostpago
+from metodoFacturacionPrepago import metodoFacturacionPrepago
 
 
-class Factura:
-    def __init__(self, idCliente,idProducto):                   
+class Factura(object):
+    def __init__(self, idCliente,idProducto, obs):                   
         self.idProducto = idProducto
         self.producto = pr.obtenerProducto(idProducto)
         self.cliente = mc.busquedaCliente(idCliente)
-        # Crea un metodoFacturacionPrepago
-        # Todavia no existe, pero la firma debe ser
-        #self.metodoFacturacion = metodoFacturacionPrepago.metodoFacturacionPostpago(idProducto)
+        self.obs = obs
         
-    def __init__(self, idCliente,idProducto,mesFacturacion,anioFacturacion,obs):                   
-        self.idProducto = idProducto
-        self.producto = pr.obtenerProducto(idProducto)
-        self.cliente = mc.busquedaCliente(idCliente)
-        # Crea un metodoFacturacionPostpago
-        self.metodoFacturacion = metodoFacturacionPostpago(self.producto,self.idProducto,self.cliente,mesFacturacion,anioFacturacion,obs)
+        if len(af.ConsultarPlanesPrepago(idProducto)) > 0:
+            self.factura = metodoFacturacionPrepago(self.cliente, self.producto,idProducto, self.obs)
+        elif len(af.ConsultarPlanesPostpago(idProducto)) > 0:
+            self.factura = metodoFacturacionPostpago (self.cliente, self.producto,idProducto, self.obs)
     
     def __str__(self):
-      return str(self.metodoFacturacion)
+      return str(self.factura)
     
 if __name__ == '__main__':
-    print "Para usar este modulo utilize la interfaz gestionarFactura"
+    factura = Factura(22714709,'CBZ27326','')
+    print factura
