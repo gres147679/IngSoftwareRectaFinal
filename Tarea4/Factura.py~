@@ -29,7 +29,7 @@ class Factura(object):
             self.metodoFacturacion = metodoFacturacionPostpago (self.cliente, self.producto,idProducto, self.obs)
     
     def __str__(self):
-      return str(self.metodoFacturacion)
+      return str(self.factura)
     
 if __name__ == '__main__':
     factura = Factura(22714709,'CBZ27326','')

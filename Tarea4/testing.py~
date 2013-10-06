@@ -94,6 +94,7 @@ class FacturaTest(unittest.TestCase):
         commit;""")
 	
 	self.myConsult.execute()
+	viejaEntrada = sys.stdin
 	sys.stdin = open('entradaPruebas.txt','r') 
 	testBill = Factura.Factura(22714709,"CBZ27326","")
 	sys.stdin.close()

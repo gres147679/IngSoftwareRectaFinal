@@ -51,8 +51,7 @@ class metodoFacturacionPostpago(metodoFacturacion):
         resultado = afiliaciones.ConsultarPlanesPostpago(self.idProducto)
         
         for row in resultado:
-            #print row
-            pass
+            print row
         codplan = resultado[0][0]
 
         #Buscamos la renta del plan que se va a cobrar al producto.      
