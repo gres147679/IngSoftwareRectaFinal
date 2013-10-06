@@ -121,7 +121,7 @@ CREATE TABLE INCLUYE (
 
 CREATE TABLE SALDO (
   numserie      varchar(10)     references PRODUCTO(numserie),
-  fecha         date            NOT NULL,
+  fecha         timestamp            NOT NULL,
   cantidad      integer         NOT NULL,
   PRIMARY KEY(numserie, fecha),
   CONSTRAINT cantidadPositiva CHECK (cantidad > 0)
