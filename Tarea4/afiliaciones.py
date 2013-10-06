@@ -267,6 +267,22 @@ con el paquete de codigo %s""")%(self.producto, self.plan)
         except Exception, e:
             print '\nERROR:', e
             
+    #
+    # Elimina todas las contrataciones de un producto con un paquete
+    # Este metodo solo deberia llamarse cuando se ha desafiliado el producto 
+    # de un plan
+    #
+    def EliminarContrataciones(self):
+        conexion = database.operacion("Elimina todas las contrataciones de un producto",
+        "DELETE FROM contrata WHERE numserie = '%s';"% self.producto,
+                                    dbparams.dbname,dbparams.dbuser,dbparams.dbpass) 
+        resultado = conexion.execute()
+        print "\nSe han eliminado todas las contrataciones del producto %s"% self.producto  
+        
+        ## Guardamos los cambios y cerramos la base de datos
+        conexion.conexion.commit()
+        conexion.cerrarConexion()
+            
     ### Elimina la afiliacion entre un producto y un paquete de servicios.
     #def desafiliarContratacion(self):
         #try:
@@ -431,6 +447,8 @@ def verificarCliente(idCliente):
                                 dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
     
     return (conexion.execute()[0][0] > 0)
+    
+
             
 ## Main de pruebas
 if __name__ == '__main__':
