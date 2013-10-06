@@ -13,7 +13,7 @@ import datetime
 # Set de Pruebas para el Módulo Facturas
 #
 # Se han realizado una serie de pruebas unitarias destinadas a comprobar la eficacia
-# del modulo Factura. En todas ellas se ensamblan casos de prueba que dan un monto
+# del modulo Factura. En todas ellas se ensamblan casos de Prueba que dan un monto
 # determinado de facturacion, y se compara este valor con el calculo. Se ignora la 
 # impresion de la factura por cuestiones de sencillez
 #
@@ -21,16 +21,17 @@ import datetime
 # del periodo de facturacion, para verificar bien
 # que se revisen las fechas
 
-class FacturaTest(unittest.TestCase):
+class FacturaPostpagoTest(unittest.TestCase):
     # Parametros de conexion de la base de datos
     dbname = dbparams.dbname
     dbuser = dbparams.dbuser
     dbpass = dbparams.dbpass
     
-    print "Para estas pruebas debe colocar el mes actual"
+    print "Realizando 8 pruebas sobre la factura Postpago..."
+    print "La salida estandar solamente se mostrar� si ocurre alg�n error"
     def setUp(self):
         self.myConsult = database.operacion(
-        "Inserts de prueba para probar la factura",
+        "Inserts de Prueba Postpago para probar la factura",
         None,self.dbname,self.dbuser,self.dbpass)
         d = datetime.datetime.today()
         mes = d.strftime("%m")
@@ -100,14 +101,14 @@ class FacturaTest(unittest.TestCase):
         result = testBill.metodoFacturacion.montoTotalCobrar
         theoreticResult = 211
         try:
-          self.assertEqual(result,theoreticResult,"Error en la prueba 1: Se esperaba %d y se recibio %d" % (theoreticResult,result));
+          self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago 1: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
 	  print e
-	  print("Prueba 1 FALLIDA")
+	  print("\nPrueba Postpago 1 FALLIDA")
 	  return
-        print("Prueba 1 lista")
+        print("\nPrueba Postpago 1 lista")
     
-    # Prueba 2
+    # Prueba Postpago 2
     ## Caso en el que un cliente consume un servicio estando afiliado a un plan
     ## que lo contenga, y este consumo es cubierto enteramente por el plan. Debe
     ## retornar el valor de la renta básica del plan
@@ -151,15 +152,15 @@ class FacturaTest(unittest.TestCase):
         result = testBill.metodoFacturacion.montoTotalCobrar
         theoreticResult = 211
         try:
-          self.assertEqual(result,theoreticResult,"Error en la prueba 2: Se esperaba %d y se recibio %d" % (theoreticResult,result));
+          self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago2: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
 	  print e
-	  print("Prueba 2 FALLIDA")
+	  print("\nPrueba Postpago 2 FALLIDA")
 	  return
-        print("Prueba 2 lista")
+        print("\nPrueba Postpago 2 lista")
         
         
-    # Prueba 3
+    # Prueba Postpago 3
     ## Caso en el que un cliente consume un servicio estando afiliado a un plan
     ## que lo contenga, y este consumo es cubierto enteramente por el plan. Debe
     ## retornar el valor de la renta básica del plan. Esta vez se inserta un consumo en
@@ -207,14 +208,14 @@ class FacturaTest(unittest.TestCase):
         result = testBill.metodoFacturacion.montoTotalCobrar
         theoreticResult = 211
         try:
-          self.assertEqual(result,theoreticResult,"Error en la prueba 3: Se esperaba %d y se recibio %d" % (theoreticResult,result));
+          self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago3: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
 	  print e
-	  print("Prueba 3 FALLIDA")
+	  print("\nPrueba Postpago 3 FALLIDA")
 	  return
-        print("Prueba 3 lista")
+        print("\nPrueba Postpago 3 lista")
         
-    # Prueba 4
+    # Prueba Postpago 4
     ## Caso en el que un cliente consume un servicio estando afiliado a un plan
     ## que lo contenga, y este consumo no es cubierto enteramente por el plan. Debe
     ## retornar el valor de la renta básica del plan mas el valor del exceso
@@ -262,14 +263,14 @@ class FacturaTest(unittest.TestCase):
         theoreticResult = 213
         
         try:
-          self.assertEqual(result,theoreticResult,"Error en la prueba 4: Se esperaba %d y se recibio %d" % (theoreticResult,result));
+          self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago4: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
 	  print e
-	  print("Prueba 4 FALLIDA")
+	  print("\nPrueba Postpago 4 FALLIDA")
 	  return
-        print("Prueba 4 lista")
+        print("\nPrueba Postpago 4 lista")
     
-    # Prueba 5
+    # Prueba Postpago 5
     ## Caso en el que un cliente consume un servicio estando afiliado a un plan
     ## que lo contenga, y este consumo no es cubierto enteramente por el plan, pero
     # esta vez esto se logra con varios consumos sucesivos. Debe
@@ -329,14 +330,14 @@ class FacturaTest(unittest.TestCase):
         theoreticResult = 213
         
         try:
-          self.assertEqual(result,theoreticResult,"Error en la prueba 5: Se esperaba %d y se recibio %d" % (theoreticResult,result));
+          self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago5: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
 	  print e
-	  print("Prueba 5 FALLIDA")
+	  print("\nPrueba Postpago 5 FALLIDA")
 	  return
-        print("Prueba 5 lista")
+        print("\nPrueba Postpago 5 lista")
         
-    # Prueba 6
+    # Prueba Postpago 6
     ## Caso en el que un cliente consume dos servicios estando afiliado a un plan
     ## que los contiene: en un caso la cantidad consumida esta cubierta, y en el otro
     ## no. En ambos casos hay una cantidad variable de consumos pequeños
@@ -415,14 +416,14 @@ class FacturaTest(unittest.TestCase):
         theoreticResult = 215
         
         try:
-          self.assertEqual(result,theoreticResult,"Error en la prueba 6: Se esperaba %d y se recibio %d" % (theoreticResult,result));
+          self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago6: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
 	  print e
-	  print("Prueba 6 FALLIDA")
+	  print("\nPrueba Postpago 6 FALLIDA")
 	  return
-        print("Prueba 6 lista")
+        print("\nPrueba Postpago 6 lista")
         
-    # Prueba 7
+    # Prueba Postpago 7
     ## Caso en el que un cliente consume tres servicios estando afiliado a un plan
     ## que los contiene: en el primer caso la cantidad consumida esta cubierta, en el segundo
     ## no. En el tercer caso el cliente esta afiliado a un paquete que contiene dicho plan, y 
@@ -529,14 +530,14 @@ class FacturaTest(unittest.TestCase):
         theoreticResult = 315
         
         try:
-          self.assertEqual(result,theoreticResult,"Error en la prueba 7: Se esperaba %d y se recibio %d" % (theoreticResult,result));
+          self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago7: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
 	  print e
-	  print("Prueba 7 FALLIDA")
+	  print("\nPrueba Postpago 7 FALLIDA")
 	  return
-        print("Prueba 7 lista")
+        print("\nPrueba Postpago 7 lista")
         
-    # Prueba 8
+    # Prueba Postpago 8
     ## Caso en el que un cliente consume tres servicios estando afiliado a un plan
     ## que los contiene: en el primer caso la cantidad consumida esta cubierta, en el segundo
     ## no. En el tercer caso el cliente esta afiliado a un paquete que contiene dicho plan, y 
@@ -643,13 +644,13 @@ class FacturaTest(unittest.TestCase):
         theoreticResult = 325
         
         try:
-          self.assertEqual(result,theoreticResult,"Error en la prueba 8: Se esperaba %d y se recibio %d" % (theoreticResult,result));
+          self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago8: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
 	  print e
-	  print("Prueba 8 FALLIDA")
+	  print("\nPrueba Postpago 8 FALLIDA")
 	  return
-        print("Prueba 8 lista")
+        print("\nPrueba Postpago 8 lista")
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    unittest.main(buffer=True)
