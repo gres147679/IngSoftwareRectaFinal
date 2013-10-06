@@ -49,8 +49,11 @@ class metodoFacturacionPrepago(metodoFacturacion):
             conexion = db.operacion("", """ select to_char(fecha, 'DD MM YYYY'), cantidad, nombreserv from consume NATURAL JOIN servicio where fecha >= to_date('%s %s %s','DD MM YYYY') 
                                             and numserie = \'%s\'; """ %(self.dia ,self.mes, self.anio, self.numSerie),
                                           dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
+	    print db.operacion.comando
        
             return conexion.execute()
+            
+        return []
                 
     def __str__(self):
         now = datetime.datetime.now()
