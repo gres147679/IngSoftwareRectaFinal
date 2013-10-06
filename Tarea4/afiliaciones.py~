@@ -77,7 +77,7 @@ class Afiliaciones:
     
     # Busca el saldo de un usuario Prepago
     def getSaldo(self):
-      if len(ConsultarPlanesPrepago(self.producto)) > 0:
+      if ConsultarPlanesPrepago(self.producto).size() > 0:
 	conexion = database.operacion("Buscamos el saldo del cliente",
 	            """SELECT saldo FROM activa WHERE 
                     numserie= '%s'"""%(self.producto),Afiliaciones.nombreBase,

@@ -53,8 +53,8 @@ class metodoFacturacionPrepago(metodoFacturacion):
 	    
 	    consumos = conexion.execute()
 	    
-	    #for i in consumos:
-	      #print i
+	    for i in consumos:
+	      print i
        
             return consumos
             
