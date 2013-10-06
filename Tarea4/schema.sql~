@@ -589,3 +589,24 @@ EXECUTE PROCEDURE existePlan();
 CREATE TRIGGER existePlan2
 BEFORE INSERT ON AFILIA FOR EACH ROW 
 EXECUTE PROCEDURE existePlan();
+
+-- CREATE OR REPLACE FUNCTION aumentaSaldo() 
+-- RETURNS TRIGGER AS $aumentaSaldo$
+-- BEGIN
+--     IF EXISTS (SELECT * 
+--        FROM ACTIVA
+--        WHERE NEW.numserie = numserie) THEN
+--            UPDATE ACTIVA
+--            SET saldo = saldo + NEW.cantidad
+--            WHERE NEW.numserie = numserie;
+--     ELSE
+--         RAISE WARNING 'INVE002: EL producto al que intenta actualizar el saldo no tiene un plan prepago';
+--         RETURN NULL;
+--     END if;
+--   RETURN NEW;
+--   END;
+-- $aumentaSaldo$ LANGUAGE plpgsql;
+-- 
+-- CREATE TRIGGER aumentaSaldo
+-- BEFORE INSERT ON SALDO FOR EACH ROW 
+-- EXECUTE PROCEDURE aumentaSaldo();

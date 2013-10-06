@@ -3,6 +3,6 @@
 #
 # Módulo que contiene los parámetros de conexión de la base de datos
 
-dbname = "innova"
-dbuser = "gustavo"
-dbpass = "1234"
+dbname = "software"
+dbuser = "becca"
+dbpass = "12345"
