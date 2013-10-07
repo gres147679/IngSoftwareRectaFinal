@@ -30,7 +30,7 @@ class metodoFacturacionPrepago(metodoFacturacion):
         
         planAsociado = af.ConsultarPlanesPrepago(self.numSerie)[0][0]
         
-        conexion = db.operacion("", """select max(to_char(fecha, 'DD MM YYYY')) from saldo where numserie=\'%s\' group by(numserie);""" %  self.numSerie,
+        conexion = db.operacion("", """select max(to_char(fecha, 'DD MM YYYY')) from recarga where numserie=\'%s\' group by(numserie);""" %  self.numSerie,
                                           dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
         
         resultado = conexion.execute()

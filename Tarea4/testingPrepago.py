@@ -57,7 +57,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         delete from servicio cascade;
         delete from contrata cascade;
         delete from paquete cascade;
-        delete from saldo cascade;
+        delete from recarga cascade;
         delete from producto cascade;
         delete from cliente cascade;
         delete from empresa cascade;
@@ -93,7 +93,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         insert into ACTIVA values
         ('CBZ27326',3002,0);
         
-        insert into saldo values('CBZ27326',current_timestamp - interval '40 days',300);
+        insert into recarga values('CBZ27326',current_timestamp - interval '40 days',300);
         
         commit;
         """)
@@ -141,7 +141,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         insert into ACTIVA values
         ('CBZ27326',3002,0);
         
-        insert into saldo values('CBZ27326',current_timestamp - interval '40 days',300);
+        insert into recarga values('CBZ27326',current_timestamp - interval '40 days',300);
         
         insert into CONSUME values(DEFAULT,
         'CBZ27326',1001,current_timestamp,50);
@@ -193,7 +193,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         insert into ACTIVA values
         ('CBZ27326',3002,0);
         
-        insert into saldo values('CBZ27326',current_timestamp - interval '40 days',300);
+        insert into recarga values('CBZ27326',current_timestamp - interval '40 days',300);
         
         
         insert into CONSUME values(DEFAULT,
@@ -250,7 +250,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         insert into ACTIVA values
         ('CBZ27326',3002,0);
         
-        insert into saldo values('CBZ27326',current_timestamp - interval '40 days',300);
+        insert into recarga values('CBZ27326',current_timestamp - interval '40 days',300);
         
         
         insert into CONSUME values(DEFAULT,
@@ -313,7 +313,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         insert into ACTIVA values
         ('CBZ27326',3002,0);
         
-        insert into saldo values('CBZ27326',current_timestamp - interval '40 days',300);
+        insert into recarga values('CBZ27326',current_timestamp - interval '40 days',300);
         
         insert into PAQUETE values
         (4001,'PegaoSMS',100);
