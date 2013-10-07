@@ -1,6 +1,9 @@
 *.py[cod]
-*.~
+*~
 dbparams.py
+
+*.py~
+
 
 # C extensions
 *.so

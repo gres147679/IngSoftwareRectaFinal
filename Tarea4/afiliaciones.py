@@ -74,6 +74,19 @@ class Afiliaciones:
         except Exception, e:
             print "\nERROR: ", e
     
+    
+    # Busca el saldo de un usuario Prepago
+    def getSaldo(self):
+      if len(ConsultarPlanesPrepago(self.producto)) > 0:
+	conexion = database.operacion("Buscamos el saldo del cliente",
+	            """SELECT saldo FROM activa WHERE 
+                    numserie= '%s'"""%(self.producto),Afiliaciones.nombreBase,
+                    Afiliaciones.usuarioBase,Afiliaciones.passwordBase)
+	resultado = conexion.execute()
+	return resultado[0][0]
+      else:
+	return -1
+	
     # Crea la afiliacion de un producto con un plan
     def CrearAfiliacion (self):
         try:            

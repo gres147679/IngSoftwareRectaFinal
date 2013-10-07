@@ -50,8 +50,13 @@ class metodoFacturacionPrepago(metodoFacturacion):
                                             and numserie = \'%s\'; """ %(self.dia ,self.mes, self.anio, self.numSerie),
                                           dbparams.dbname,dbparams.dbuser,dbparams.dbpass)
 	    print db.operacion.comando
+	    
+	    consumos = conexion.execute()
+	    
+	    #for i in consumos:
+	      #print i
        
-            return conexion.execute()
+            return consumos
             
         return []
                 
