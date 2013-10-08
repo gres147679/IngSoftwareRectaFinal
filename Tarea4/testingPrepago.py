@@ -166,8 +166,7 @@ class FacturaPrepagoTest(unittest.TestCase):
     # Prueba Prepago 3
     ## Caso en el que un cliente consume un servicio estando afiliado a un plan
     ## que lo contenga, y este consumo no es cubierto enteramente por el plan. Debe
-    ## retornar el mismo monto que la prueba anterior. Este caso prueba si
-    ## el sistema  rechaza consumos que no pueden facturarse
+    ## retornar el saldo menos el exceso consumido. Prueba si el sistema descuenta saldo
     
     def test_unConsumoConAfiliacionNoCabe(self):
         self.myConsult.setComando("""
@@ -208,11 +207,12 @@ class FacturaPrepagoTest(unittest.TestCase):
 	testBill = Factura.Factura(22714709,"CBZ27326","")
 	sys.stdin.close()
         result = afiliaciones.Afiliaciones("CBZ27326","").getSaldo()
-        theoreticResult = 300
+        theoreticResult = 299.9
         result2 = len(testBill.metodoFacturacion.listaConsumos)
+        theoreticResult2 = 1
         try:
-          self.assertTrue(result == theoreticResult and result2 == 0
-          ,"Error en la Prueba Prepago 3: Se esperaba %d y %d, pero se recibio %d y %d" % (theoreticResult,0,result,result2));
+          self.assertTrue(result == theoreticResult and result2 == theoreticResult2
+          ,"Error en la Prueba Prepago 3: Se esperaba %f y %d, pero se recibio %f y %d" % (theoreticResult,theoreticResult2,result,result2));
         except AssertionError,e:
 	  raise e
 	  print("\nPrueba Prepago 3 FALLIDA")
@@ -223,8 +223,8 @@ class FacturaPrepagoTest(unittest.TestCase):
     ## Caso en el que un cliente consume un servicio estando afiliado a un plan
     ## que lo contenga, y este consumo no es cubierto enteramente por el plan. Esta
     ## vez se realizan varios consumos que en total exceden el plan. Debe
-    ## retornar el mismo monto que la prueba anterior. Este caso prueba si
-    ## el sistema  rechaza consumos que no pueden facturarse
+    ## retornar el mismo monto que la prueba anterior. 
+    ## Prueba si el sistema descuenta saldo consecutivamente
     
     def test_variosConsumosConAfiliacionNoCaben(self):
         self.myConsult.setComando("""
@@ -270,11 +270,12 @@ class FacturaPrepagoTest(unittest.TestCase):
 	testBill = Factura.Factura(22714709,"CBZ27326","")
 	sys.stdin.close()
         result = afiliaciones.Afiliaciones("CBZ27326","").getSaldo()
-        theoreticResult = 300
+        theoreticResult = 299.7
         result2 = len(testBill.metodoFacturacion.listaConsumos)
+        theoreticResult2 = 3
         try:
-          self.assertTrue(result == theoreticResult and result2 == 0
-          ,"Error en la Prueba Prepago 4: Se esperaba %d y %d, pero se recibio %d y %d" % (theoreticResult,0,result,result2));
+          self.assertTrue(result == theoreticResult and result2 == theoreticResult2 
+          ,"Error en la Prueba Prepago 4: Se esperaba %f y %d, pero se recibio %f y %d" % (theoreticResult,theoreticResult2 ,result,result2));
         except AssertionError,e:
 	  raise e
 	  print("\nPrueba Prepago 4 FALLIDA")
@@ -282,6 +283,74 @@ class FacturaPrepagoTest(unittest.TestCase):
         print("\nPrueba Prepago 4 lista")
         
     # Prueba Prepago 5
+    ## Caso en el que un cliente consume un servicio estando afiliado a un plan
+    ## que lo contenga, y este consumo no es cubierto enteramente por el plan. Esta
+    ## vez se realizan varios consumos que en total exceden el plan y el saldo. Debe
+    ## quitarle todo el saldo al cliente y rechazar el ultimo consumo
+    
+    def test_variosConsumosConAfiliacionRechazado(self):
+        self.myConsult.setComando("""
+        insert into EMPRESA values
+        (12345678,'MOCEL');
+        
+        insert into CLIENTE values (22714709,'Gustavo El Khoury',
+        'Urb. Monte Elena Qta. Santa Teresa');
+        
+        insert into PRODUCTO values
+        ('CBZ27326','iPhone 4S','12345678',22714709);
+        
+        insert into SERVICIO values
+        (1001,'Segundos a MOCEL',0.15,FALSE);
+        
+        insert into plan values
+        (3002,'Mixto Plus','Este fabuloso plan incluye todos los servicios, y 
+        tarifas para excesos',211,311,'prepago');
+        
+        insert into incluye values
+        (3002,1001,0.1,100);
+        
+        insert into ACTIVA values
+        ('CBZ27326',3002,0);
+        
+        insert into recarga values('CBZ27326',current_timestamp - interval '40 days',300);
+        
+        
+        insert into CONSUME values(DEFAULT,
+        'CBZ27326',1001,current_timestamp - interval '22 days',100);
+        
+        insert into CONSUME values(DEFAULT,
+        'CBZ27326',1001,current_timestamp - interval '20 days',1000);
+        
+        insert into CONSUME values(DEFAULT,
+        'CBZ27326',1001,current_timestamp - interval '21 days',1000);
+        
+        insert into CONSUME values(DEFAULT,
+        'CBZ27326',1001,current_timestamp - interval '19 days',1000);
+        
+        insert into CONSUME values(DEFAULT,
+        'CBZ27326',1001,current_timestamp - interval '19 days',2);
+        
+        
+        commit;""")
+        
+        self.myConsult.execute()
+	sys.stdin = open('entradaPruebas.txt','r') 
+	testBill = Factura.Factura(22714709,"CBZ27326","")
+	sys.stdin.close()
+        result = afiliaciones.Afiliaciones("CBZ27326","").getSaldo()
+        theoreticResult = 0
+        result2 = len(testBill.metodoFacturacion.listaConsumos)
+        theoreticResult2 = 4
+        try:
+          self.assertTrue(result == theoreticResult and result2 == theoreticResult2 
+          ,"Error en la Prueba Prepago 5: Se esperaba %f y %d, pero se recibio %f y %d" % (theoreticResult,theoreticResult2 ,result,result2));
+        except AssertionError,e:
+	  raise e
+	  print("\nPrueba Prepago 5 FALLIDA")
+	  return
+        print("\nPrueba Prepago 5 lista")
+        
+    # Prueba Prepago 6
     ## Caso en el que un cliente consume un servicio estando afiliado a un plan
     ## que lo contenga, y este consumo no es cubierto enteramente por el plan, pero
     ## si por un paquete adicional. 
@@ -346,12 +415,14 @@ class FacturaPrepagoTest(unittest.TestCase):
         result2 = len(testBill.metodoFacturacion.listaConsumos)
         try:
           self.assertTrue(result == theoreticResult and result2 == theoreticResult2
-          ,"Error en la Prueba Prepago 4: Se esperaba %d y %d, pero se recibio %d y %d" % (theoreticResult,theoreticResult2,result,result2));
+          ,"Error en la Prueba Prepago 6: Se esperaba %d y %d, pero se recibio %d y %d" % (theoreticResult,theoreticResult2,result,result2));
         except AssertionError,e:
 	  raise e
-	  print("\nPrueba Prepago 4 FALLIDA")
+	  print("\nPrueba Prepago 6 FALLIDA")
 	  return
-        print("\nPrueba Prepago 4 lista")
+        print("\nPrueba Prepago 6 lista")
+        
+        
     
         
 if __name__ == "__main__":
