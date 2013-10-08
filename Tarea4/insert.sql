@@ -8,10 +8,10 @@
         ('CBZ27326','iPhone 4S','12345678',22714709);
         
         insert into SERVICIO values
-        (1001,'Segundos a MOCEL',0.15,FALSE);
+        (1001,'Segundos a MOCEL',0.1,FALSE);
         
         insert into SERVICIO values
-        (1002,'Segundos a Otras Operadoras',0.20,FALSE);
+        (1002,'Segundos a Otras Operadoras',0.2,FALSE);
         
         insert into SERVICIO values
         (1003,'Mensajes de Texto',0.5,FALSE);
@@ -21,7 +21,7 @@
         
         insert into PLAN values
         (3002,'Mixto Plus','Este fabuloso plan incluye todos los servicios, y 
-        tarifas para excesos',211,311,'postpago');
+        tarifas para excesos',211,311,'prepago');
         
         insert into INCLUYE values
         (3002,1001,0.1,200);
