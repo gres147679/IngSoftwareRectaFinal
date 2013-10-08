@@ -121,7 +121,7 @@ CREATE TABLE INCLUYE (
 CREATE TABLE RECARGA (
   numserie      varchar(10)     references PRODUCTO(numserie),
   fecha         timestamp       NOT NULL,
-  cantidad      integer         NOT NULL,
+  cantidad      real            NOT NULL,
   PRIMARY KEY(numserie, fecha),
   CONSTRAINT cantidadPositiva CHECK (cantidad > 0)
 );
@@ -485,25 +485,27 @@ DECLARE
         AND EXTRACT(month FROM fecha) = EXTRACT(month FROM NEW.fecha)
         AND EXTRACT(year FROM fecha) = EXTRACT(year FROM NEW.fecha);
     
+    cantidad_consumida := NEW.cantidad;
+    cantidad_total_consumida := cantidad_total_consumida - cantidad_consumida;
     cantidad_incluida_total := cantidad_incluida - cantidad_total_consumida;
-    cantidad_consumida := NEW.cantidad;    
         
     costo_servicio := (SELECT tarifa 
                        FROM PRODUCTO NATURAL JOIN ACTIVA NATURAL JOIN INCLUYE
                        WHERE numserie = NEW.numserie AND codserv = NEW.codserv);
-                           
+
     IF cantidad_incluida_total <= 0 THEN
         costo_extra := costo_servicio*cantidad_consumida;
-    ELSE                        
-        IF cantidad_consumida > cantidad_incluida_total THEN
-            costo_extra := costo_servicio*(cantidad_consumida-cantidad_incluida_total);
+    ELSE
+        cantidad_total_consumida := cantidad_total_consumida + cantidad_consumida;
+        IF cantidad_total_consumida > cantidad_incluida THEN
+            costo_extra := costo_servicio*(cantidad_total_consumida-cantidad_incluida);
         ELSE costo_extra := 0;
         END IF;
     END IF;
         
     saldo_actual := (SELECT saldo
                      FROM ACTIVA
-                     WHERE numserie = NEW.numserie);
+                     WHERE numserie = NEW.numserie);                     
                         
     saldo_nuevo := saldo_actual-costo_extra;
     
@@ -529,7 +531,7 @@ CREATE OR REPLACE FUNCTION realizaRecarga()
 RETURNS TRIGGER AS $realizaRecarga$
 DECLARE 
   saldo_actual real;
-  cantidad_total int;
+  cantidad_total real;
   
   BEGIN
     
