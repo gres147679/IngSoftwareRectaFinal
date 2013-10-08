@@ -106,7 +106,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         result = str(productoTest._desc).split('+')[1].strip()
         theoreticResult="Servicio de Mensajes de Texto"
         
-        cost = productoTest._costo
+        cost = productoTest._costoServicios
         theoreticCost = 100
         
         try:
@@ -167,7 +167,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         theoreticResult="Servicio de Mensajes de TextoServicio de Segundos adicionales a MOCELServicio \
 de Segundos adicionales a otras operadorasServicio de Megabytes de Navegacion"        
        
-	cost = productoTest._costo
+	cost = productoTest._costoServicios
 	theoreticCost = 600
         
         try:
