@@ -107,7 +107,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Prepago 1: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Prepago 1 FALLIDA")
 	  return
         print("\nPrueba Prepago 1 lista")
@@ -157,7 +157,7 @@ class FacturaPrepagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Prepago 2: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Prepago 2 FALLIDA")
 	  return
         print("\nPrueba Prepago 2 lista")
@@ -214,7 +214,7 @@ class FacturaPrepagoTest(unittest.TestCase):
           self.assertTrue(result == theoreticResult and result2 == 0
           ,"Error en la Prueba Prepago 3: Se esperaba %d y %d, pero se recibio %d y %d" % (theoreticResult,0,result,result2));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Prepago 3 FALLIDA")
 	  return
         print("\nPrueba Prepago 3 lista")
@@ -276,7 +276,7 @@ class FacturaPrepagoTest(unittest.TestCase):
           self.assertTrue(result == theoreticResult and result2 == 0
           ,"Error en la Prueba Prepago 4: Se esperaba %d y %d, pero se recibio %d y %d" % (theoreticResult,0,result,result2));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Prepago 4 FALLIDA")
 	  return
         print("\nPrueba Prepago 4 lista")
@@ -348,7 +348,7 @@ class FacturaPrepagoTest(unittest.TestCase):
           self.assertTrue(result == theoreticResult and result2 == theoreticResult2
           ,"Error en la Prueba Prepago 4: Se esperaba %d y %d, pero se recibio %d y %d" % (theoreticResult,theoreticResult2,result,result2));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Prepago 4 FALLIDA")
 	  return
         print("\nPrueba Prepago 4 lista")
@@ -356,4 +356,4 @@ class FacturaPrepagoTest(unittest.TestCase):
         
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
-    unittest.main()
+    unittest.main(buffer=True)

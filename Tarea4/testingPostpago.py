@@ -103,7 +103,7 @@ class FacturaPostpagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago 1: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Postpago 1 FALLIDA")
 	  return
         print("\nPrueba Postpago 1 lista")
@@ -154,7 +154,7 @@ class FacturaPostpagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago2: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Postpago 2 FALLIDA")
 	  return
         print("\nPrueba Postpago 2 lista")
@@ -210,7 +210,7 @@ class FacturaPostpagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago3: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Postpago 3 FALLIDA")
 	  return
         print("\nPrueba Postpago 3 lista")
@@ -265,7 +265,7 @@ class FacturaPostpagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago4: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Postpago 4 FALLIDA")
 	  return
         print("\nPrueba Postpago 4 lista")
@@ -332,7 +332,7 @@ class FacturaPostpagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago5: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Postpago 5 FALLIDA")
 	  return
         print("\nPrueba Postpago 5 lista")
@@ -418,7 +418,7 @@ class FacturaPostpagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago6: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Postpago 6 FALLIDA")
 	  return
         print("\nPrueba Postpago 6 lista")
@@ -532,7 +532,7 @@ class FacturaPostpagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago7: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Postpago 7 FALLIDA")
 	  return
         print("\nPrueba Postpago 7 lista")
@@ -646,7 +646,7 @@ class FacturaPostpagoTest(unittest.TestCase):
         try:
           self.assertEqual(result,theoreticResult,"Error en la Prueba Postpago8: Se esperaba %d y se recibio %d" % (theoreticResult,result));
         except AssertionError,e:
-	  print e
+	  raise e
 	  print("\nPrueba Postpago 8 FALLIDA")
 	  return
         print("\nPrueba Postpago 8 lista")
