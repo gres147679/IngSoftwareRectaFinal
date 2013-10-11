@@ -1,5 +1,8 @@
 from django.db import models
 
+# ToDo: Existen productos con costo, que es un Float mayor que cero
+# Django no tiene un tipo para esto, asi que hay que implementarlo
+
 # Create your models here.
 PLANTYPECHOICES = ('i', 'infinito'), ('p', 'paquete'),
 PLANMODECHOICES = ('p', 'prepago'), ('p', 'postpago'),
@@ -38,5 +41,59 @@ class Plan(models.Model):
     tipo = models.CharField(max_length=8,choices=PLANMODECHOICES)
     
     def __unicode__(self):
-	return "Codigo: " + str(self.codpaq) \
-	    +" | Nombre: " + str(self.nombrepaq)
+	return "Codigo: " + str(self.codplan) \
+	    +" | Nombre: " + str(self.nombreplan)
+	
+class PlanPostpago(models.Model):
+    codplan = models.ForeignKey('Plan')
+    
+    def __unicode__(self):
+	return str(self.codplan)
+    
+class PlanPrepago(models.Model):
+    codplan = models.ForeignKey('Plan')
+    
+    def __unicode__(self):
+	return str(self.codplan)
+
+class Producto(models.Model):
+    numserie = models.CharField(max_length=10,unique=True)
+    nombreprod = models.CharField(max_length=50)
+    RIF = models.ForeignKey('Empresa')
+    cedula = models.ForeignKey('Cliente')
+    planPrepago  = models.ManyToManyField(PlanPrepago, through='Activa')
+    planPostpago = models.ManyToManyField(PlanPostpago, through='Afilia')
+    
+    def __unicode__(self):
+	return "Serial: " + str(self.numserie) \
+	    +" | Nombre: " + str(self.nombreprod)
+	
+class Activa(models.Model):
+    codplan = models.ForeignKey('PlanPrepago')
+    numserie = models.ForeignKey('Producto')
+    saldo = models.FloatField()
+    
+class Afilia(models.Model):
+    codplan = models.ForeignKey('PlanPostpago')
+    numserie = models.ForeignKey('Producto')
+    tipoplan = models.CharField(max_length=8,choices=PLANTYPECHOICES)
+
+class Servicio(models.Model):
+    codserv = models.PositiveIntegerField(unique=True)
+    nombreserv = models.CharField(max_length=50)
+    costo = models.FloatField()
+    unico = models.BooleanField(default=False)
+    
+    def __unicode__(self):
+	return "Nombre: " + self.nombreserv
+    
+class Consume(models.Model):
+    numserie = models.ForeignKey('Producto')
+    codserv = models.ForeignKey('Servicio')
+    fecha = models.DateTimeField()
+    cantidad = models.PositiveIntegerField()
+    
+class Contiene(models.Model):
+    codpaq = models.ForeignKey('Paquete')
+    codserv = models.ForeignKey('Servicio')
+    cantidad = models.PositiveIntegerField()
