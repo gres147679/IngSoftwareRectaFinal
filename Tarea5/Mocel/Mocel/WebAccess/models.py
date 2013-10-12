@@ -97,3 +97,18 @@ class Contiene(models.Model):
     codpaq = models.ForeignKey('Paquete')
     codserv = models.ForeignKey('Servicio')
     cantidad = models.PositiveIntegerField()
+
+class Contrata(models.Model):
+    numserie = models.ForeignKey('Producto')
+    codpaq = models.ForeignKey('Paquete')
+
+class Contiene(models.Model):
+    codplan = models.ForeignKey('Plan')
+    codserv = models.ForeignKey('Servicio')
+    cantidad = models.PositiveIntegerField()
+    tarifa = models.FloatField()
+    
+class Recarga(models.Model):
+    numserie = models.ForeignKey('Producto')
+    fecha = models.DateTimeField()
+    cantidad = models.PositiveIntegerField()
