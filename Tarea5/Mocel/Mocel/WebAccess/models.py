@@ -8,9 +8,9 @@ PLANTYPECHOICES = ('i', 'infinito'), ('p', 'paquete'),
 PLANMODECHOICES = ('p', 'prepago'), ('p', 'postpago'),
 
 class Cliente(models.Model):
-    cedula = models.PositiveIntegerField(unique=True)
-    nombrecl = models.CharField(max_length=50)
-    direccion = models.TextField()
+    cedula = models.PositiveIntegerField('Cedula',unique=True)
+    nombrecl = models.CharField('Nombre',max_length=50)
+    direccion = models.TextField('Direccion')
     
     def __unicode__(self):
 	return "Cedula: " + str(self.cedula) \
@@ -57,12 +57,12 @@ class PlanPrepago(models.Model):
 	return str(self.codplan)
 
 class Producto(models.Model):
-    numserie = models.CharField(max_length=10,unique=True)
-    nombreprod = models.CharField(max_length=50)
+    numserie = models.CharField('Numero de serie',max_length=10,unique=True)
+    nombreprod = models.CharField('Nombre del producto',max_length=50)
     RIF = models.ForeignKey('Empresa')
     cedula = models.ForeignKey('Cliente')
-    planPrepago  = models.ManyToManyField(PlanPrepago, through='Activa')
-    planPostpago = models.ManyToManyField(PlanPostpago, through='Afilia')
+    planPrepago  = models.ManyToManyField(PlanPrepago, through='Activa',blank=True)
+    planPostpago = models.ManyToManyField(PlanPostpago, through='Afilia',blank=True)
     
     def __unicode__(self):
 	return "Serial: " + str(self.numserie) \
