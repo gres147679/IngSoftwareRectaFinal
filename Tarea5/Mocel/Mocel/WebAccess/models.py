@@ -38,8 +38,8 @@ class Plan(models.Model):
     def save(self):
 	try:
 	    super(Plan,self).save()
-	except e:
-	    pass
+	except Exception,e:
+	    raise e
 	if self.tipo == "pr":
 	    if not len(PlanPrepago.objects.filter(codplan=self)):
 		plan = PlanPrepago(codplan=self)
