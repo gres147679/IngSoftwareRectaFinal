@@ -1,11 +1,13 @@
 from django.db import models
+from django.db.models.signals import post_delete
+from deleteActions import borradoPlan
 
 # ToDo: Existen productos con costo, que es un Float mayor que cero
 # Django no tiene un tipo para esto, asi que hay que implementarlo
 
 # Create your models here.
 PLANTYPECHOICES = ('i', 'infinito'), ('p', 'paquete'),
-PLANMODECHOICES = ('p', 'prepago'), ('p', 'postpago'),
+PLANMODECHOICES = ('pr', 'prepago'), ('po', 'postpago'),
 
 class Cliente(models.Model):
     cedula = models.PositiveIntegerField('Cedula',unique=True)
@@ -33,6 +35,21 @@ class Paquete(models.Model):
 	    +" | Nombre: " + str(self.nombrepaq)
 	
 class Plan(models.Model):
+    def save(self):
+	try:
+	    super(Plan,self).save()
+	except e:
+	    pass
+	if self.tipo == "pr":
+	    if not len(PlanPrepago.objects.filter(codplan=self)):
+		plan = PlanPrepago(codplan=self)
+		plan.save()
+	else:
+	    if not len(PlanPostpago.objects.filter(codplan=self)):
+		plan = PlanPostpago(codplan=self)
+		plan.save()
+	
+		
     codplan = models.PositiveIntegerField(unique=True)
     nombreplan = models.CharField(max_length=50)
     descripcion = models.TextField()
@@ -61,8 +78,8 @@ class Producto(models.Model):
     nombreprod = models.CharField('Nombre del producto',max_length=50)
     RIF = models.ForeignKey('Empresa')
     cedula = models.ForeignKey('Cliente')
-    planPrepago  = models.ManyToManyField(PlanPrepago, through='Activa',blank=True)
-    planPostpago = models.ManyToManyField(PlanPostpago, through='Afilia',blank=True)
+    planPrepago  = models.ManyToManyField(PlanPrepago, through='Activa')
+    planPostpago = models.ManyToManyField(PlanPostpago, through='Afilia')
     
     def __unicode__(self):
 	return "Serial: " + str(self.numserie) \
@@ -102,7 +119,7 @@ class Contrata(models.Model):
     numserie = models.ForeignKey('Producto')
     codpaq = models.ForeignKey('Paquete')
 
-class Contiene(models.Model):
+class Incluye(models.Model):
     codplan = models.ForeignKey('Plan')
     codserv = models.ForeignKey('Servicio')
     cantidad = models.PositiveIntegerField()
@@ -112,3 +129,6 @@ class Recarga(models.Model):
     numserie = models.ForeignKey('Producto')
     fecha = models.DateTimeField()
     cantidad = models.PositiveIntegerField()
+    
+# Accion asociada al eliminar un plan
+post_delete.connect(borradoPlan, sender=Plan)
