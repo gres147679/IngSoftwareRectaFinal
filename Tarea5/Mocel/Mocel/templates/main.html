@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html>
+
+	<!--HEAD-->
+	<head>
+		<title> {% block title %} MOCEL {% endblock%}</title>
+		<meta charset="utf-8">
+	</head>
+
+	<!--BODY-->
+	<body>
+		<header>
+			<h1>MOCEL</h1>
+			<nav>
+				<li><a href='#'>Clientes</a></li>
+			</nav>
+		</header>
+
+	<section>
+		{% block content %}
+
+		{% endblock%}
+	</section>
+
+
+	</body>
+
+	<!--FOOTER-->
+	<footer>
+
+
+	</footer>
+
+</html>

@@ -1,0 +1,23 @@
+<!==Es una extension del archivo main.html==>
+{% extends 'main.html' %}
+
+{% block title %} MOCEL - Cliente {% endblock%}
+
+{% block content %}
+
+<p>CREAR CLIENTE</p>
+
+	<form action="." method="POST">
+		{% csrf_token %}
+		{{ form.as_p }}
+		
+		<!==Botones==>
+		<input type="submit" value="Crear">
+		<input type="reset" value="Limpiar">
+	</form>
+
+	<br>
+
+	{{ informacion }}
+
+{% endblock%}
