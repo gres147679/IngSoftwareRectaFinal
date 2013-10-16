@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.db import models
 from django.db.models.signals import post_delete
 from signalActions import borradoPlan
@@ -35,12 +36,12 @@ class Empresa(models.Model):
 	return "Empresa: " + str(self.razon_social)
 
 class Paquete(models.Model):
-    codpaq = models.PositiveIntegerField(unique=True)
-    nombrepaq = models.CharField(max_length=50)
-    precio = models.FloatField(validators = [MinValueValidator(0)])
+    codpaq = models.PositiveIntegerField('Código',unique=True)
+    nombrepaq = models.CharField('Nombre',max_length=50)
+    precio = models.FloatField('Renta',validators = [MinValueValidator(0)])
     
     def __unicode__(self):
-	return "Codigo: " + str(self.codpaq) \
+	return u"Código: " + str(self.codpaq) \
 	    +" | Nombre: " + str(self.nombrepaq)
 	
 class PlanPostpago(models.Model):
@@ -90,22 +91,22 @@ class Plan(models.Model):
 	aBorrar.delete()
 	
 		
-    codplan = models.PositiveIntegerField(unique=True)
-    nombreplan = models.CharField(max_length=50)
-    descripcion = models.TextField()
-    renta_basica = models.FloatField(validators = [MinValueValidator(0)])
-    renta_ilimitada = models.FloatField(validators = [MinValueValidator(0)])
-    tipo = models.CharField(max_length=8,choices=PLANMODECHOICES)
+    codplan = models.PositiveIntegerField('Código',unique=True)
+    nombreplan = models.CharField('Nombre',max_length=50)
+    descripcion = models.TextField('Descripcion')
+    renta_basica = models.FloatField('Renta normal',validators = [MinValueValidator(0)])
+    renta_ilimitada = models.FloatField('Renta ilimitada',validators = [MinValueValidator(0)])
+    tipo = models.CharField('Tipo',max_length=8,choices=PLANMODECHOICES)
     
     def __unicode__(self):
-	return "Codigo: " + str(self.codplan) \
+	return u"Código: " + str(self.codplan) \
 	    +" | Nombre: " + str(self.nombreplan)
 
 class Producto(models.Model):
-    numserie = models.CharField('Numero de serie',max_length=10,unique=True)
+    numserie = models.CharField('Número de serie',max_length=10,unique=True)
     nombreprod = models.CharField('Nombre del producto',max_length=50)
-    RIF = models.ForeignKey('Empresa')
-    cedula = models.ForeignKey('Cliente')
+    RIF = models.ForeignKey('Empresa',verbose_name="Empresa dueña")
+    cedula = models.ForeignKey('Cliente',verbose_name="Cliente dueño")
     planPrepago  = models.ManyToManyField(PlanPrepago, through='Activa')
     planPostpago = models.ManyToManyField(PlanPostpago, through='Afilia')
     
@@ -115,12 +116,12 @@ class Producto(models.Model):
 	
 class Activa(models.Model):
     class Meta:
-        verbose_name = 'una afiliacion a plan Prepago'
+        verbose_name = 'afiliacion a plan Prepago'
         verbose_name_plural = 'Afiliaciones a planes Prepago'
     
-    codplan = models.ForeignKey('PlanPrepago')
-    numserie = models.ForeignKey('Producto')
-    saldo = models.FloatField(validators = [MinValueValidator(0)])
+    codplan = models.ForeignKey('PlanPrepago',verbose_name='Plan')
+    numserie = models.ForeignKey('Producto',verbose_name='Producto')
+    saldo = models.FloatField(validators = [MinValueValidator(0)],verbose_name='Saldo')
     
 class Afilia(models.Model):
     
@@ -128,15 +129,15 @@ class Afilia(models.Model):
         verbose_name = 'una afiliacion a plan Postpago'
         verbose_name_plural = 'Afiliaciones a planes Postpago'
         
-    codplan = models.ForeignKey('PlanPostpago')
-    numserie = models.ForeignKey('Producto')
-    tipoplan = models.CharField(max_length=8,choices=PLANTYPECHOICES)
+    codplan = models.ForeignKey('PlanPostpago',verbose_name='Plan')
+    numserie = models.ForeignKey('Producto',verbose_name='Producto')
+    tipoplan = models.CharField(max_length=8,choices=PLANTYPECHOICES,verbose_name='Tipo de plan')
 
 class Servicio(models.Model):
-    codserv = models.PositiveIntegerField(unique=True)
-    nombreserv = models.CharField(max_length=50)
-    costo = models.FloatField(validators = [MinValueValidator(0)])
-    unico = models.BooleanField(default=False)
+    codserv = models.PositiveIntegerField('Código',unique=True)
+    nombreserv = models.CharField('Nombre',max_length=50)
+    costo = models.FloatField('Costo',validators = [MinValueValidator(0)])
+    unico = models.BooleanField('Servicio único',default=False)
     
     def __unicode__(self):
 	return "Nombre: " + self.nombreserv
@@ -148,19 +149,34 @@ class Consume(models.Model):
     cantidad = models.PositiveIntegerField()
     
 class Contiene(models.Model):
-    codpaq = models.ForeignKey('Paquete')
-    codserv = models.ForeignKey('Servicio')
-    cantidad = models.PositiveIntegerField()
+    class Meta:
+        verbose_name = 'servicio en un paquete'
+        verbose_name_plural = 'Servicios en un paquete'
+    
+    codpaq = models.ForeignKey('Paquete',verbose_name='Paquete')
+    codserv = models.ForeignKey('Servicio',verbose_name='Servicio')
+    cantidad = models.PositiveIntegerField('Cantidad')
+    
+    def __unicode__(self):
+	return "El paquete " + str(self.codpaq.nombrepaq) + " contiene " + str(self.cantidad)+"x"+str(self.codserv.nombreserv)
 
 class Contrata(models.Model):
-    numserie = models.ForeignKey('Producto')
-    codpaq = models.ForeignKey('Paquete')
+    class Meta:
+        verbose_name = 'afiliacion a un paquete'
+        verbose_name_plural = 'Afiliaciones a paquetes'
+    
+    numserie = models.ForeignKey('Producto',verbose_name='Producto')
+    codpaq = models.ForeignKey('Paquete',verbose_name='Paquete')
 
 class Incluye(models.Model):
-    codplan = models.ForeignKey('Plan')
-    codserv = models.ForeignKey('Servicio')
-    cantidad = models.PositiveIntegerField()
-    tarifa = models.FloatField(validators = [MinValueValidator(0)])
+    class Meta:
+        verbose_name = 'servicio en un plan'
+        verbose_name_plural = 'Servicios en un plan'
+    
+    codplan = models.ForeignKey('Plan',verbose_name='Plan')
+    codserv = models.ForeignKey('Servicio',verbose_name='Servicio')
+    cantidad = models.PositiveIntegerField('Cantidad')
+    tarifa = models.FloatField('Tarifa',validators = [MinValueValidator(0)])
     
 class Recarga(models.Model):
     numserie = models.ForeignKey('Producto')
