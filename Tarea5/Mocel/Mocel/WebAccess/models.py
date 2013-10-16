@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import post_delete
 from signalActions import borradoPlan
+from django.core.validators import MinValueValidator
 
 # ToDo: Existen productos con costo, que es un Float mayor que cero
 # Django no tiene un tipo para esto, asi que hay que implementarlo
@@ -28,7 +29,7 @@ class Empresa(models.Model):
 class Paquete(models.Model):
     codpaq = models.PositiveIntegerField(unique=True)
     nombrepaq = models.CharField(max_length=50)
-    precio = models.FloatField()
+    precio = models.FloatField(validators = [MinValueValidator(0)])
     
     def __unicode__(self):
 	return "Codigo: " + str(self.codpaq) \
@@ -53,8 +54,8 @@ class Plan(models.Model):
     codplan = models.PositiveIntegerField(unique=True)
     nombreplan = models.CharField(max_length=50)
     descripcion = models.TextField()
-    renta_basica = models.FloatField()
-    renta_ilimitada = models.FloatField()
+    renta_basica = models.FloatField(validators = [MinValueValidator(0)])
+    renta_ilimitada = models.FloatField(validators = [MinValueValidator(0)])
     tipo = models.CharField(max_length=8,choices=PLANMODECHOICES)
     
     def __unicode__(self):
@@ -88,7 +89,7 @@ class Producto(models.Model):
 class Activa(models.Model):
     codplan = models.ForeignKey('PlanPrepago')
     numserie = models.ForeignKey('Producto')
-    saldo = models.FloatField()
+    saldo = models.FloatField(validators = [MinValueValidator(0)])
     
 class Afilia(models.Model):
     codplan = models.ForeignKey('PlanPostpago')
@@ -98,7 +99,7 @@ class Afilia(models.Model):
 class Servicio(models.Model):
     codserv = models.PositiveIntegerField(unique=True)
     nombreserv = models.CharField(max_length=50)
-    costo = models.FloatField()
+    costo = models.FloatField(validators = [MinValueValidator(0)])
     unico = models.BooleanField(default=False)
     
     def __unicode__(self):
@@ -123,7 +124,7 @@ class Incluye(models.Model):
     codplan = models.ForeignKey('Plan')
     codserv = models.ForeignKey('Servicio')
     cantidad = models.PositiveIntegerField()
-    tarifa = models.FloatField()
+    tarifa = models.FloatField(validators = [MinValueValidator(0)])
     
 class Recarga(models.Model):
     numserie = models.ForeignKey('Producto')
