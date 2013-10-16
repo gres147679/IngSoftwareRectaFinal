@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models.signals import post_delete
-from deleteActions import borradoPlan
+from signalActions import borradoPlan
 
 # ToDo: Existen productos con costo, que es un Float mayor que cero
 # Django no tiene un tipo para esto, asi que hay que implementarlo

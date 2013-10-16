@@ -13,11 +13,9 @@ urlpatterns = patterns('',
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
     # Uncomment the next line to enable the admin:
-<<<<<<< HEAD
     # url(r'^admin/', include(admin.site.urls)),
 
     url(r'^',include('Mocel.WebAccess.urls')),
-=======
+
     url(r'^admin/', include(admin.site.urls)),
->>>>>>> e2295decfc9d7de24dc4726950b1148f0b6dffe2
 )
