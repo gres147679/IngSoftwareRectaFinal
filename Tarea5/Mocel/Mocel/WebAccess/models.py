@@ -3,8 +3,16 @@ from django.db.models.signals import post_delete
 from signalActions import borradoPlan
 from django.core.validators import MinValueValidator
 
-# ToDo: Existen productos con costo, que es un Float mayor que cero
-# Django no tiene un tipo para esto, asi que hay que implementarlo
+# A continuacion se encuentra la traduccion de las entidades de la DB
+# a modelos de Django
+#
+# Estandares:
+# - Los nombres de atributos se mantienen, tal cual estan en el ER
+# - Se define el metodo __unicode__ en cada clase, para tener una
+#   representacion leible de cada entidad
+# - En el caso de los precios (productos, paquetes, etc) se usan los 
+#   validadores de django, que se pasan al constructor del atributo
+# - Se usa la metaclase para colocar nombres bonitos a los modelos
 
 # Create your models here.
 PLANTYPECHOICES = ('i', 'infinito'), ('p', 'paquete'),
@@ -35,20 +43,51 @@ class Paquete(models.Model):
 	return "Codigo: " + str(self.codpaq) \
 	    +" | Nombre: " + str(self.nombrepaq)
 	
+class PlanPostpago(models.Model):
+    codplan = models.ForeignKey('Plan')
+    
+    def __unicode__(self):
+	return str(self.codplan)
+    
+class PlanPrepago(models.Model):
+    codplan = models.ForeignKey('Plan')
+    
+    def __unicode__(self):
+	return str(self.codplan)
+
 class Plan(models.Model):
+    class Meta:
+        verbose_name_plural = 'Planes'
+        
+    # Se hace override del metodo por defecto del modelos
+    # La idea es insertar la tupla correspondiente en la 
+    # categoria planPrepago o planPostpago segun corresponda
+ 
+    
     def save(self):
 	try:
 	    super(Plan,self).save()
 	except Exception,e:
 	    raise e
+	
 	if self.tipo == "pr":
+	    # Si el plan fue cambiado, busco su instancia en PlanPrepago para 
+	    # borrarla. No consigo como saber que valor fue editado, para no hacer
+	    # esto a cada rato
+	    if self.pk is not None:
+		aBorrar = PlanPostpago.objects.filter(codplan=self)
 	    if not len(PlanPrepago.objects.filter(codplan=self)):
 		plan = PlanPrepago(codplan=self)
 		plan.save()
 	else:
+	    if self.pk is not None:
+		aBorrar = PlanPrepago.objects.filter(codplan=self)
 	    if not len(PlanPostpago.objects.filter(codplan=self)):
 		plan = PlanPostpago(codplan=self)
 		plan.save()
+	
+	# Borro su entrada en la categoria
+	aBorrar.delete()
 	
 		
     codplan = models.PositiveIntegerField(unique=True)
@@ -61,18 +100,6 @@ class Plan(models.Model):
     def __unicode__(self):
 	return "Codigo: " + str(self.codplan) \
 	    +" | Nombre: " + str(self.nombreplan)
-	
-class PlanPostpago(models.Model):
-    codplan = models.ForeignKey('Plan')
-    
-    def __unicode__(self):
-	return str(self.codplan)
-    
-class PlanPrepago(models.Model):
-    codplan = models.ForeignKey('Plan')
-    
-    def __unicode__(self):
-	return str(self.codplan)
 
 class Producto(models.Model):
     numserie = models.CharField('Numero de serie',max_length=10,unique=True)
@@ -87,11 +114,20 @@ class Producto(models.Model):
 	    +" | Nombre: " + str(self.nombreprod)
 	
 class Activa(models.Model):
+    class Meta:
+        verbose_name = 'una afiliacion a plan Prepago'
+        verbose_name_plural = 'Afiliaciones a planes Prepago'
+    
     codplan = models.ForeignKey('PlanPrepago')
     numserie = models.ForeignKey('Producto')
     saldo = models.FloatField(validators = [MinValueValidator(0)])
     
 class Afilia(models.Model):
+    
+    class Meta:
+        verbose_name = 'una afiliacion a plan Postpago'
+        verbose_name_plural = 'Afiliaciones a planes Postpago'
+        
     codplan = models.ForeignKey('PlanPostpago')
     numserie = models.ForeignKey('Producto')
     tipoplan = models.CharField(max_length=8,choices=PLANTYPECHOICES)
