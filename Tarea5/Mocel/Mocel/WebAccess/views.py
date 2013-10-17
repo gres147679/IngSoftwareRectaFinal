@@ -56,7 +56,7 @@ def ver_clientes(request):
 def ver_productos(request,idcliente):
 	idcl = idcliente
 	c = Cliente.objects.get(cedula = idcliente)
-	listaProducto = Producto.objects.filter()
+	listaProducto = Producto.objects.filter(cedula = c)
 
 	if not listaProducto:
 		mensaje = "El cliente no tiene asociado ningun producto."

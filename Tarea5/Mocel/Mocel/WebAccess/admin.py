@@ -5,6 +5,7 @@ class ClienteAdmin(admin.ModelAdmin):
    
 
 admin.site.register(Cliente,ClienteAdmin)
+admin.site.register(Usuario)
 admin.site.register(Producto)
 admin.site.register(Empresa)
 admin.site.register(Afilia)

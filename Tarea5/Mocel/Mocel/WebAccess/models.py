@@ -27,6 +27,15 @@ class Cliente(models.Model):
     def __unicode__(self):
 	return "Cedula: " + str(self.cedula) \
 	    +" | Nombre: " + str(self.nombrecl)
+	    
+class Usuario(models.Model):
+    cedula = models.ForeignKey('Cliente',verbose_name="username")
+    password = models.CharField('password',max_length=12)
+    
+    def __unicode__(self):
+	return "username: " + str(self.cedula) \
+	    +" | password: " + "*"*len(self.password)
+    
     
 class Empresa(models.Model):
     RIF = models.PositiveIntegerField(unique=True)
