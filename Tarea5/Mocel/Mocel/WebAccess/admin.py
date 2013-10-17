@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Mocel.WebAccess.models import Cliente,Producto,Empresa,Afilia,Activa,Plan,Servicio,Contiene,Paquete,Incluye
+from Mocel.WebAccess.models import *
 
 class ClienteAdmin(admin.ModelAdmin):
     fields = ['nombrecl','cedula','direccion']
@@ -15,3 +15,7 @@ admin.site.register(Contiene)
 admin.site.register(Activa)
 admin.site.register(Paquete)
 admin.site.register(Incluye)
+admin.site.register(Consume)
+admin.site.register(PlanPostpago)
+admin.site.register(PlanPrepago)
+admin.site.register(Contrata)

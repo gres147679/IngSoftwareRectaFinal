@@ -1,0 +1,13 @@
+<html>
+<head>
+    <title>Introducir Cliente</title>
+</head>
+<body>
+    <h1> Por favor, introduzca la cedula del cliente al que desea conocer la facturacion</h1>
+    <form action="/buscarFactura/" method="post">
+        {% csrf_token %}
+        <input type="text" name="cedulaCliente">
+        <input type="submit" value="Search">
+    </form>
+</body>
+</html>

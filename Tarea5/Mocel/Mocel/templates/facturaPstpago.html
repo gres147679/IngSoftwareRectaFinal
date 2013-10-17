@@ -1,0 +1,55 @@
+<html><body>
+{% for factura in listaFacturas %}
+{% if factura.postpago %} <h1>FACTURA POSTPAGO </h1>{% else %} <h1>FACTURA PREPAGO </h1>{% endif %}
+<h2> DATOS DEL CLIENTE </h2>
+<table>
+    <tr>
+        <th> Nombre: </th>
+        <th> {{factura.cliente.nombrecl}}</th>
+    </tr>
+    <tr>
+        <th> Cedula: </th>
+        <th> {{factura.cliente.cedula}}</th>
+    </tr>
+    <tr>
+        <th> Direccion: </th>
+        <th> {{factura.cliente.direccion}}</th>
+    </tr>
+</table>
+<h2> DATOS DEL PRODUCTO </h2>
+<table>
+    <tr>
+        <th> Modelo: </th>
+        <th> {{factura.producto.numserie}}</th>
+    </tr>
+    <tr>
+        <th> Nombre: </th>
+        <th> {{factura.producto.nombreprod}}</th>
+</table>
+<table>
+    <tr>
+        <th> Servicio </th>
+        <th> Total Consumido </th>
+        <th> Limite para gastar </th>
+        <th> Montoa a cobrar por exceso </th>
+    </tr>
+    
+    {% for key, listaValues in factura.listaCobrar.items %}
+        <tr>
+            {% for consumo in listaValues%}
+            <th> {{consumo}} </th>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    
+    <tr>
+        <th>TOTAL:</th>
+        <th></th>
+        <th>{{factura.totalExceso}}</th>
+    </tr>
+</table>
+<h2>El total a cobrar por el plan es {{ factura.totalPlan }}.</h2>
+<h2>El total a cobrar por los paquetes es {{ factura.totalPaquetes }}.</h2>
+<h2>El total a cobrar es {{ factura.total }}.</h2>
+{% endfor %}
+</body></html>

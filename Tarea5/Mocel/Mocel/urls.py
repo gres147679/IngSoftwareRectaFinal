@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from views import pedirCliente, buscarFactura
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -18,4 +19,8 @@ urlpatterns = patterns('',
     url(r'^',include('Mocel.WebAccess.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
+    
+    url(r'^pedirCliente/', pedirCliente),
+    
+    url(r'^buscarFactura/', buscarFactura),
 )
