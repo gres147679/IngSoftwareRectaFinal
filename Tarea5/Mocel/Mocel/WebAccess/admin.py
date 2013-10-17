@@ -1,8 +1,13 @@
 from django.contrib import admin
 from Mocel.WebAccess.models import *
+from customAdmin import customAdminSite
+
+
 class ClienteAdmin(admin.ModelAdmin):
     fields = ['nombrecl','cedula','direccion']
-   
+
+
+customAdminSite.register(Cliente,ClienteAdmin)
 
 admin.site.register(Cliente,ClienteAdmin)
 admin.site.register(Producto)
