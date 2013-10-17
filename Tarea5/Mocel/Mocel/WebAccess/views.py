@@ -1,7 +1,8 @@
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from Mocel.WebAccess.forms import AgregarClienteForm
-from Mocel.WebAccess.models import Cliente
+from Mocel.WebAccess.models import Cliente, Producto, Activa, Afilia
+from Mocel.views import generarFactura
 
 
 def agregar_cliente_view(request):
@@ -34,3 +35,35 @@ def agregar_cliente_view(request):
 		form = AgregarClienteForm()
 		ctx = {'form':form}
 		return render_to_response('crearCliente.html',ctx,context_instance=RequestContext(request))
+		
+def ver_clientes(request):
+  listaCliente = Cliente.objects.all()
+  context = {'lista_clientes': listaCliente}
+  return render(request, 'listarCliente.html', context)
+  
+def ver_productos(request,idcliente):
+  idcl = idcliente
+  c = Cliente.objects.get(cedula = idcliente)
+  listaProducto = Producto.objects.filter()
+  context = {'lista_productos' : listaProducto, 'cedulaCliente' : idcl}
+  return render(request, 'listarProducto.html', context)
+  
+def info_producto(request, serieprod):
+  producto = Producto.objects.get(numserie = serieprod)
+  html = "infoSinPlan.html"
+  context = {'producto' : producto}
+  
+  if (Activa.objects.filter(numserie = producto).count()):
+    ac = Activa.objects.get(numserie = producto)
+    html = 'infoPrepago.html'
+    context = {'producto' : producto, 'saldo' : ac.saldo}
+    return render(request, 'infoPrepago.html', context)
+  
+  if (Afilia.objects.filter(numserie = producto).count()):
+    af = Afilia.objects.get(numserie = producto)
+    html = 'infoPostpago.html'
+    c = generarFactura(producto)
+    context.update(c)
+    return render(request, 'infoPostpago.html', context)
+  
+  return render(request, 'infoSinPlan.html', context)

@@ -1,0 +1,19 @@
+{% block title %} MOCEL {% endblock%}
+
+{% block content %}
+
+
+<h4> Lista de Productos: </h4>
+
+<ol>
+{% for producto in lista_productos %}
+    <li> Nombre: {{ producto.nombreprod }} <br>
+         Serie: {{producto.numserie}} <br>
+    <a href="/producto/{{ producto.numserie }}/"> Consultar </a> <br> <br>
+    </li>
+{% endfor %}
+</ol>
+
+{% endblock%}
+
+<h4> <a href="#" onclick="history.go(-1)"> Regresar </a> </h4>

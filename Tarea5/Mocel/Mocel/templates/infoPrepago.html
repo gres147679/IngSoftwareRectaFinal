@@ -1,0 +1,20 @@
+{% block title %} MOCEL {% endblock%}
+
+{% block content %}
+
+
+<h4> Informacion del producto </h4>
+
+<p> Serial: {{producto.numserie}}  <br>
+    Nombre: {{producto.nombreprod}}
+</p>
+
+
+<p> El producto posee un plan prepago </p>
+
+
+<p> Posee un saldo de Bs. : {{saldo}}</p>
+
+{% endblock%}
+
+<h4> <a href="#" onclick="history.go(-1)"> Regresar </a> </h4>

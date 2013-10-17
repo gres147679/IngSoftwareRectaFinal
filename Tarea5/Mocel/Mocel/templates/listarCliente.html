@@ -1,0 +1,16 @@
+{% block title %} MOCEL {% endblock%}
+
+<h4> Lista de Clientes </h4> 
+
+{% block content %}
+
+<ul>
+{% for cliente in lista_clientes %}
+    <li> Nombre: {{cliente.nombrecl}} <br>
+         Cedula: {{ cliente.cedula }} <br>
+         <a href="/cliente/{{ cliente.cedula }}/"> Productos </a> <br> <br>
+    </li>
+{% endfor %}
+</ul>
+
+{% endblock%}

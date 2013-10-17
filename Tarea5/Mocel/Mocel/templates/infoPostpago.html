@@ -1,0 +1,24 @@
+{% block title %} MOCEL {% endblock%}
+
+{% block content %}
+
+
+<h4> Informacion del producto: </h4>
+
+<p> Serial: {{producto.numserie}}  <br>
+    Nombre: {{producto.nombreprod}}
+</p>
+
+
+<p> El producto posee un plan postpago </p>
+
+<h4> Detalles de ultima factura: </h4>
+
+<p> El total a cobrar por el plan es {{ totalPlan }} <br>
+    El total a cobrar por los paquetes es {{ totalPaquetes }}.<br>
+    El total a cobrar es {{ total }}.</p>
+
+
+{% endblock%}
+
+<h4> <a href="#" onclick="history.go(-1)"> Regresar </a> </h4>
