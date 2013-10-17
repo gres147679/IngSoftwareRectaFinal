@@ -69,24 +69,21 @@ def ver_productos(request,idcliente):
 	
   
 def info_producto(request, serieprod):
-  producto = Producto.objects.get(numserie = serieprod)
-  html = "infoSinPlan.html"
-  context = {'producto' : producto}
+	producto = Producto.objects.get(numserie = serieprod)
+	context = {'producto' : producto}
   
-  if (Activa.objects.filter(numserie = producto).count()):
-    ac = Activa.objects.get(numserie = producto)
-    html = 'infoPrepago.html'
-    context = {'producto' : producto, 'saldo' : ac.saldo}
-    return render(request, 'infoPrepago.html', context)
+	if (Activa.objects.filter(numserie = producto).count()):
+		ac = Activa.objects.get(numserie = producto)
+		context = {'producto' : producto, 'saldo' : ac.saldo}
+		return render_to_response('infoPrepago.html',context,context_instance=RequestContext(request))
   
-  if (Afilia.objects.filter(numserie = producto).count()):
-    af = Afilia.objects.get(numserie = producto)
-    html = 'infoPostpago.html'
-    c = generarFactura(producto)
-    context.update(c)
-    return render(request, 'infoPostpago.html', context)
+	if (Afilia.objects.filter(numserie = producto).count()):
+		af = Afilia.objects.get(numserie = producto)
+		c = generarFactura(producto)
+		context.update(c)
+		return render_to_response('infoPostpago.html',context,context_instance=RequestContext(request))
   
-  return render(request, 'infoSinPlan.html', context)
+	return render_to_response('infoSinPlan.html',context,context_instance=RequestContext(request))
 
 
 def login_view(request):

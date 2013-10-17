@@ -15,7 +15,7 @@
 				<a href="{% url 'vista_principal' %}">Inicio</a>	
 				
 				{% if user.is_authenticated %}
-					<a href="#">Productos</a>
+					<a href="/cliente/{{ user.username }}/">Productos</a>
 
 					<a href="#">Servicios</a>
 
@@ -28,9 +28,12 @@
 
 	<section>
 		{% block content %}
-		<br>		
-		<h5>BIENVENIDOS</h5>
-
+			<br>		
+			{% if user.is_authenticated %}
+				<p>Bienvenido, {{ user.username }}. Gracias por acceder. </p>
+			{% else %}
+				<p>Bienvenido.</p>
+			{% endif %}
 
 		{% endblock %}
 	</section>
