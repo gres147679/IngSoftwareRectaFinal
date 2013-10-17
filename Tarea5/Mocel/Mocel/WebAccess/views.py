@@ -4,7 +4,9 @@ from Mocel.WebAccess.forms import AgregarClienteForm
 from Mocel.WebAccess.models import Cliente, Producto, Activa, Afilia
 from Mocel.views import generarFactura
 
-
+def index_view(request):
+	return render_to_response('index.html',context_instance = RequestContext(request))
+	
 def agregar_cliente_view(request):
 	if request.method == "POST":
 		form = AgregarClienteForm(request.POST)
@@ -35,18 +37,34 @@ def agregar_cliente_view(request):
 		form = AgregarClienteForm()
 		ctx = {'form':form}
 		return render_to_response('crearCliente.html',ctx,context_instance=RequestContext(request))
-		
+
+#
+# Lista todos los clientes
+#
 def ver_clientes(request):
-  listaCliente = Cliente.objects.all()
-  context = {'lista_clientes': listaCliente}
-  return render(request, 'listarCliente.html', context)
+	listaCliente = Cliente.objects.all()
+	if not listaCliente:
+		mensaje = "ERROR: No hay clientes en la base de datos."
+		context = {'lista_clientes': listaCliente, 'informacion':mensaje}
+	else: 
+		context = {'lista_clientes': listaCliente}
+	return render_to_response('listarCliente.html',context,context_instance=RequestContext(request))
   
+#
+# Lista todos los productos de un cliente
+#
 def ver_productos(request,idcliente):
-  idcl = idcliente
-  c = Cliente.objects.get(cedula = idcliente)
-  listaProducto = Producto.objects.filter()
-  context = {'lista_productos' : listaProducto, 'cedulaCliente' : idcl}
-  return render(request, 'listarProducto.html', context)
+	idcl = idcliente
+	c = Cliente.objects.get(cedula = idcliente)
+	listaProducto = Producto.objects.filter()
+
+	if not listaProducto:
+		mensaje = "El cliente no tiene asociado ningun producto."
+		context = {'lista_productos' : listaProducto, 'cedulaCliente' : idcl,'informacion':mensaje}
+	else:
+		context = {'lista_productos' : listaProducto, 'cedulaCliente' : idcl}
+	return render_to_response('listarProducto.html',context,context_instance=RequestContext(request))
+	
   
 def info_producto(request, serieprod):
   producto = Producto.objects.get(numserie = serieprod)
