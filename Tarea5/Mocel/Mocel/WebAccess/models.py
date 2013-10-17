@@ -108,7 +108,7 @@ class Plan(models.Model):
     tipo = models.CharField('Tipo',max_length=8,choices=PLANMODECHOICES)
     
     def __unicode__(self):
-	return u"Código: " + str(self.codplan) \
+	return u"Codigo: " + str(self.codplan) \
 	    +" | Nombre: " + str(self.nombreplan)
 
 class Producto(models.Model):
