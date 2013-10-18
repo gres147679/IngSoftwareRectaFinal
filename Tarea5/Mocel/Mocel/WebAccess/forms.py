@@ -18,3 +18,8 @@ class AgregarClienteForm(forms.Form):
 class loginForm(forms.Form):
 	username = forms.CharField(widget=forms.TextInput()) 
 	password = forms.CharField(widget=forms.PasswordInput(render_value=False))
+
+class pedirDatosFacturacionForm(forms.Form):
+    cedula = forms.IntegerField(widget=forms.TextInput())
+    mes = forms.CharField(widget=forms.TextInput(), max_length=2)
+    anio = forms.CharField(widget=forms.TextInput(), max_length=4)

@@ -10,11 +10,14 @@
     <div class="container_3">
         <div class="grid_3">
             <div class="banner"></div>
-            <h1> Por favor, introduzca la cedula del cliente al que desea conocer la facturacion</h1>
+            <h1> Por favor, introduzca la informacion del cliente al que desea conocer la facturacion</h1>
+            {% if error %} <p> {{ error }} </p> {% endif %}
             <form action="/buscarFactura/" method="post">
+                <table>
+                    {{ form.as_table }}
+                </table>
                 {% csrf_token %}
-                <input type="text" name="cedulaCliente">
-                <input type="submit" value="Search">
+                <input type="submit" value="Submit">
             </form>
         </div>
     </div>

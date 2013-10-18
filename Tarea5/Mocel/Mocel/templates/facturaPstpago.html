@@ -35,6 +35,8 @@
                     <th> {{factura.producto.nombreprod}}</th>
             </table>
             <table>
+            <h3> Fecha de Facturacion: {{factura.fechaActual |date:"d - m - Y"}}  </h3>
+            <h3> Periodo de Facturacion: {{factura.mesFacturacion}} - {{factura.anioFacturacion}}</h3>
                 <tr>
                     <th> Servicio </th>
                     <th> Total Consumido </th>
