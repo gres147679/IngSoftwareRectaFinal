@@ -88,7 +88,9 @@ def info_producto(request, serieprod):
 
 #funcion auxiliar que autentica el usuario
 def autenticar(username, password):
-  
+
+  if not isinstance(username, int):
+    return False  
 
   if Cliente.objects.filter(cedula = username).count():
     cl = Cliente.objects.get(cedula = username)
@@ -97,7 +99,7 @@ def autenticar(username, password):
       
       return user.password == password
     
-  return false
+  return False
 
 def login_view(request):
   	mensaje = ""
