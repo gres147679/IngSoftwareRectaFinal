@@ -1,0 +1,93 @@
+# Aquí se presenta un ejemplo, en el que se hace override
+# del método save de la clase Consume. La idea es revisar
+# si el consumo está cubierto por un plan, y a su vez 
+# actualiza el saldo. Rechaza el consumo si no está cubierto
+# por un plan, o si no tiene saldo
+
+def save(self):
+	valido = 0
+	
+	 Instancia del producto que consume
+	productoQueConsume = self.numserie
+	
+	 Instancia del servicio que se consume
+	servicioConsumido = self.codserv
+	
+	 Determino si el producto esta afiliado a un producto postpago
+	planPostpago = Afilia.objects.all().filter(numserie=productoQueConsume)
+	
+	 Determino si el producto esta afiliado a un producto prepago
+	planPrepago = Activa.objects.all().filter(numserie=productoQueConsume)
+	
+	if not planPrepago.count() and not planPostpago.count:
+	    print "webo1"
+	    return
+	elif planPrepago.count():
+	    miPlan = planPrepago[0].codplan.codplan
+	    print type(miPlan)
+	else:
+	    miPlan = planPostpago[0].codplan.codplan
+	    
+	 Determino si el paquete contribuye al consumo
+	tienePaq = Contrata.objects.all().filter(numserie=productoQueConsume)
+	if tienePaq.count():
+	    print "sad"
+	    codPaquete = tienePaq[0].codpaq
+	    print codPaquete
+	    incluidoPaq = Contiene.objects.all().filter(codpaq=codPaquete).filter(codserv=servicioConsumido)
+	    totalIncluido1 = 0
+	    if incluidoPaq.count():
+		valido = 1
+		for i in incluidoPaq:
+		    totalIncluido1 += i.cantidad
+	
+	print totalIncluido1
+
+	 Determino si el plan contribuye al consumo
+	print servicioConsumido
+	print type(miPlan)
+	servIncluidos = Incluye.objects.all().filter(codserv=servicioConsumido).filter(codplan=miPlan)
+	print Incluye.objects.all().filter(codplan=miPlan).filter(codserv=servicioConsumido)
+	totalIncluido2 = 0
+	if servIncluidos.count():
+	    valido = 1
+	    for i in servIncluidos:
+		totalIncluido2 += i.cantidad
+	elif not valido:
+	    print "webo2"
+	    return
+		
+	if planPrepago.count():
+	    if not valido:
+		print "webo3"
+		return
+	    
+	    totalConsumos = 0
+	    costoServIncluidos = Incluye.objects.all().filter(codserv=servicioConsumido).filter(codplan=miPlan)[0].tarifa
+	    consumos = Consume.objects.all().filter(codserv=servicioConsumido).filter(numserie=productoQueConsume)
+	    totalConsumido = 0
+	    for i in consumos:
+		totalConsumos += i.cantidad
+	    
+	    totalIncluido = totalIncluido1 + totalIncluido2
+	    
+	    if (self.cantidad + totalConsumos) <= totalIncluido:
+		super(Consume, self).save()
+	    else:
+		aDescontarSaldo = ((self.cantidad + totalConsumos) - totalIncluido)*costoServIncluidos
+		print aDescontarSaldo
+		print planPrepago[0].saldo
+		if planPrepago[0].saldo >= 0:
+		    p = planPrepago[0]
+		    p.saldo = p.saldo - aDescontarSaldo
+		    print p.saldo
+		    p.save()
+		    nuevoAfiliacion = Activa(codplan=planPrepago[0].codplan,numserie=planPrepago[0].numserie,saldo = planPrepago[0].saldo-aDescontarSaldo)
+		    planPrepago[0].delete()
+		    print Activa.objects.all().filter(numserie=productoQueConsume)
+		    nuevoAfiliacion.save()
+		    print Activa.objects.all().filter(numserie=productoQueConsume)
+		    super(Consume, self).save()
+		else:
+		    print "webo4"
+		    return
