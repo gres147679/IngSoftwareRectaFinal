@@ -144,8 +144,8 @@ class PruebaConsume(TestCase):
       c = Cliente.objects.create(cedula=101, nombrecl ='cliente1', direccion = 'dir1')
       p = Producto.objects.create(numserie =201, nombreprod ="abcd",cedula = c, RIF = e)
       
-      Consume.objects.create(numserie = p, codserv = s1, fecha = '2011-01-01 10:10', cantidad = 55)
-      
+      cons = Consume(numserie = p, codserv = s1, fecha = '2011-01-01 10:10', cantidad = 55)
+      cons.save()
 
     def testConsume(self):
       p = Producto.objects.get(numserie =201)

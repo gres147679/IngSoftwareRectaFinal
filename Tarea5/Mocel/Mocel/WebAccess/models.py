@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os, sys
 from django.db import models
-from signalActions import borradoPlan
+from signalActions import borradoPlan, insertadoServicio, borradoServicio
 from django.core.validators import MinValueValidator
 from django.db.models import signals
 from django.db import connection, transaction
@@ -155,6 +155,95 @@ class Servicio(models.Model):
 	return "Nombre: " + self.nombreserv
     
 class Consume(models.Model):
+    def save(self):
+	valido = 0
+	
+	# Instancia del producto que consume
+	productoQueConsume = self.numserie
+	
+	# Instancia del servicio que se consume
+	servicioConsumido = self.codserv
+	
+	# Determino si el producto esta afiliado a un producto postpago
+	planPostpago = Afilia.objects.all().filter(numserie=productoQueConsume)
+	
+	# Determino si el producto esta afiliado a un producto prepago
+	planPrepago = Activa.objects.all().filter(numserie=productoQueConsume)
+	
+	if not planPrepago.count() and not planPostpago.count:
+	    print "webo1"
+	    return
+	elif planPrepago.count():
+	    miPlan = planPrepago[0].codplan.codplan
+	    print type(miPlan)
+	else:
+	    miPlan = planPostpago[0].codplan.codplan
+	    
+	# Determino si el paquete contribuye al consumo
+	tienePaq = Contrata.objects.all().filter(numserie=productoQueConsume)
+	if tienePaq.count():
+	    print "sad"
+	    codPaquete = tienePaq[0].codpaq
+	    print codPaquete
+	    incluidoPaq = Contiene.objects.all().filter(codpaq=codPaquete).filter(codserv=servicioConsumido)
+	    totalIncluido1 = 0
+	    if incluidoPaq.count():
+		valido = 1
+		for i in incluidoPaq:
+		    totalIncluido1 += i.cantidad
+	
+	print totalIncluido1
+
+	# Determino si el plan contribuye al consumo
+	#print servicioConsumido
+	print type(miPlan)
+	servIncluidos = Incluye.objects.all().filter(codserv=servicioConsumido).filter(codplan=miPlan)
+	print Incluye.objects.all().filter(codplan=miPlan).filter(codserv=servicioConsumido)
+	totalIncluido2 = 0
+	if servIncluidos.count():
+	    valido = 1
+	    for i in servIncluidos:
+		totalIncluido2 += i.cantidad
+	elif not valido:
+	    print "webo2"
+	    return
+		
+	if planPrepago.count():
+	    if not valido:
+		print "webo3"
+		return
+	    
+	    totalConsumos = 0
+	    costoServIncluidos = Incluye.objects.all().filter(codserv=servicioConsumido).filter(codplan=miPlan)[0].tarifa
+	    consumos = Consume.objects.all().filter(codserv=servicioConsumido).filter(numserie=productoQueConsume)
+	    totalConsumido = 0
+	    for i in consumos:
+		totalConsumos += i.cantidad
+	    
+	    totalIncluido = totalIncluido1 + totalIncluido2
+	    
+	    if (self.cantidad + totalConsumos) <= totalIncluido:
+		super(Consume, self).save()
+	    else:
+		aDescontarSaldo = ((self.cantidad + totalConsumos) - totalIncluido)*costoServIncluidos
+		print aDescontarSaldo
+		print planPrepago[0].saldo
+		if planPrepago[0].saldo >= 0:
+		    p = planPrepago[0]
+		    p.saldo = p.saldo - aDescontarSaldo
+		    print p.saldo
+		    p.save()
+		    #nuevoAfiliacion = Activa(codplan=planPrepago[0].codplan,numserie=planPrepago[0].numserie,saldo = planPrepago[0].saldo-aDescontarSaldo)
+		    #planPrepago[0].delete()
+		    #print Activa.objects.all().filter(numserie=productoQueConsume)
+		    #nuevoAfiliacion.save()
+		    #print Activa.objects.all().filter(numserie=productoQueConsume)
+		    super(Consume, self).save()
+		else:
+		    print "webo4"
+		    return
+	    
+    
     numserie = models.ForeignKey('Producto')
     codserv = models.ForeignKey('Servicio')
     fecha = models.DateTimeField()
@@ -184,6 +273,9 @@ class Incluye(models.Model):
     class Meta:
         verbose_name = 'servicio en un plan'
         verbose_name_plural = 'Servicios en un plan'
+        
+    def __unicode__(self):
+	return 'El plan ' + str(self.codplan.nombreplan) + ' incluye '+ str(self.cantidad) + '*'+ str(self.codserv.nombreserv)
     
     codplan = models.ForeignKey('Plan',verbose_name='Plan')
     codserv = models.ForeignKey('Servicio',verbose_name='Servicio')
@@ -198,6 +290,15 @@ class Recarga(models.Model):
 # Accion asociada al eliminar un plan
 signals.post_delete.connect(borradoPlan, sender=Plan)
 
+# Accion asociada al crear un Servicio, que crea el paquete
+# asociado al servicio adicional
+signals.post_save.connect(insertadoServicio, sender=Servicio)
+
+# Accion asociada al crear un Servicio
+signals.post_delete.connect(borradoServicio, sender=Servicio)
+
+
+# Ejecucion de triggers
 def load_customized_sql(app, created_models, verbosity=2, **kwargs):
     app_dir = os.path.normpath(os.path.join(os.path.dirname(app.__file__),      'sql'))
     custom_files = [os.path.join(app_dir, "triggers.sql")]
@@ -218,3 +319,4 @@ def load_customized_sql(app, created_models, verbosity=2, **kwargs):
                 transaction.commit_unless_managed()
         
 signals.post_syncdb.connect(load_customized_sql)
+
