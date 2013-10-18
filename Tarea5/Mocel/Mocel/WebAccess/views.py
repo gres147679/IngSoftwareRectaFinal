@@ -80,7 +80,8 @@ def info_producto(request, serieprod):
   
 	if (Afilia.objects.filter(numserie = producto).count()):
 		af = Afilia.objects.get(numserie = producto)
-		c = generarFactura(producto)
+		fechaActual = datetime.date.today()
+		c = generarFactura(producto,fechaActual.month,fechaActual.year)
 		context.update(c)
 		return render_to_response('infoPostpago.html',context,context_instance=RequestContext(request))
   
