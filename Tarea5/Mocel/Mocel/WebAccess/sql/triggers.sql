@@ -190,14 +190,12 @@ RETURNS TRIGGER AS $consumoCoherente$
   
   BEGIN
 
-    IF EXISTS (SELECT *
-               FROM "WebAccess_activa" NATURAL JOIN "WebAccess_incluye"
-               WHERE numserie_id = NEW.numserie_id AND codserv_id = NEW.codserv_id)
+    IF EXISTS (SELECT * FROM "WebAccess_afilia" as af,"WebAccess_planpostpago" as pp,"WebAccess_incluye" as inc 
+    where af.codplan_id=pp.id and inc.codplan_id=pp.codplan_id and af.codplan_id=NEW.codplan_id)
        OR
        
-       EXISTS (SELECT *
-               FROM "WebAccess_afilia" NATURAL JOIN "WebAccess_incluye"
-               WHERE numserie_id = NEW.numserie_id AND codserv_id = NEW.codserv_id)
+       EXISTS (SELECT * FROM "WebAccess_activa" as af,"WebAccess_planpostpago" as pp,"WebAccess_incluye" as inc 
+    where af.codplan_id=pp.id and inc.codplan_id=pp.codplan_id and af.codplan_id=NEW.codplan_id)
        
        THEN RETURN NEW;
   
