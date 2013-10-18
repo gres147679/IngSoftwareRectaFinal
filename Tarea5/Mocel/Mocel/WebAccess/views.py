@@ -87,10 +87,11 @@ def info_producto(request, serieprod):
 	return render_to_response('infoSinPlan.html',context,context_instance=RequestContext(request))
 
 
+
 #funcion auxiliar que autentica el usuario
 def autenticar(username, password):
 
-  if not isinstance(username, int):
+  if not username.isdigit():
     return False  
 
   if Cliente.objects.filter(cedula = username).count():
