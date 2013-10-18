@@ -1,17 +1,17 @@
 <!==Es una extension del archivo index.html==>
 {% extends 'index.html' %}
 
-{% block title %} MOCEL - No posee plan{% endblock%}
+{% block title %} MOCEL - No posee plan {% endblock%}
 
 {% block content %}
 	<h4> Informacion del producto: </h4>
-	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial: {{producto.numserie}}  <br>
-	   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre: {{producto.nombreprod}}
+	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial: {{ producto.numserie }}  <br>
+	   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre: {{ producto.nombreprod }}
 	</p>
 
 	<p> El producto no posee un plan asociado. </p>
 
-	<a href="#"> Regresar </a>
+	<a href="/cliente/{{ user.username }}/"> Regresar </a>
 
 {% endblock%}
 

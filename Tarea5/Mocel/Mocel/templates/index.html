@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html>
-
 	<!--HEAD-->
 	<head>
 		<title> {% block title %} MOCEL {% endblock%}</title>
@@ -12,13 +11,29 @@
 	<body>
 		<header>
 			<h1>MOCEL</h1>
+			<nav>
+				<a href="{% url 'vista_principal' %}">Inicio</a>	
+				
+				{% if user.is_authenticated %}
+					<a href="/cliente/{{ user.username }}/">Productos</a>
+
+					<a href="#">Servicios</a>
+
+					<a href="{% url 'vista_logout' %}">Logout</a>
+				{% else %}
+					<a href="{% url 'vista_login' %}">Login</a>
+				{% endif %}
+			</nav>
 		</header>
 
 	<section>
 		{% block content %}
-		
-		<h5>BIENVENIDOS</h5>
-
+			<br>		
+			{% if user.is_authenticated %}
+				<p>Bienvenido, {{ user.username }}. Gracias por acceder. </p>
+			{% else %}
+				<p>Bienvenido.</p>
+			{% endif %}
 
 		{% endblock %}
 	</section>

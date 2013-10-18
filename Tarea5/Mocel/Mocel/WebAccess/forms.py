@@ -10,3 +10,11 @@ class AgregarClienteForm(forms.Form):
 
 	def clean(self):
 		return self.cleaned_data
+
+
+#
+# Autentica un usuario (form)
+#
+class loginForm(forms.Form):
+	username = forms.CharField(widget=forms.TextInput()) 
+	password = forms.CharField(widget=forms.PasswordInput(render_value=False))
