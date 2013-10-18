@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from views import pedirCliente, buscarFactura
+from views import pedirCliente, buscarFactura, buscarTodasFacturas
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -25,4 +25,6 @@ urlpatterns = patterns('',
     url(r'^pedirCliente/', pedirCliente),
     
     url(r'^buscarFactura/', buscarFactura),
+    
+    url(r'^buscarTodasFacturas/', buscarTodasFacturas),
 )
