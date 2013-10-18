@@ -228,29 +228,6 @@ BEFORE INSERT ON "WebAccess_consume"
 FOR EACH ROW EXECUTE PROCEDURE consumoCoherente();
 
 
-CREATE OR REPLACE FUNCTION autoCreaPaquete() 
-RETURNS TRIGGER AS $autoCreaPaquete$
-DECLARE
-  costoServ integer;
-  saldoAf integer;
-  canti integer;
-  incluido integer;
-  BEGIN
-    IF (NEW.unico) THEN
-      INSERT INTO "WebAccess_paquete" VALUES
-      (DEFAULT,NEW.codserv,'Paquete ' || NEW.nombreserv,NEW.costo);
-      INSERT INTO "WebAccess_contiene" VALUES
-      (DEFAULT,NEW.codserv,NEW.codserv,1);
-    END IF;
-    RETURN NEW;
-  END;  
-$autoCreaPaquete$ LANGUAGE plpgsql;
-
-CREATE TRIGGER autoCreaPaquete
-AFTER INSERT ON "WebAccess_servicio" FOR EACH ROW 
-EXECUTE PROCEDURE autoCreaPaquete();
-
-
 CREATE OR REPLACE FUNCTION actualizaSaldo() 
 RETURNS TRIGGER AS $actualizaSaldo$
 DECLARE
