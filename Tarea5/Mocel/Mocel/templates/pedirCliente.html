@@ -1,13 +1,22 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href= "{% static 'Mocel/style.css' %}" />
+
 <html>
 <head>
     <title>Introducir Cliente</title>
 </head>
 <body>
-    <h1> Por favor, introduzca la cedula del cliente al que desea conocer la facturacion</h1>
-    <form action="/buscarFactura/" method="post">
-        {% csrf_token %}
-        <input type="text" name="cedulaCliente">
-        <input type="submit" value="Search">
-    </form>
+    <div class="container_3">
+        <div class="grid_3">
+            <div class="banner"></div>
+            <h1> Por favor, introduzca la cedula del cliente al que desea conocer la facturacion</h1>
+            <form action="/buscarFactura/" method="post">
+                {% csrf_token %}
+                <input type="text" name="cedulaCliente">
+                <input type="submit" value="Search">
+            </form>
+        </div>
+    </div>
 </body>
 </html>
