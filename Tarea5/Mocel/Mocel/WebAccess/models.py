@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import os, sys
 from django.db import models
-#from django.db.models.signals import post_delete
 from signalActions import borradoPlan
 from django.core.validators import MinValueValidator
 from django.db.models import signals
