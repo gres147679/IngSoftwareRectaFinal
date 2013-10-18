@@ -37,7 +37,7 @@ RETURNS TRIGGER AS $servicioEsUnico1$
   BEGIN
     IF (SELECT unico
     FROM "WebAccess_servicio" AS origen 
-    WHERE origen.codserv=NEW.codserv_id) THEN
+    WHERE origen.id=NEW.codserv_id) THEN
       IF NEW.cantidad = 1 AND NOT EXISTS (select * from "WebAccess_consume" AS origen 
       where origen.numserie_id = NEW.numserie_id AND origen.codserv_id = NEW.codserv_id)
         THEN RETURN NEW;
@@ -58,7 +58,7 @@ RETURNS TRIGGER AS $servicioEsUnico2$
   BEGIN
     IF (SELECT unico 
     FROM "WebAccess_servicio" AS origen 
-    WHERE origen.codserv=NEW.codserv_id) THEN
+    WHERE origen.id=NEW.codserv_id) THEN
       IF NEW.cantidad = 1 AND NOT EXISTS(select * from "WebAccess_incluye" AS 
       origen where origen.codserv_id = NEW.codserv_id AND origen.codplan_id =
 NEW.codplan_id)
@@ -80,7 +80,7 @@ RETURNS TRIGGER AS $servicioEsUnico3$
   BEGIN
     IF (SELECT unico 
     FROM "WebAccess_servicio" AS origen 
-    WHERE origen.codserv=NEW.codserv_id) THEN
+    WHERE origen.id=NEW.codserv_id) THEN
       IF NEW.cantidad = 1 AND NOT EXISTS(select * from "WebAccess_contiene" AS 
       origen where origen.codpaq_id = NEW.codpaq_id AND origen.codserv_id = NEW.codserv_id)
       THEN RETURN NEW;
