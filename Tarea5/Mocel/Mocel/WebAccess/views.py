@@ -137,11 +137,12 @@ def pedirCliente (request):
 def buscarTodasFacturas(request):
     listaClientes = Cliente.objects.all()
     listaFacturas = []
+    fechaActual = datetime.date.today()
     if listaClientes:
         for cliente in listaClientes:
             listaProductos = Producto.objects.filter(cedula = cliente)
             for producto in listaProductos:
-                factura = generarFactura(producto)
+                factura = generarFactura(producto, fechaActual.month, fechaActual.year)
                 if factura:
                     listaFacturas.append(factura)
                         
