@@ -4,23 +4,23 @@
 {% block title %} MOCEL - Cliente Postpago {% endblock%}
 
 {% block content %}
-	<h4> Informacion del producto: </h4>
+	<h1> Informacion del producto: </h1>
 
-	<p> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial: {{producto.numserie}}.<br>
+	<h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial: {{producto.numserie}}.<br>
 	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre: {{producto.nombreprod}}.
-	</p>
+	</p></h3>
 
-	<p> El producto posee un plan postpago. </p>
+	<h3><p> El producto posee un plan postpago. </p></h3>
 
 
-	<h4> Detalles de ultima factura: </h4>
+	<h2><p>Detalles de ultima factura: </p></h2>
 
-	<p> El total a cobrar por: <br>
+	<h3> El total a cobrar por: <br>
 	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Plan: {{ totalPlan }}. <br>
 	    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Paquetes: {{ totalPaquetes }}.<br>
-	    TOTAL: {{ total }}.</p>
+	    TOTAL: {{ total }}.</h3> <br>
 
-	<a href="/cliente/{{ user.username }}/"> Regresar </a>
+	<h2> <a href="/cliente/{{ producto.cedula.cedula }}/"> Regresar </a></h2>
 
 {% endblock%}
 

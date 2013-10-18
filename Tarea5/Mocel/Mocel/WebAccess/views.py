@@ -1,6 +1,6 @@
-from django.shortcuts import render_to_response, render
+from django.shortcuts import render_to_response, render, HttpResponse
 from django.template import RequestContext
-from Mocel.WebAccess.forms import AgregarClienteForm, loginForm
+from Mocel.WebAccess.forms import *
 from Mocel.WebAccess.models import *
 from Mocel.views import generarFactura
 from django.contrib.auth import login,logout,authenticate
@@ -80,7 +80,8 @@ def info_producto(request, serieprod):
   
 	if (Afilia.objects.filter(numserie = producto).count()):
 		af = Afilia.objects.get(numserie = producto)
-		c = generarFactura(producto)
+		fechaActual = datetime.date.today()
+		c = generarFactura(producto,fechaActual.month,fechaActual.year)
 		context.update(c)
 		return render_to_response('infoPostpago.html',context,context_instance=RequestContext(request))
   
@@ -132,16 +133,17 @@ def logout_view(request):
 	return HttpResponseRedirect('/')
 
 def pedirCliente (request):
-    return render(request, 'pedirCliente.html')
+    return render(request, 'pedirCliente.html', {'form': pedirDatosFacturacionForm} )
 
 def buscarTodasFacturas(request):
     listaClientes = Cliente.objects.all()
     listaFacturas = []
+    fechaActual = datetime.date.today()
     if listaClientes:
         for cliente in listaClientes:
             listaProductos = Producto.objects.filter(cedula = cliente)
             for producto in listaProductos:
-                factura = generarFactura(producto)
+                factura = generarFactura(producto, fechaActual.month, fechaActual.year)
                 if factura:
                     listaFacturas.append(factura)
                         
@@ -150,40 +152,39 @@ def buscarTodasFacturas(request):
         return HttpResponse("No hay clientes en la base de datos")
     
 def buscarFactura (request):
-    if 'cedulaCliente' in request.POST:
-        ced = request.POST['cedulaCliente']
+    if request.method == 'POST':
+        form = pedirDatosFacturacionForm(request.POST)
         
-        if not ced:
-            message = 'Por favor, no deje el campo vacio'
-        
-        else:
+        if form.is_valid():
+            cd = form.cleaned_data
+            ced = cd['cedula']
+            mes = cd['mes']
+            anio = cd['anio']
             
             listaClientes = Cliente.objects.filter(cedula = ced)
             
             if not listaClientes:
-                message = 'El cliente no tiene productos en la base de datos' 
+                return render(request, 'pedirCliente.html', {'form': form, 'error' : "El cliente no existe en la base de datos"})   
                 
             else:           
                 cliente = listaClientes[0]
                 listaProductos = Producto.objects.filter(cedula = cliente)
                 
                 if not listaProductos:
-                    message = 'El cliente no tiene productos en la base de datos'    
+                    return render(request, 'pedirCliente.html', {'form': form, 'error' : "El cliente no tiene productos en la base de datos"})   
                 else:
                     listaFacturas = []
                     for pro in listaProductos:
-                        factura = generarFactura(pro)
+                        factura = generarFactura(pro, mes, anio)
                         if factura:
                             listaFacturas.append(factura)
                     
                     pro = listaProductos[0]
                     return render(request, 'facturaPstpago.html', {'listaFacturas': listaFacturas})
-    else:
-        message = 'Por favor, no deje el campo vacio'
+        else:
+            return render(request, 'pedirCliente.html', {'form': form, 'error' : "Debe rellenar todos los campos"})
         
-    return HttpResponse(message)
-
-def generarFactura(Producto):
+def generarFactura(Producto, mes, anio):
     afilia = Afilia.objects.filter(numserie = Producto)
     
     if not afilia:
@@ -207,7 +208,7 @@ def generarFactura(Producto):
     
     nombrePlan = plan.nombreplan
     
-    totalConsumido = totalConsumidoPorServicio(Producto)
+    totalConsumido = totalConsumidoPorServicio(Producto, mes, anio)
     
     totalPlan = totalPlanPorServicio(plan)
     
@@ -224,8 +225,13 @@ def generarFactura(Producto):
     
     total = 0
     total = totalExceso + totalPaquete + plan.renta_basica
-    
-    return {    'producto': Producto,
+
+    fechaActual = datetime.date.today()
+
+    return {    'anioFacturacion': anio,
+                'mesFacturacion': mes,
+                'fechaActual': fechaActual,
+                'producto': Producto,
                 'postpago': postpago,
                 'total': total,
                 'listaCobrar': listaCobrar,
@@ -290,10 +296,9 @@ def totalPlanPorServicio(plan):
     
     return totalPlan
 
-def totalConsumidoPorServicio(Producto):
+def totalConsumidoPorServicio(Producto, mes, anio):
     
-    fechaActual = datetime.date.today()
-    listaConsumos = Consume.objects.filter(fecha__year = fechaActual.year, fecha__month= fechaActual.month, numserie = Producto).order_by('codserv')
+    listaConsumos = Consume.objects.filter(fecha__year = anio, fecha__month= mes, numserie = Producto).order_by('codserv')
     
     for consumo in listaConsumos:
         print str(consumo.fecha) + ' ' + consumo.numserie.numserie + ' ' + consumo.codserv.nombreserv + ' ' + str(consumo.cantidad)

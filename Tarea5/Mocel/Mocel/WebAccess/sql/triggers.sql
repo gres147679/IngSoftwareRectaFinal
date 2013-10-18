@@ -198,7 +198,7 @@ RETURNS TRIGGER AS $consumoCoherente$
        EXISTS (SELECT *
                FROM "WebAccess_afilia" NATURAL JOIN "WebAccess_incluye"
                WHERE numserie_id = NEW.numserie_id AND codserv_id = NEW.codserv_id))
-                           
+                          
        THEN RETURN NEW;
   
     END IF;
