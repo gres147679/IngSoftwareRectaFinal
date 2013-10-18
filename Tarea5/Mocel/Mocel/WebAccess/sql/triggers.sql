@@ -231,16 +231,18 @@ FOR EACH ROW EXECUTE PROCEDURE consumoCoherente();
 CREATE OR REPLACE FUNCTION autoCreaPaquete() 
 RETURNS TRIGGER AS $autoCreaPaquete$
 DECLARE
-  costoServ integer;
-  saldoAf integer;
-  canti integer;
-  incluido integer;
+  idPaq integer;
   BEGIN
     IF (NEW.unico) THEN
       INSERT INTO "WebAccess_paquete" VALUES
       (DEFAULT,NEW.codserv,'Paquete ' || NEW.nombreserv,NEW.costo);
+      
+      SELECT id INTO idPaq 
+      FROM "WebAccess_paquete" 
+      WHERE codpaq = NEW.codserv;
+      
       INSERT INTO "WebAccess_contiene" VALUES
-      (DEFAULT,NEW.codserv,NEW.codserv,1);
+      (DEFAULT,idPaq,NEW.id,1);
     END IF;
     RETURN NEW;
   END;  
