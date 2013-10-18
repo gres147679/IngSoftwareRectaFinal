@@ -9,6 +9,21 @@ import datetime
 def pedirCliente (request):
     return render(request, 'pedirCliente.html')
 
+def buscarTodasFacturas(request):
+    listaClientes = Cliente.objects.all()
+    listaFacturas = []
+    if listaClientes:
+        for cliente in listaClientes:
+            listaProductos = Producto.objects.filter(cedula = cliente)
+            for producto in listaProductos:
+                factura = generarFactura(producto)
+                if factura:
+                    listaFacturas.append(factura)
+                        
+        return render(request, 'facturaPstpago.html', {'listaFacturas': listaFacturas})
+    else:
+        return HttpResponse("No hay clientes en la base de datos")
+    
 def buscarFactura (request):
     if 'cedulaCliente' in request.POST:
         ced = request.POST['cedulaCliente']
@@ -33,7 +48,6 @@ def buscarFactura (request):
                     listaFacturas = []
                     for pro in listaProductos:
                         factura = generarFactura(pro)
-                        print factura
                         if factura:
                             listaFacturas.append(factura)
                     
