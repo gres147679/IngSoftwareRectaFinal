@@ -190,36 +190,36 @@ RETURNS TRIGGER AS $consumoCoherente$
   
   BEGIN
 
-    IF EXISTS (SELECT * FROM "WebAccess_afilia" as af,"WebAccess_planpostpago" as pp,"WebAccess_incluye" as inc 
-    where af.codplan_id=pp.id and inc.codplan_id=pp.codplan_id and af.codplan_id=NEW.codplan_id)
+    IF (EXISTS (SELECT *
+               FROM "WebAccess_activa" NATURAL JOIN "WebAccess_incluye"
+               WHERE numserie_id = NEW.numserie_id AND codserv_id = NEW.codserv_id)
        OR
        
-       EXISTS (SELECT * FROM "WebAccess_activa" as af,"WebAccess_planpostpago" as pp,"WebAccess_incluye" as inc 
-    where af.codplan_id=pp.id and inc.codplan_id=pp.codplan_id and af.codplan_id=NEW.codplan_id)
-       
+       EXISTS (SELECT *
+               FROM "WebAccess_afilia" NATURAL JOIN "WebAccess_incluye"
+               WHERE numserie_id = NEW.numserie_id AND codserv_id = NEW.codserv_id))
+                          
        THEN RETURN NEW;
   
-    ELSE 
-   
-      IF (EXISTS (SELECT *
-                  FROM "WebAccess_activa"
-                  WHERE numserie_id = NEW.numserie_id)
-         OR
-      
-         EXISTS (SELECT *
-                 FROM "WebAccess_afilia"
-                 WHERE numserie_id = NEW.numserie_id))
-          
-         AND EXISTS (SELECT *
-                     FROM "WebAccess_contrata" NATURAL JOIN "WebAccess_contiene"
-                     WHERE numserie_id = NEW.numserie_id AND codserv_id = NEW.codserv_id)
-          THEN RETURN NEW;
-      ELSE 
-        RAISE WARNING 'INVE001: No se puede agregar un consumo si no hay un plan o paquete que lo respalde';
-        RETURN NULL;
-      END IF;
     END IF;
-      
+    
+    IF (EXISTS (SELECT *
+               FROM "WebAccess_activa"
+               WHERE numserie_id = NEW.numserie_id)
+       OR
+       
+       EXISTS (SELECT *
+               FROM "WebAccess_afilia"
+               WHERE numserie_id = NEW.numserie_id)) AND
+               
+               EXISTS (SELECT * FROM "WebAccess_contrata" NATURAL JOIN "WebAccess_contiene"
+                        WHERE numserie_id = NEW.numserie_id AND codserv_id = NEW.codserv_id)
+      THEN RETURN NEW;
+    END IF;
+                        
+    RAISE WARNING 'INVE001: No se puede agregar un consumo si no hay un plan o paquete que';
+    RETURN NULL;
+
   END;
 $consumoCoherente$ LANGUAGE plpgsql;
 
