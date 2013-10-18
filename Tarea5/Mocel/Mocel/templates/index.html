@@ -1,44 +1,57 @@
 <!DOCTYPE html>
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href= "{% static 'Mocel/style.css' %}" />
 
 <html>
 	<!--HEAD-->
 	<head>
 		<title> {% block title %} MOCEL {% endblock%}</title>
 		<meta charset="utf-8">
+        </div>
+ 
 	</head>
+
 
 	<!--BODY-->
 	<body>
-		<header>
-			<h1>MOCEL</h1>
-			<nav>
-				<a href="{% url 'vista_principal' %}">Inicio</a>	
+    <div class="container_3">
+        <div class="grid_3">
+            <div class="banner"></div>
+
+		    <header>
+
+			    <h4>MOCEL</h4>
+
+	            <section>
+		            {% block content %}	
+			            {% if user.is_authenticated %}
+				            <h3>Bienvenido, {{ user.username }}. Gracias por acceder. </h3>
+			            {% else %}
+				            <h3>Bienvenido.</h3>
+			            {% endif %}
+
+		            {% endblock %}
+	            </section>
+
+		    </header>
+
+		    <nav>
+				    <h2><a href="{% url 'vista_principal' %}">Inicio</a><br/></h2>	
 				
-				{% if user.is_authenticated %}
-					<a href="/cliente/{{ user.username }}/">Productos</a>
+				    {% if user.is_authenticated %}
+					    <h2><a href="/cliente/{{ user.username }}/">Productos</a><br/></h2>
 
-					<a href="#">Servicios</a>
-
-					<a href="{% url 'vista_logout' %}">Logout</a>
-				{% else %}
-					<a href="{% url 'vista_login' %}">Login</a>
-				{% endif %}
+					    <h2><a href="#">Servicios</a><br/></h2>
+                        
+					    <h2><a href="{% url 'vista_logout' %}">Logout</a><br/></h2>
+				    {% else %}
+					    <h2><a href="{% url 'vista_login' %}">Login</a><br/></h2>
+				    {% endif %}
 			</nav>
-		</header>
-
-	<section>
-		{% block content %}
-			<br>		
-			{% if user.is_authenticated %}
-				<p>Bienvenido, {{ user.username }}. Gracias por acceder. </p>
-			{% else %}
-				<p>Bienvenido.</p>
-			{% endif %}
-
-		{% endblock %}
-	</section>
 
 
+            </div>
+        </div>
 	</body>
 
 	<!--FOOTER-->
