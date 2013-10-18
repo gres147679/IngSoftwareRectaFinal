@@ -1,0 +1,176 @@
+body {
+	min-width: 960px;
+}
+
+.container_3 {
+	margin-left: auto;
+	margin-right: auto;
+	width: 960px;
+	font-family: Arial, Verdana, sans-serif;
+}
+
+.grid_1,
+.grid_2,
+.grid_3,
+.grid_4,
+.grid_5,
+.grid_6 {
+	display:inline;
+	float: left;
+	position: relative;
+	margin: 10px;
+}
+
+
+.container_3 .grid_1 {
+	width:300px;
+}
+
+.container_3 .grid_6 {
+	width:450px;
+}
+
+.container_3 .grid_4 {
+	width:150px;
+	margin:10px 0px;
+}
+
+.container_3 .grid_5 {
+	width:780px
+}
+.container_3 .grid_2 {
+	width:620px;
+}
+
+.container_3 .grid_3 {
+	width:940px;
+	text-align:center;
+}
+
+.container_3 .grid_3 .blue_Bar {
+	height:25px;
+	text-align:right;
+	background:#CCFFFF;
+	margin:10px 0px;
+}
+.container_3 .grid_3 .banner {
+	background-image:url('images/BannerInnova.jpg');
+	background-repeat:no-repeat;
+	height:250px;
+}
+
+.center {
+	margin-left: auto;
+	margin-right: auto;
+	width:250px;
+}
+
+.centerBig {
+	margin-left: auto;
+	margin-right: auto;
+	width:700px;
+}
+
+.center600 {
+	margin-left: auto;
+	margin-right: auto;
+	width:650px;
+}
+
+p {
+	text-align:justify;
+}
+table.tabla{
+	border-spacing: 0px 5px;
+	width:600px;
+}
+
+th.tabla, td.tabla{
+	padding: 7px 10px 10px 10px;
+}
+
+th.tabla {
+	text-transform:uppercase;
+	letter-spacing:0.1em;
+	font-size:90%;
+	border-bottom: 2px solid #111111;
+	border-top: 1px solid #999;
+	text-align: left;
+	width:40px;
+}
+
+th.grande {
+	text-transform:uppercase;
+	letter-spacing:0.1em;
+	font-size:90%;
+	border-bottom: 2px solid #111111;
+	border-top: 1px solid #999;
+	text-align: left;
+	width:150px;
+
+}
+
+tfoot {
+	text-align:center;
+}
+tr {
+	background-color:#E8E8E8 ;
+}
+.blue {
+	color: #369;
+}
+
+.right {
+	float: right;
+}
+h1 {
+    letter-spacing: 3px;
+    font-size: 1.4em;
+    color: #369;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+h2 {
+    letter-spacing: 3px;
+    font-size: 1.2em;
+    color: #369;
+    font-weight: normal;
+    font-family: arial;
+}
+
+h3 {
+    letter-spacing: 1px;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-align:center;
+}
+
+h4 {
+    letter-spacing: 3px;
+    font-size: 1.5em;
+    color: #369;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-align:center;
+}
+
+h5 {
+    letter-spacing: 1px;
+    font-weight: normal;
+    font-family: sans-serif;
+    text-align:center;
+}
+
+h6 {
+    letter-spacing: 1px;
+    font-weight: normal;
+    font-size: 0.875em;
+    color:#B22222;
+    font-family: sans-serif;
+}
+
+.container_3 .push_4 {
+	padding-left:800px;
+	left:800px;
+}
