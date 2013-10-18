@@ -8,8 +8,9 @@
         <div class="grid_3">
             <div class="banner"></div>
             {% for factura in listaFacturas %}
+            <div class="blue_Bar"></div>
             {% if factura.postpago %} <h1>FACTURA POSTPAGO </h1>{% else %} <h1>FACTURA PREPAGO </h1>{% endif %}
-            <h2> DATOS DEL CLIENTE </h2>
+            <h3> DATOS DEL CLIENTE </h3>
             <table>
                 <tr>
                     <th> Nombre: </th>
@@ -24,7 +25,7 @@
                     <th> {{factura.cliente.direccion}}</th>
                 </tr>
             </table>
-            <h2> DATOS DEL PRODUCTO </h2>
+            <h3> DATOS DEL PRODUCTO </h3>
             <table>
                 <tr>
                     <th> Modelo: </th>
@@ -41,7 +42,7 @@
                     <th> Servicio </th>
                     <th> Total Consumido </th>
                     <th> Limite para gastar </th>
-                    <th> Montoa a cobrar por exceso </th>
+                    <th> Monto a cobrar por exceso </th>
                 </tr>
                 
                 {% for key, listaValues in factura.listaCobrar.items %}
@@ -60,8 +61,9 @@
             </table>
             <h2>El total a cobrar por el plan es {{ factura.totalPlan }}.</h2>
             <h2>El total a cobrar por los paquetes es {{ factura.totalPaquetes }}.</h2>
-            <h2>El total a cobrar es {{ factura.total }}.</h2>
+            <h2>El total a cobrar es {{ factura.total }}.</h2> <br/><br/>
             {% endfor %}
+
         </div>
     </div>
 </body></html>

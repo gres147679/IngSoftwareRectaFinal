@@ -4,16 +4,17 @@
 {% block title %} MOCEL - Cliente Prepago {% endblock%}
 
 {% block content %}
-	<h4> Informacion del producto: </h4>
-	<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial: {{ producto.numserie }}  <br>
+	<h1> Informacion del producto: </h1>
+
+	<h3><p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Serial: {{ producto.numserie }}  <br>
 	   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Nombre: {{ producto.nombreprod }}
-	</p>
+	</p></h3>
 
-	<p> El producto posee un plan prepago. </p>
+	<h3> <p> El producto posee un plan prepago. </p> </h3> 
 
-	<p> Posee un saldo de: {{saldo}} Bs.</p>
+	<h2> <p> Posee un saldo de: {{saldo}} Bs.</p> <h2> <br> 
 
-	<a href="/cliente/{{ user.username }}/"> Regresar </a>
+	<h2> <a href="/cliente/{{ user.username }}/"> Regresar </a> </h2>
 
 {% endblock%}
 

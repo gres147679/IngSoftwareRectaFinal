@@ -4,20 +4,20 @@
 {% block title %} MOCEL - Lista de productos {% endblock%}
 
 {% block content %}
-	<h4> Lista de Productos: </h4>
+	<h1> Lista de Productos: </h1>
 
 	{{ informacion }}
 
 	<ol>
 	{% for producto in lista_productos %}
-	    <li> Nombre: {{ producto.nombreprod }} <br>
-		 Serie: {{producto.numserie}} <br>
-	    	 <a href="/producto/{{ producto.numserie }}/"> Consultar </a> <br> <br>
-	    </li>
+	    <p><h3><li> Nombre: {{ producto.nombreprod }} <br>
+		 Serie: {{producto.numserie}} <br></h3>
+	    <h2><a href="/producto/{{ producto.numserie }}/">Consultar</a> <br> <br></h2>
+	    </li></p>
 	{% endfor %}
 	</ol>
 
-	<a href="{% url 'vista_principal' %}"> Regresar </a>
+	<h2> <a href="{% url 'vista_principal' %}"> Regresar </a></h2>
 
 {% endblock%}
 
