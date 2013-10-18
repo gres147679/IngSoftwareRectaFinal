@@ -29,8 +29,8 @@ class Cliente(models.Model):
 	    +" | Nombre: " + str(self.nombrecl)
 	    
 class Usuario(models.Model):
-    cedula = models.ForeignKey('Cliente',verbose_name="username")
-    password = models.CharField('password',max_length=12)
+    cedula = models.ForeignKey('Cliente',related_name="username",unique=True)
+    password = models.CharField('password',max_length=12,unique=True)
     
     def __unicode__(self):
 	return "username: " + str(self.cedula) \

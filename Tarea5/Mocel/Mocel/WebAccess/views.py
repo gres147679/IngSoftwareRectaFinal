@@ -1,7 +1,7 @@
 from django.shortcuts import render_to_response, render
 from django.template import RequestContext
 from Mocel.WebAccess.forms import AgregarClienteForm, loginForm
-from Mocel.WebAccess.models import Cliente, Producto, Activa, Afilia
+from Mocel.WebAccess.models import Cliente, Producto, Activa, Afilia, Usuario
 from Mocel.views import generarFactura
 from django.contrib.auth import login,logout,authenticate
 from django.http import HttpResponseRedirect
@@ -86,6 +86,19 @@ def info_producto(request, serieprod):
 	return render_to_response('infoSinPlan.html',context,context_instance=RequestContext(request))
 
 
+#funcion auxiliar que autentica el usuario
+def autenticar(username, password):
+  
+
+  if Cliente.objects.filter(cedula = username).count():
+    cl = Cliente.objects.get(cedula = username)
+    if Usuario.objects.filter(cedula = cl).count():
+      user = Usuario.objects.get(cedula = cl)
+      
+      return user.password == password
+    
+  return false
+
 def login_view(request):
   	mensaje = ""
   	if request.user.is_authenticated():
@@ -98,11 +111,12 @@ def login_view(request):
 			if form.is_valid():
 				username = form.cleaned_data['username']
 				password = form.cleaned_data['password']
-				usuario = authenticate(username=username,password=password)
+				#usuario = authenticate(username=username,password=password)
 
-				if usuario is not None and usuario.is_active:
-					login(request,usuario)
-					return HttpResponseRedirect('/')
+				if autenticar(username,password):
+					#login(request,usuario)
+					redirect = '/cliente/' + str(username)
+					return HttpResponseRedirect(redirect)
 				else:
 					mensaje = "ERROR: usuario y/o password incorrecto."
 		form = loginForm()
