@@ -19,12 +19,4 @@ urlpatterns = patterns('',
     url(r'^',include('Mocel.WebAccess.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    
-    url(r'^admin/WebAccess/facturar', pedirCliente),
-    
-    url(r'^pedirCliente/', pedirCliente),
-    
-    url(r'^buscarFactura/', buscarFactura),
-    
-    url(r'^buscarTodasFacturas/', buscarTodasFacturas),
 )
