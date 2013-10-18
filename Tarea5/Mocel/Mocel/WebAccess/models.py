@@ -28,15 +28,15 @@ class Cliente(models.Model):
     direccion = models.TextField('Direccion')
     
     def __unicode__(self):
-	return "Cedula: " + str(self.cedula) \
-	    +" | Nombre: " + str(self.nombrecl)
+	return u"Cédula: " + unicode(self.cedula) \
+	    +" | Nombre: " + unicode(self.nombrecl)
 	    
 class Usuario(models.Model):
     cedula = models.ForeignKey('Cliente',related_name="username",unique=True)
     password = models.CharField('password',max_length=12,unique=True)
     
     def __unicode__(self):
-	return "username: " + str(self.cedula) \
+	return "username: " + unicode(self.cedula) \
 	    +" | password: " + "*"*len(self.password)
     
     
@@ -45,7 +45,7 @@ class Empresa(models.Model):
     razon_social = models.CharField(max_length=50)
     
     def __unicode__(self):
-	return "Empresa: " + str(self.razon_social)
+	return "Empresa: " + unicode(self.razon_social)
 
 class Paquete(models.Model):
     codpaq = models.PositiveIntegerField('Código',unique=True)
@@ -53,20 +53,20 @@ class Paquete(models.Model):
     precio = models.FloatField('Renta',validators = [MinValueValidator(0)])
     
     def __unicode__(self):
-	return u"Código: " + str(self.codpaq) \
-	    +" | Nombre: " + str(self.nombrepaq)
+	return u"Código: " + unicode(self.codpaq) \
+	    +" | Nombre: " + unicode(self.nombrepaq)
 	
 class PlanPostpago(models.Model):
     codplan = models.ForeignKey('Plan')
     
     def __unicode__(self):
-	return str(self.codplan)
+	return unicode(self.codplan)
     
 class PlanPrepago(models.Model):
     codplan = models.ForeignKey('Plan')
     
     def __unicode__(self):
-	return str(self.codplan)
+	return unicode(self.codplan)
 
 class Plan(models.Model):
     class Meta:
@@ -111,8 +111,8 @@ class Plan(models.Model):
     tipo = models.CharField('Tipo',max_length=8,choices=PLANMODECHOICES)
     
     def __unicode__(self):
-	return u"Codigo: " + str(self.codplan) \
-	    +" | Nombre: " + str(self.nombreplan)
+	return u"Código: " + unicode(self.codplan) \
+	    +" | Nombre: " + unicode(self.nombreplan)
 
 class Producto(models.Model):
     numserie = models.CharField('Número de serie',max_length=10,unique=True)
@@ -123,8 +123,8 @@ class Producto(models.Model):
     planPostpago = models.ManyToManyField(PlanPostpago, through='Afilia')
     
     def __unicode__(self):
-	return "Serial: " + str(self.numserie) \
-	    +" | Nombre: " + str(self.nombreprod)
+	return "Serial: " + unicode(self.numserie) \
+	    +" | Nombre: " + unicode(self.nombreprod)
 	
 class Activa(models.Model):
     class Meta:
@@ -170,7 +170,7 @@ class Contiene(models.Model):
     cantidad = models.PositiveIntegerField('Cantidad')
     
     def __unicode__(self):
-	return "El paquete " + str(self.codpaq.nombrepaq) + " contiene " + str(self.cantidad)+"x"+str(self.codserv.nombreserv)
+	return "El paquete " + unicode(self.codpaq.nombrepaq) + " contiene " + unicode(self.cantidad)+"x"+unicode(self.codserv.nombreserv)
 
 class Contrata(models.Model):
     class Meta:
