@@ -85,3 +85,8 @@ C) En el código de los escenarios de prueba, se encuentra un grupo de pruebas co
 realizarlas, el equipo de desarrollo notó que existía un problema cuando se agregaban consumos desde el
 escenario de pruebas de Django, lo cual incide en las pruebas de facturación. Sin embargo, al simular
 estos escenarios desde la interfaz de administrador, no se notaron problemas algunos.
+
+D) Al correr los escenarios de prueba con manage.py test WebAccess, se observará un error referente a
+triggers en la creación de la base de datos temporal. Esto no influye en la ejecución, y ocurre
+pues Django intenta insertar el script custom de sql DOS veces a la base de datos, lo cual provoca
+conflictos sobre triggers que ya existen
