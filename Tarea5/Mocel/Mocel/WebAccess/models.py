@@ -33,7 +33,7 @@ class Cliente(models.Model):
 	    
 class Usuario(models.Model):
     cedula = models.ForeignKey('Cliente',related_name="username",unique=True)
-    password = models.CharField('password',max_length=12,unique=True)
+    password = models.CharField('password',max_length=12)
     
     def __unicode__(self):
 	return "username: " + unicode(self.cedula) \

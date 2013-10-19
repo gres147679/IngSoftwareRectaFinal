@@ -29,17 +29,17 @@ class PruebaPlan(TestCase):
       cantPostpago = PlanPostpago.objects.filter(codplan = pl).count()
       self.assertEqual(cantPostpago, 1)
 
-class PruebaFactura(TestCase):
-    def setUp(self):
-      e = Empresa.objects.create(RIF = 100, razon_social = 'Empresa1')
-      c = Cliente.objects.create(cedula=101, nombrecl ='cliente1', direccion = 'dir1')
-      pl = Plan(codplan = 121, nombreplan = "prepago1", tipo = "pr",renta_basica =35, renta_ilimitada = 70)
-      pl.save()
-      p = Producto.objects.create(numserie =201, nombreprod ="abcd",cedula = c, RIF = e)
-      pre = PlanPrepago.objects.get(codplan = pl)
-      Activa.objects.create(codplan = pre, numserie = p, saldo = 25)
-      paq = Paquete.objects.create(codpaq = 301, nombrepaq = 'paquete1', precio = 30)
-      Contrata.objects.create(codpaq = paq, numserie = p)
+#class PruebaFactura(TestCase):
+#    def setUp(self):
+#      e = Empresa.objects.create(RIF = 100, razon_social = 'Empresa1')
+#      c = Cliente.objects.create(cedula=101, nombrecl ='cliente1', direccion = 'dir1')
+#      pl = Plan(codplan = 121, nombreplan = "prepago1", tipo = "pr",renta_basica =35, renta_ilimitada = 70)
+#      pl.save()
+#      p = Producto.objects.create(numserie =201, nombreprod ="abcd",cedula = c, RIF = e)
+#      pre = PlanPrepago.objects.get(codplan = pl)
+#      Activa.objects.create(codplan = pre, numserie = p, saldo = 25)
+#      paq = Paquete.objects.create(codpaq = 301, nombrepaq = 'paquete1', precio = 30)
+#      Contrata.objects.create(codpaq = paq, numserie = p)
       
     # Se prueba el monto del plan  
     #def testMontoPlan(self):
@@ -65,14 +65,14 @@ class PruebaFactura(TestCase):
         
         #self.assertEqual(montoTotal, 65 )
       
-class PruebaFactura2(TestCase):
-    def setUp(self):
-      #Creacion del producto
-      e = Empresa.objects.create(RIF = 100, razon_social = 'Empresa1')
-      c = Cliente.objects.create(cedula=101, nombrecl ='cliente1', direccion = 'dir1')
-      pl = Plan(codplan = 121, nombreplan = "prepago1", tipo = "pr",renta_basica =211, renta_ilimitada = 300)
-      pl.save()
-      p = Producto.objects.create(numserie =201, nombreprod ="abcd",cedula = c, RIF = e)
+#class PruebaFactura2(TestCase):
+#    def setUp(self):
+#      #Creacion del producto
+#      e = Empresa.objects.create(RIF = 100, razon_social = 'Empresa1')
+#      c = Cliente.objects.create(cedula=101, nombrecl ='cliente1', direccion = 'dir1')
+#      pl = Plan(codplan = 121, nombreplan = "prepago1", tipo = "pr",renta_basica =211, renta_ilimitada = 300)
+#      pl.save()
+#      p = Producto.objects.create(numserie =201, nombreprod ="abcd",cedula = c, RIF = e)
       
       ##Afiliacion de producto a planes y paquetes
       #pre = PlanPrepago.objects.get(codplan = pl)
@@ -99,11 +99,11 @@ class PruebaFactura2(TestCase):
       
       
     # Se prueba el monto del plan  
-    def testMontoPlan(self):
-        p = Producto.objects.get(numserie = 201)
-        f = generarFactura(p, 01,2011)
-        montoPlan =  f['total']
-        self.assertEqual(montoPlan,0)
+#    def testMontoPlan(self):
+#        p = Producto.objects.get(numserie = 201)
+#        f = generarFactura(p, 01,2011)
+#        montoPlan =  f['total']
+#        self.assertEqual(montoPlan,0)
    
         #self.assertEqual(montoPlan, 211)
         
@@ -126,16 +126,29 @@ class PruebaFactura2(TestCase):
 # Prueba de Triggers
 
 # Prueba que el servicio unico debe ser ofrecido solo una vez
-#class ServicioUnico(TestCase):
-    #def setUp(self):
-      #s1 = Servicio.objects.create(codserv = 3002, nombreserv = 'serv1', costo = 1.5, unico = True) 
-      #paq1 = Paquete.objects.create(codpaq = 301, nombrepaq = 'paquete1', precio = 30)
-      #Contiene.objects.create(codpaq = paq1, codserv = s1, cantidad = 50)
+# En el caso que se crea con una cantidad mayor que uno, falla
+class ServicioUnico1(TestCase):
+    def setUp(self):
+      serv = Servicio.objects.create(codserv = 3002, nombreserv = 'serv1', costo = 1.5, unico = True)
       
-    #def testServicioUnico(self):
-      #paq = Paquete.objects.get(codpaq =301)
-      #c = Contiene.objects.filter(codpaq= paq).count()
-      #self.assertEqual(c, 0)
+      paq = Paquete.objects.create(codpaq = 301, nombrepaq = 'paquete1', precio = 30)
+      cont = Contiene.objects.create(codpaq = paq, codserv = serv, cantidad = 1)
+      
+      plan  = Plan(codplan = 123, nombreplan = "plan basico", tipo = "pr",renta_basica =25, renta_ilimitada = 50)
+      plan.save()
+      inc = Incluye.objects.create(codplan = plan, codserv = serv, cantidad = 1, tarifa = 10)
+      
+    def testServicioUnicoPaquete(self):
+      paq = Paquete.objects.get(codpaq =301)
+      cont = Contiene.objects.filter(codpaq= paq).count()
+      self.assertEqual(cont, 1)
+  
+    def testServicioUnicoPlan(self):
+      plan = Plan.objects.get(codplan =123)
+      inc = Incluye.objects.filter(codplan= plan).count()
+      self.assertEqual(inc, 1)
+
+
 
 # Prueba que un producto no puede consumir si no esta asociado a un plan
 #class PruebaConsume(TestCase):
@@ -172,8 +185,8 @@ class PruebaFactura2(TestCase):
       #c = Consume.objects.filter(numserie = p).count()
       #self.assertEqual(c, 0) 
 
-# Prueba de actualizacion de saldo     
-class PruebaSaldo(TestCase):
+# Prueba de actualizacion de saldo por recarga   
+class PruebaSaldoRecarga(TestCase):
     def setUp(self):
       e = Empresa.objects.create(RIF = 102, razon_social = 'Empresa1')
       c = Cliente.objects.create(cedula=101, nombrecl ='cliente1', direccion = 'dir1')
@@ -184,18 +197,43 @@ class PruebaSaldo(TestCase):
       pre = PlanPrepago.objects.get(codplan = pl)
       Activa.objects.create(codplan = pre, numserie = p, saldo = 25)
       
-      Recarga.objects.create(numserie = p, cantidad = 50, fecha ='2011-01-01 10:10')
-      
-    def tearDown(self):
-      Paquete.objects.filter(codpaq = 301).delete()
+      Recarga.objects.create(numserie = p, cantidad = 50, fecha ='2011-01-01 10:10:00')
+     
 
-    def testSaldo(self):
+    def testRecarga(self):
       p = Producto.objects.get(numserie = 201)
       ac = Activa.objects.get(numserie = p)
       print ac.saldo
       self.assertEqual(ac.saldo, 75)
      
- 
+# Prueba de actualizacion de saldo por consumo   
+class PruebaSaldoConsumo(TestCase):
+    def setUp(self):
+      #Crea un producto y lo asocia a un plan prepago
+      e = Empresa.objects.create(RIF = 102, razon_social = 'Empresa1')
+      c = Cliente.objects.create(cedula=101, nombrecl ='cliente1', direccion = 'dir1')
+      pl = Plan(codplan = 128, nombreplan = "prepago1", tipo = "pr",renta_basica =211, renta_ilimitada = 300)
+      pl.save()
+      p = Producto.objects.create(numserie =203, nombreprod ="abcd",cedula = c, RIF = e)
+      pre = PlanPrepago.objects.get(codplan = pl)
+      ac = Activa.objects.create(codplan = pre, numserie = p, saldo = 50)
+      
+      #Crea un servicio que es incluido por el plan
+      serv = Servicio.objects.create(codserv = 3002, nombreserv = 'serv1', costo = 1.5)
+#      paq1 = Paquete.objects.create(codpaq = 301, nombrepaq = 'paquete1', precio = 30)
+#      Contiene.objects.create(codpaq = paq1, codserv = serv, cantidad = 10)
+      inc = Incluye(codplan = pl, codserv = serv, cantidad = 10, tarifa = 1.5)
+      inc.save()
+      
+      #Consume una cantidad mayor de servicio ofrecido por el plan
+      Consume.objects.create(numserie = p, codserv = serv, fecha = '2011-01-01 10:10:00', cantidad = 20)
+     
+
+    def testRecarga(self):
+      p = Producto.objects.get(numserie = 201)
+      ac = Activa.objects.get(numserie = p)
+      print ac.saldo
+      self.assertEqual(ac.saldo, 35)
 #class PruebaTrigger1():
 
 #  

@@ -218,8 +218,6 @@ def generarFactura(Producto, mes, anio):
     listaCobrar = {}
    
     agregarRestoServicios(Producto, totalPlan)
-    
-    print totalPlan
 
     totalExceso = resumenConsumos(listaCobrar, totalConsumido, totalPlan)
     
