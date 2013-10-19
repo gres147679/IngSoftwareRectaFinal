@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render
 from django.template import RequestContext
-from Mocel.WebAccess.forms import AgregarClienteForm
-from Mocel.WebAccess.models import *
+from ServiSoft.WebAccess.forms import AgregarClienteForm
+from ServiSoft.WebAccess.models import *
 from django.http import HttpResponse
 import datetime
 

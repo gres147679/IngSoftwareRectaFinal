@@ -1,4 +1,4 @@
-# Django settings for Mocel project.
+# Django settings for ServiSoft project.
 import os
 
 DEBUG = True
@@ -13,7 +13,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'mocel',                      # Or path to database file if using sqlite3.
+        'NAME': 'servisoft',                      # Or path to database file if using sqlite3.
         'USER': 'sys',                      # Not used with sqlite3.
         'PASSWORD': '123',                  # Not used with sqlite3.
         'HOST': 'localhost',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -102,10 +102,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'Mocel.urls'
+ROOT_URLCONF = 'ServiSoft.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'Mocel.wsgi.application'
+WSGI_APPLICATION = 'ServiSoft.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
@@ -121,7 +121,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Mocel.WebAccess',
+    'ServiSoft.WebAccess',
     # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

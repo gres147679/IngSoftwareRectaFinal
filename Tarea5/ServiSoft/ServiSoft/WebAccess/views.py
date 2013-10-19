@@ -1,8 +1,8 @@
 from django.shortcuts import render_to_response, render, HttpResponse
 from django.template import RequestContext
-from Mocel.WebAccess.forms import *
-from Mocel.WebAccess.models import *
-from Mocel.views import generarFactura
+from ServiSoft.WebAccess.forms import *
+from ServiSoft.WebAccess.models import *
+from ServiSoft.views import generarFactura
 from django.contrib.auth import login,logout,authenticate
 from django.http import HttpResponseRedirect
 import datetime

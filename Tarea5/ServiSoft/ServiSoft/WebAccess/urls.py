@@ -1,7 +1,7 @@
 from django.conf.urls import *
 from views import *
 
-urlpatterns = patterns('Mocel.WebAccess.views',
+urlpatterns = patterns('ServiSoft.WebAccess.views',
     url(r'^$','index_view',name='vista_principal'),
 	#url(r'^agregarCliente/$','agregar_cliente_view',name="vista_agregar_cliente"),
 

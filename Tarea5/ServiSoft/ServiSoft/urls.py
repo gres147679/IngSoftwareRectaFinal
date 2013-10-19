@@ -7,8 +7,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     # Examples:
-    # url(r'^$', 'Mocel.views.home', name='home'),
-    # url(r'^Mocel/', include('Mocel.foo.urls')),
+    # url(r'^$', 'ServiSoft.views.home', name='home'),
+    # url(r'^ServiSoft/', include('ServiSoft.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
 
-    url(r'^',include('Mocel.WebAccess.urls')),
+    url(r'^',include('ServiSoft.WebAccess.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
 )
