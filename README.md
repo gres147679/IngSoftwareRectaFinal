@@ -5,7 +5,7 @@
 *                                                                                                  *
 *                                                                                                  *
 *   Desarrollado por: Gamar Azuaje       Rosangelis Garcia                                         *
-*                     Reinaldo Verdugo   Jose L. Jiménez                                           *
+*                     Reinaldo Verdugo   Jose L. Jimï¿½nez                                           *
 *                     Gustavo El Khoury  Rebeca Machado                                            *
 *                     Leopoldo Pimentel                                                            *
 *                                                                                                  *
@@ -17,13 +17,13 @@
 DISCLAIMER
 ==========
 Este archivo describe las instrucciones, consideraciones y justificaciones del desarrollo del 
-sistema planteado en la tarea 5 del curso de Ingeniería de Software. El sistema es de nuestra 
-autoría y las conceptualizaciones del sistema (diseño) se encuentran plasmadas en el informe 
+sistema planteado en la tarea 5 del curso de Ingenierï¿½a de Software. El sistema es de nuestra 
+autorï¿½a y las conceptualizaciones del sistema (diseï¿½o) se encuentran plasmadas en el informe 
 entregado. 
 
-Las plataformas utilizadas fueron Django y PostgreSQL, siendo esta última de vital importancia en 
+Las plataformas utilizadas fueron Django y PostgreSQL, siendo esta ï¿½ltima de vital importancia en 
 para el correcto funcionamiento del sistema. El uso de otro lenguaje/backend para la base de datos 
-acabará en un completo desastre.
+acabarï¿½ en un completo desastre.
 
 
 INSTRUCCIONES
@@ -53,40 +53,60 @@ los clientes
 CONSIDERACIONES
 ===============
 
-A) Para la inserción de los triggers de integridad de la base de datos utilizada en las tareas 
+A) Para la inserciï¿½n de los triggers de integridad de la base de datos utilizada en las tareas 
 anteriores, se presentaron problemas que obedecen al siguiente ticket de error presente en Django:
 
 https://code.djangoproject.com/ticket/3214
 
-La forma más sana de corregir el problema consiste en crear un manejador de señales que capture la 
-señal de sincronización de la DB, y que luego inserte los triggers, según se explica aquí:
+La forma mï¿½s sana de corregir el problema consiste en crear un manejador de seï¿½ales que capture la 
+seï¿½al de sincronizaciï¿½n de la DB, y que luego inserte los triggers, segï¿½n se explica aquï¿½:
 http://djangosnippets.org/snippets/1338/
 
-Desafortunadamente este mecanismo no distingue si la operación de inserción de triggers ya fue 
-realizada o no. En conclusión, al ejecutar syncdb más de una vez se observan errores que indican 
-que ya los triggers existen. Una solución posible (aun asi, difícil de llevar a cabo en tan poco 
+Desafortunadamente este mecanismo no distingue si la operaciï¿½n de inserciï¿½n de triggers ya fue 
+realizada o no. En conclusiï¿½n, al ejecutar syncdb mï¿½s de una vez se observan errores que indican 
+que ya los triggers existen. Una soluciï¿½n posible (aun asi, difï¿½cil de llevar a cabo en tan poco 
 tiempo) es transformar los triggers de la base de datos en funciones save de django. Esto se ha
-logrado en dos de los triggers de integridad: crear una categoría de Plan Prepago o Postpago
-al insertar un plan, y crear paquetes de servicios adicionales automáticamente al insertar un servicio.
+logrado en dos de los triggers de integridad: crear una categorï¿½a de Plan Prepago o Postpago
+al insertar un plan, y crear paquetes de servicios adicionales automï¿½ticamente al insertar un servicio.
 Pedimos disculpas por este inconveniente que se escapa de nuestras manos.
 
-B) En esta oportunidad, debido a que habían bastantes puntos (casos de uso) a cubrir para la 
-entrega, se decidió dividir el trabajo en áreas.
+B) En esta oportunidad, debido a que habï¿½an bastantes puntos (casos de uso) a cubrir para la 
+entrega, se decidiï¿½ dividir el trabajo en ï¿½reas.
 
-Informe, documentación y diagramas: Leopoldo Pimentel y Reinaldo Verdugo.
+Informe, documentaciï¿½n y diagramas: Leopoldo Pimentel y Reinaldo Verdugo.
 Traduccion de base de datos: Rebeca Machado y Gustavo El Khoury
-Interfaz gráfica: Reinaldo Verdugo
+Interfaz grï¿½fica: Reinaldo Verdugo
 Refactorizaciones: Rebeca Machado
-Implementación: Gustavo El Khoury, Gamar Azuaje, Rosangelis Garcia, Jose Luis Jimenez
+Implementaciï¿½n: Gustavo El Khoury, Gamar Azuaje, Rosangelis Garcia, Jose Luis Jimenez
 
-Las parejas iniciales están al inicio del archivo.
+Las parejas iniciales estï¿½n al inicio del archivo.
 
-C) En el código de los escenarios de prueba, se encuentra un grupo de pruebas comentadas. Al momento de
-realizarlas, el equipo de desarrollo notó que existía un problema cuando se agregaban consumos desde el
-escenario de pruebas de Django, lo cual incide en las pruebas de facturación. Sin embargo, al simular
+C) En el cï¿½digo de los escenarios de prueba, se encuentra un grupo de pruebas comentadas. Al momento de
+realizarlas, el equipo de desarrollo notï¿½ que existï¿½a un problema cuando se agregaban consumos desde el
+escenario de pruebas de Django, lo cual incide en las pruebas de facturaciï¿½n. Sin embargo, al simular
 estos escenarios desde la interfaz de administrador, no se notaron problemas algunos.
 
-D) Al correr los escenarios de prueba con manage.py test WebAccess, se observará un error referente a
-triggers en la creación de la base de datos temporal. Esto no influye en la ejecución, y ocurre
+D) Al correr los escenarios de prueba con manage.py test WebAccess, se observarï¿½ un error referente a
+triggers en la creaciï¿½n de la base de datos temporal. Esto no influye en la ejecuciï¿½n, y ocurre
 pues Django intenta insertar el script custom de sql DOS veces a la base de datos, lo cual provoca
 conflictos sobre triggers que ya existen
+
+
+    Copyright (C) 2014  Gustavo El Khoury <gustavoelkhoury@gmail.com>
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+    The full GPLv2 License can be fount at the root of the repo, in the 
+    LICENSE file.
